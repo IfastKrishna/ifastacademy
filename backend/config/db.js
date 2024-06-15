@@ -1,14 +1,11 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-
-dotenv.config();
+const { DB_NAME } = require("../constant");
 
 const connectDB = async () => {
   try {
-    const mongoResponse = await mongoose.connect(process.env.MONGOURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const mongoResponse = await mongoose.connect(
+      `${process.env.MONGODB_URI}/${DB_NAME}`
+    );
     console.log(
       "MONGODB CONNECTED :: successfully ✔✔✔✔👌",
       mongoResponse.connection.host
