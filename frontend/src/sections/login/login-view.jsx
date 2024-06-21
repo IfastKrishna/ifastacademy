@@ -13,8 +13,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useRouter } from 'src/routes/hooks';
+// import { useRouter } from 'src/routes/hooks';
 
+import { useForm } from 'react-hook-form';
 import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
@@ -24,22 +25,34 @@ import Iconify from 'src/components/iconify';
 
 export default function LoginView() {
   const theme = useTheme();
-
-  const router = useRouter();
-
+  // const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
 
-  const handleClick = () => {
-    router.push('/dashboard');
+    formState: { errors, isSubmitSuccessful },
+  } = useForm();
+
+  const handleClick = (data) => {
+    console.log(isSubmitSuccessful);
+    console.log(data);
   };
 
   const renderForm = (
-    <>
+    <Box component="form" onSubmit={handleSubmit(handleClick)}>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField
+          {...register('email', { required: 'email is required' })}
+          label="Email address"
+          error={errors?.email}
+          helperText={errors?.email?.message}
+        />
 
         <TextField
-          name="password"
+          {...register('password', { required: 'password is required' })}
+          error={errors?.password}
+          helperText={errors?.password?.message}
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
@@ -60,17 +73,10 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-      >
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" color="inherit">
         Login
       </LoadingButton>
-    </>
+    </Box>
   );
 
   return (
@@ -99,7 +105,7 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
+          <Typography variant="h4">Sign in to ifastacademy</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?

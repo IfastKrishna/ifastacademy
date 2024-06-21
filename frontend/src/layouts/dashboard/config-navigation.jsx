@@ -18,9 +18,46 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
+    title: 'student',
+    icon: icon('ic_student'),
+    sub: [
+      {
+        title: 'add',
+        path: '/student/add',
+        icon: icon('ic_right-arrow'),
+      },
+      {
+        title: 'update',
+        path: '/student/update:_id',
+        icon: icon('ic_right-arrow'),
+      },
+      {
+        title: 'list',
+        path: 'student/list',
+        icon: icon('ic_right-arrow'),
+      },
+    ],
+  },
+  {
     title: 'product',
-    path: '/products',
     icon: icon('ic_cart'),
+    sub: [
+      {
+        title: 'add',
+        path: 'product/add',
+        icon: icon('ic_right-arrow'),
+      },
+      {
+        title: 'update',
+        path: '/product/update:_id',
+        icon: icon('ic_right-arrow'),
+      },
+      {
+        title: 'list',
+        path: 'product/list',
+        icon: icon('ic_right-arrow'),
+      },
+    ],
   },
   {
     title: 'blog',
