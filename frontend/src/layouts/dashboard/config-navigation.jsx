@@ -27,13 +27,8 @@ const navConfig = [
         icon: icon('ic_right-arrow'),
       },
       {
-        title: 'update',
-        path: '/student/update:_id',
-        icon: icon('ic_right-arrow'),
-      },
-      {
         title: 'list',
-        path: 'student/list',
+        path: 'student/lists',
         icon: icon('ic_right-arrow'),
       },
     ],
@@ -48,13 +43,8 @@ const navConfig = [
         icon: icon('ic_right-arrow'),
       },
       {
-        title: 'update',
-        path: '/product/update:_id',
-        icon: icon('ic_right-arrow'),
-      },
-      {
-        title: 'list',
-        path: 'product/list',
+        title: 'lists',
+        path: 'product/lists',
         icon: icon('ic_right-arrow'),
       },
     ],
