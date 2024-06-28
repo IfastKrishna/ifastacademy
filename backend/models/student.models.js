@@ -20,14 +20,26 @@ const studentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    userId: {
-      type: String,
-      unique: true,
-      trim: true,
+
+    dob: {
+      type: Date,
+      required: true,
     },
+
+    ifastId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     avatar: {
       type: String,
-      default: "", // avatar upload on cloudinary
     },
     // Contact information
     email: {
@@ -37,14 +49,16 @@ const studentSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    phoneNumber: {
+    phoneNo: {
       type: String,
       trim: true,
+      required: true,
     },
     emergencyContact: {
       type: String,
       trim: true,
     },
+
     enrolledCourses: [
       {
         // Many-to-many relationship with Courses
@@ -52,23 +66,23 @@ const studentSchema = new mongoose.Schema(
         ref: "Course",
       },
     ],
+
     joiningDate: {
       type: Date,
       required: true,
     },
-    dob: {
-      type: Date,
-      required: true,
-    },
     address: addressSchema,
+
     hobbies: {
       type: String,
       trim: true,
     },
+
     occupation: {
       type: String,
       trim: true,
     },
+
     notes: {
       type: String,
       trim: true,

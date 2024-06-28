@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from '../layouts/dashboard';
+import ProtectedRoute from '../components/protacted-route';
 
 export const IndexPage = lazy(() => import('../pages/app'));
 export const BlogPage = lazy(() => import('../pages/blog'));
@@ -25,7 +26,11 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
-        { path: 'product/lists', element: <ProductsPage /> },
+        {
+          path: 'product',
+          element: <ProtectedRoute roles={['admin', 'superadmin']} />,
+          children: [{ index: true, path: 'lists', element: <ProductsPage /> }],
+        },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
