@@ -24,7 +24,7 @@ const isAdmin = async (req, res, next) => {
         "You are not authorized to access this route"
       );
     }
-jghfvhfgiiuiu0gyhjhikjjl
+
     req.user = user;
     next();
   } catch (error) {
