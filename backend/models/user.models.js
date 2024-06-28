@@ -14,17 +14,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    username: {
+    ifastId: {
       type: String,
       unique: true,
       trim: true,
-      lowercase: true,
       required: true,
-    },
-
-    avatar: {
-      type: String,
-      default: "",
     },
 
     email: {
@@ -33,6 +27,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
+    },
+
+    avatar: {
+      type: String,
+      default: "",
     },
 
     password: {
@@ -50,7 +49,12 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ["user", "employee", "admin", "superadmin"],
+      enum: ["student", "employee", "admin", "superadmin"],
+    },
+    status: {
+      type: String,
+      default: "active",
+      enum: ["active", "inactive"],
     },
   },
   { timestamps: true }
@@ -73,7 +77,7 @@ userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      userId: this.userId,
+      ifastId: this.ifastId,
       email: this.email,
       role: this.role,
       avatar: this.avatar,

@@ -11,7 +11,7 @@ const courseEnquireSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    qulification: {
+    qualification: {
       type: String,
       required: true,
     },
