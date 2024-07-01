@@ -1,4 +1,5 @@
 const { Student } = require("../../models/student.models");
+const handleErrors = require("../../utils/handleErrors");
 
 const registerStudent = async (req, res) => {
   try {
@@ -58,7 +59,8 @@ const registerStudent = async (req, res) => {
       student,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    handleErrors(error, res);
   }
 };
+
+module.exports = registerStudent;

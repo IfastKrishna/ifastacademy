@@ -1,6 +1,7 @@
 const {
   FollowupMode,
 } = require("../../../models/master/follow-up-mode.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const searchFollowUpMode = async (req, res) => {
   try {
@@ -44,7 +45,7 @@ const searchFollowUpMode = async (req, res) => {
       message: "Followup Mode fetched successfully",
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

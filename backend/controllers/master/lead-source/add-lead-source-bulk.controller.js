@@ -1,4 +1,5 @@
 const { LeadSource } = require("../../../models/master/lead-source.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const addLeadSourceBulk = async (req, res) => {
   try {
@@ -6,7 +7,7 @@ const addLeadSourceBulk = async (req, res) => {
     const leadSources = await LeadSource.insertMany(leadSource);
     res.status(201).json(leadSources);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

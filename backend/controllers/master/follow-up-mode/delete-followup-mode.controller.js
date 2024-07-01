@@ -1,6 +1,7 @@
 const {
   FollowupMode,
 } = require("../../../models/master/follow-up-mode.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const deleteFollowupMode = async (req, res) => {
   try {
@@ -32,6 +33,6 @@ const deleteFollowupMode = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleErrors(error, res);
   }
 };

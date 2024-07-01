@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const deleteCourse = async (req, res) => {
   try {
@@ -29,7 +30,7 @@ const deleteCourse = async (req, res) => {
         .json({ message: `Course with id ${id} deleted successfully` });
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return handleErrors(error, res);
   }
 };
 

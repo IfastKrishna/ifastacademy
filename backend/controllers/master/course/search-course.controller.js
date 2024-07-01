@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const searchCourse = async (req, res) => {
   try {
@@ -17,13 +18,13 @@ const searchCourse = async (req, res) => {
     const match = {};
 
     if (name) {
-      match.name = { $regex: new RegExp(name, "i") }; // Case-insensitive search for name
+      match.name = { $regex: new RegExp(name, "i") };
     }
     if (level) {
       match.level = level;
     }
     if (instructor) {
-      match.instructor = { $regex: new RegExp(instructor, "i") }; // Case-insensitive search for instructor
+      match.instructor = { $regex: new RegExp(instructor, "i") };
     }
     if (duration) {
       match.duration = duration;
@@ -86,7 +87,7 @@ const searchCourse = async (req, res) => {
       message: "Courses fetched successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

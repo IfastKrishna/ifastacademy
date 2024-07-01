@@ -23,10 +23,12 @@ const batchSchema = new mongoose.Schema(
       type: Date,
     },
 
-    instructor: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Employee",
-    },
+    instructors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+      },
+    ],
 
     students: [
       {
@@ -34,7 +36,7 @@ const batchSchema = new mongoose.Schema(
         ref: "Student",
       },
     ],
-    
+
     capacity: {
       type: Number,
     },

@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const addCourse = async (req, res) => {
   try {
@@ -40,7 +41,7 @@ const addCourse = async (req, res) => {
       .status(201)
       .json({ status: true, message: "Course added successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 
