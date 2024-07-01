@@ -1,6 +1,7 @@
 const {
   FollowupMode,
 } = require("../../../models/master/follow-up-mode.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const addFollowupBulk = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ const addFollowupBulk = async (req, res) => {
     const followupModes = await FollowupMode.insertMany(followupMode);
     res.status(201).json(followupModes);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

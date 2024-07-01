@@ -1,4 +1,5 @@
 const { LeadSource } = require("../../../models/master/lead-source.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const addLeadSource = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ const addLeadSource = async (req, res) => {
       .status(201)
       .send({ status: true, message: "Lead Source added successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

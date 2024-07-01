@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const updateCourse = async (req, res) => {
   try {
@@ -54,7 +55,7 @@ const updateCourse = async (req, res) => {
       data: course,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

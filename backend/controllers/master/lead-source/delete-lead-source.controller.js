@@ -1,4 +1,5 @@
 const { LeadSource } = require("../../../models/master/lead-source.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const deleteLeadSource = async (req, res) => {
   try {
@@ -30,7 +31,7 @@ const deleteLeadSource = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleErrors(error, res);
   }
 };
 

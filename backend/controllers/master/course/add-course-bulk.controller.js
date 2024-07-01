@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const addCourseBulk = async (req, res) => {
   try {
@@ -6,7 +7,7 @@ const addCourseBulk = async (req, res) => {
     const courses = await Course.insertMany(course);
     res.status(201).json({ courses, message: "Courses added successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

@@ -1,4 +1,5 @@
 const { Course } = require("../../../models/master/course.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const getCourse = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ const getCourse = async (req, res) => {
       message: "Courses fetched successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 

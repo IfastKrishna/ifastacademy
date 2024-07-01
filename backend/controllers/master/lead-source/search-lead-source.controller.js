@@ -1,4 +1,5 @@
 const { LeadSource } = require("../../../models/master/lead-source.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const searchLeadSource = async (req, res) => {
   try {
@@ -47,7 +48,7 @@ const searchLeadSource = async (req, res) => {
       message: "Lead Source fetched successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleErrors(error, res);
   }
 };
 
