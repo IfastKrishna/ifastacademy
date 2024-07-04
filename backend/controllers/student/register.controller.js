@@ -1,7 +1,7 @@
 const { Student } = require("../../models/student.models");
 const handleErrors = require("../../utils/handleErrors");
 
-const registerStudent = async (req, res) => {
+const addStudent = async (req, res) => {
   try {
     const {
       firstName,
@@ -13,14 +13,14 @@ const registerStudent = async (req, res) => {
       enrolledCourses,
       address,
       joiningDate,
-      dob,
+      dob = new Date(),
       role,
     } = req.body;
 
     const { ifastId, avatar, _id: userId } = req?.user;
 
     if (
-      [firstName, email, phoneNo, joiningDate, dob].some(
+      [firstName, email, phoneNo, joiningDate, dob, address].some(
         (field) =>
           !field || field === "" || field === null || field === undefined
       )
@@ -63,4 +63,4 @@ const registerStudent = async (req, res) => {
   }
 };
 
-module.exports = registerStudent;
+module.exports = addStudent;

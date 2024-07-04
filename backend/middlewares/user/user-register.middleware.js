@@ -2,23 +2,37 @@ const User = require("../../models/user.models");
 
 const userRegister = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, phone, password, role, ifastId } =
+    const { firstName, lastName, email, phoneNo, password, role, ifastId } =
       req.body;
 
-    if ([firstName, email, phone, password, role].some((field) => !field)) {
+    if ([firstName, email, phoneNo, password, role].some((field) => !field)) {
       return res
         .status(400)
-        .json({ message: "Please fill all required fields" });
+        .send({ message: "Please fill all required fields" });
     }
 
-    const userExists = await User.findOne({ $or: [{ email }, { phone }] });
+    // Email and phone number validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!phoneRegex.test(phoneNo)) {
+      return res.status(400).json({
+        message: "Invalid phone number format. Phone number must be 10 digits.",
+      });
+    }
+
+    const userExists = await User.findOne({ $and: [{ email }, { phoneNo }] });
     if (userExists) {
       return res.status(400).json({
         message: "User already exists with this email or phone number",
       });
     }
 
-    const userCount = await User.countDocuments({});
+    const userCount = (await User.countDocuments({})) + 1;
     const formattedUserCount =
       userCount < 10
         ? `000${userCount}`
@@ -37,7 +51,7 @@ const userRegister = async (req, res, next) => {
       lastName,
       ifastId: newIfastId,
       email,
-      phone,
+      phoneNo,
       password,
       role,
     });
@@ -47,6 +61,7 @@ const userRegister = async (req, res, next) => {
     );
 
     req.user = userWithoutPassword;
+
     next();
   } catch (error) {
     console.error(error);

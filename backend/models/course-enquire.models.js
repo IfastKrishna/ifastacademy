@@ -1,5 +1,35 @@
 const mongoose = require("mongoose");
-const { addressSchema } = require("./master/employee.models");
+
+const addressSchema = new mongoose.Schema(
+  {
+    streetAddress: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    postalCode: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    country: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
 
 const courseEnquireSchema = new mongoose.Schema(
   {

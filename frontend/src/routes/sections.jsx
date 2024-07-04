@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Toaster } from 'react-hot-toast';
 import DashboardLayout from '../layouts/dashboard';
 import ProtectedRoute from '../components/protacted-route';
 
@@ -20,6 +22,7 @@ export default function Router() {
         <DashboardLayout>
           <Suspense>
             <Outlet />
+            <Toaster position="bottom-left" />
           </Suspense>
         </DashboardLayout>
       ),

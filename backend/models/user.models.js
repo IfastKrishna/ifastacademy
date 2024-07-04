@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema(
 
     avatar: {
       type: String,
-      default: "",
+      default:
+        "https://res.cloudinary.com/dzegosfst/image/upload/v1720065923/avatar_25_ixmiwb.jpg",
     },
 
     password: {
@@ -41,9 +42,16 @@ const userSchema = new mongoose.Schema(
     },
 
     phoneNo: {
-      required: true,
       type: String,
+      required: true,
       trim: true,
+      validate: {
+        validator: function (v) {
+          return /^\d{10}$/.test(v);
+        },
+        message: (props) =>
+          `${props.value} is not a valid phone number! Phone number must be 10 digits.`,
+      },
     },
 
     role: {
