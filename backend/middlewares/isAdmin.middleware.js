@@ -1,10 +1,11 @@
 const User = require("../models/user.models");
+const jwt = require("jsonwebtoken");
 
 const isAdmin = async (req, res, next) => {
   try {
     const token =
       req.cookies[process.env.TOKEN_NAME] ||
-      req.headers("Authorization")?.replace("Bearer ", "");
+      req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
       return handleUnauthorized(res);

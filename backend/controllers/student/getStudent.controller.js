@@ -7,7 +7,10 @@ const getStudent = async (req, res) => {
     const limit = parseInt(pageSize) || 10;
     const page = parseInt(currPage) || 1;
     const skip = (page - 1) * limit;
-    const students = await Student.find().limit(limit).skip(skip);
+    const students = await Student.aggregate([
+      { $skip: skip },
+      { $limit: limit },
+    ]);
 
     res.json({ success: true, data: students });
   } catch (error) {

@@ -5,7 +5,7 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({
       $or: [{ username }, { email: username }, { phoneNo: username }],
-    }).select("-password");
+    });
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -17,17 +17,22 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    const loggedInUser = await User.findOne({ _id: user._id }).select(
+      "-password"
+    );
+
     const token = user.generateAccessToken();
+
     res
       .status(200)
-      .cookie("token", token, {
+      .cookie(process.env.TOKEN_NAME, token, {
         httpOnly: true,
         secure: true,
       })
       .send({
         success: true,
         message: "Login successful",
-        user,
+        data: loggedInUser,
         token,
         isAuth: true,
       });

@@ -1,5 +1,35 @@
 const mongoose = require("mongoose");
-const { addressSchema } = require("./course-enquire.models");
+
+const addressSchema = new mongoose.Schema(
+  {
+    streetAddress: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    postalCode: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    country: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
 
 const studentSchema = new mongoose.Schema(
   {
@@ -54,6 +84,7 @@ const studentSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+
     emergencyContact: {
       type: String,
       trim: true,
@@ -61,7 +92,6 @@ const studentSchema = new mongoose.Schema(
 
     enrolledCourses: [
       {
-        // Many-to-many relationship with Courses
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
       },
@@ -71,6 +101,7 @@ const studentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+
     address: addressSchema,
 
     hobbies: {

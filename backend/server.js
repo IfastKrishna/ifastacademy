@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const AllRouters = require("./routes/AllRoutes");
 
 const app = express();
 
@@ -9,11 +10,7 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
-
-// import routes
-
-// declaration routes
-
-// // http://localhost:8000/api/v1 baseurl
+app.use("/api/v1", AllRouters);
+// // http://localhost:8080/api/v1 baseurl
 
 module.exports = app;

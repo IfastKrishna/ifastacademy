@@ -1,32 +1,35 @@
 const mongoose = require("mongoose");
 
-const addressSchema = new mongoose.Schema({
-  streetAddress: {
-    type: String,
-    required: true,
-    trim: true,
+const addressSchema = new mongoose.Schema(
+  {
+    streetAddress: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    postalCode: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    country: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
-  city: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  state: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  postalCode: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  country: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-});
+  { _id: false }
+);
 
 const employeeSchema = new mongoose.Schema(
   {
@@ -82,4 +85,4 @@ const employeeSchema = new mongoose.Schema(
 
 const Employee = mongoose.model("Employee", employeeSchema);
 
-module.exports = { Employee, addressSchema };
+module.exports = { Employee };
