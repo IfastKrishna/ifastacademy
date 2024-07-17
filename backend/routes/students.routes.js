@@ -1,6 +1,6 @@
 const express = require("express");
 const addStudent = require("../controllers/student/register.controller");
-const getStudent = require("../controllers/student/getStudent.controller");
+const getStudent = require("../controllers/student/get-students.controller");
 const isAuth = require("../middlewares/isAuth.middleware");
 const userRegister = require("../middlewares/user/user-register.middleware");
 const getStudentDetailsById = require("../controllers/student/get-from-id.controller");
