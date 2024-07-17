@@ -70,6 +70,8 @@ const studentSchema = new mongoose.Schema(
 
     avatar: {
       type: String,
+      default:
+        "https://res.cloudinary.com/dzegosfst/image/upload/v1720065923/avatar_25_ixmiwb.jpg",
     },
     // Contact information
     email: {
