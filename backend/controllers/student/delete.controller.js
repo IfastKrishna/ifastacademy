@@ -1,4 +1,4 @@
-const { Student } = require("../../models/student.models");
+const { Student } = require("../../models/student/student.models");
 
 const deleteStudent = async (req, res) => {
   const { id } = req.params;

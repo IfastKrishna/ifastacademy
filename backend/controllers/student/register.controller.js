@@ -1,4 +1,4 @@
-const { Student } = require("../../models/student.models");
+const { Student } = require("../../models/student/student.models");
 const handleErrors = require("../../utils/handleErrors");
 
 const addStudent = async (req, res) => {
