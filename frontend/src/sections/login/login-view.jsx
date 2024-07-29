@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable import/no-unresolved */
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -13,30 +14,38 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-// import { useRouter } from 'src/routes/hooks';
-
 import { useForm } from 'react-hook-form';
 import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
+import useLogin from 'src/libs/mutation/user/useLogin';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
-  // const router = useRouter();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
 
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm();
 
+  const { mutate: login, isPending: isLoginLoading, isSuccess: isLoginSuccess } = useLogin();
+
+  useEffect(() => {
+    if (isLoginSuccess) {
+      router.push('/');
+      console.log('Login success');
+    }
+  }, [isLoginSuccess, router]);
+
   const handleClick = (data) => {
-    console.log(isSubmitSuccessful);
-    console.log(data);
+    login(data);
   };
 
   const renderForm = (
@@ -45,13 +54,13 @@ export default function LoginView() {
         <TextField
           {...register('email', { required: 'email is required' })}
           label="Email address"
-          error={errors?.email}
+          error={!!errors?.email}
           helperText={errors?.email?.message}
         />
 
         <TextField
           {...register('password', { required: 'password is required' })}
-          error={errors?.password}
+          error={!!errors?.password}
           helperText={errors?.password?.message}
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -73,7 +82,14 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" color="inherit">
+      <LoadingButton
+        loading={isLoginLoading}
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+        color="inherit"
+      >
         Login
       </LoadingButton>
     </Box>

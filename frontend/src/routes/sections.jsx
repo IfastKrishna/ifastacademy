@@ -1,8 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Toaster } from 'react-hot-toast';
 import DashboardLayout from '../layouts/dashboard';
 import ProtectedRoute from '../components/protacted-route';
 
@@ -22,7 +20,6 @@ export default function Router() {
         <DashboardLayout>
           <Suspense>
             <Outlet />
-            <Toaster position="bottom-left" />
           </Suspense>
         </DashboardLayout>
       ),
@@ -30,9 +27,28 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
         {
-          path: 'product',
-          element: <ProtectedRoute roles={['admin', 'superadmin']} />,
-          children: [{ index: true, path: 'lists', element: <ProductsPage /> }],
+          path: 'students',
+          element: (
+            <ProtectedRoute roles={['admin', 'superadmin']}>
+              <>Students</>
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'staffs',
+          element: (
+            <ProtectedRoute roles={['admin']}>
+              <h1>Staffs</h1>
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'products',
+          element: (
+            <ProtectedRoute roles={['admin', 'superadmin']}>
+              <ProductsPage />
+            </ProtectedRoute>
+          ),
         },
         { path: 'blog', element: <BlogPage /> },
       ],

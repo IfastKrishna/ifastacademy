@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -8,8 +8,9 @@ import { alpha } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-
-import { account } from 'src/_mock/account';
+import useLogout from 'src/libs/mutation/user/useLogout';
+import { useRouter } from 'src/routes/hooks';
+import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,10 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const [data, setData] = useState(useIsAuth()?.data?.data || {});
+  const router = useRouter();
+
+  const { mutate: logout, isPending: logouting, isSuccess: logouted } = useLogout();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -40,6 +45,12 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  useEffect(() => {
+    if (logouted) {
+      router.push('/');
+    }
+  }, [logouted, router]);
 
   return (
     <>
@@ -56,15 +67,15 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.photoURL}
-          alt={account.displayName}
+          src={data?.avatar}
+          alt={data?.firstName + ' ' + data?.lastName}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {data?.firstName.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -85,10 +96,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {data?.firstName + ' ' + data?.lastName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {data?.email}
           </Typography>
         </Box>
 
@@ -105,10 +116,10 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={logout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
-          Logout
+          {logouting ? 'Logging out...' : 'Logout'}
         </MenuItem>
       </Popover>
     </>
