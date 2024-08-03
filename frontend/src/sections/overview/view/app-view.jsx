@@ -15,10 +15,12 @@ import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const router = useRouter();
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -28,37 +30,79 @@ export default function AppView() {
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Weekly Sales"
-            total={714000}
+            title="Today Fees"
+            total={4000}
             color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
           />
         </Grid>
-
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="New Users"
-            total={1352831}
+            title="Pending Fees"
+            total={40000}
+            color="error"
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+          />
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="Students"
+            onClick={() => router.push('/student/all')}
+            total={500}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            icon={
+              <img
+                alt="icon"
+                src="/assets/icons/navbar/ic_user.svg"
+                style={{ width: '60px', height: '60px' }}
+              />
+            }
           />
         </Grid>
-
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Item Orders"
+            title="Employees"
+            total={5}
+            color="info"
+            icon={
+              <img
+                alt="icon"
+                src="/assets/icons/navbar/ic_teacher.svg"
+                style={{ width: '60px', height: '60px' }}
+              />
+            }
+          />
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="Today Followups"
             total={1723315}
             color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_folllowups.svg" />}
           />
         </Grid>
-
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Bug Reports"
-            total={234}
-            color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            title="Today Admissions"
+            total={3}
+            color="warning"
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_user_check.svg" />}
+          />
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="Happy Birthday"
+            total={5}
+            color="warning"
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_happybirthday.svg" />}
+          />
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="Assets Problems"
+            total={5}
+            color="warning"
+            icon={<img alt="icon" src="/assets/icons/navbar/ic_laptop.svg" />}
           />
         </Grid>
 
@@ -103,7 +147,6 @@ export default function AppView() {
             }}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
           <AppCurrentVisits
             title="Current Visits"
@@ -117,7 +160,6 @@ export default function AppView() {
             }}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
@@ -138,7 +180,6 @@ export default function AppView() {
             }}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
           <AppCurrentSubject
             title="Current Subject"
@@ -152,7 +193,6 @@ export default function AppView() {
             }}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={8}>
           <AppNewsUpdate
             title="News Update"
@@ -165,7 +205,6 @@ export default function AppView() {
             }))}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
           <AppOrderTimeline
             title="Order Timeline"
@@ -183,7 +222,6 @@ export default function AppView() {
             }))}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
           <AppTrafficBySite
             title="Traffic by Site"
@@ -211,7 +249,6 @@ export default function AppView() {
             ]}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={8}>
           <AppTasks
             title="Tasks"

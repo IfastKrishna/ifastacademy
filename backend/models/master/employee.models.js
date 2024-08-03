@@ -9,7 +9,7 @@ const addressSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     state: {
@@ -19,7 +19,7 @@ const addressSchema = new mongoose.Schema(
     },
     postalCode: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     country: {

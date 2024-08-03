@@ -9,10 +9,19 @@ import { fShortenNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({
+  title,
+  total,
+  icon,
+  color = 'primary',
+  sx,
+  onClick,
+  ...other
+}) {
   return (
     <Card
       component={Stack}
+      onClick={() => (!!onClick ? onClick() : null)}
       spacing={3}
       direction="row"
       sx={{
@@ -20,6 +29,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
         py: 5,
         borderRadius: 2,
         ...sx,
+        courser: 'pointer',
       }}
       {...other}
     >

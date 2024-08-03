@@ -13,34 +13,49 @@ const navConfig = [
     icon: icon('ic_analytics'),
   },
   {
+    title: 'enquiry',
+    path: '/enquiry/all',
+    icon: icon('ic_user-plus'),
+  },
+  {
+    title: 'followup',
+    icon: icon('ic_followup'),
+    path: '/followup/all',
+  },
+  {
     title: 'user',
-    path: '/user',
+    path: '/user/all',
     icon: icon('ic_user'),
   },
   {
     title: 'student',
     icon: icon('ic_student'),
-    path: '/students',
+    path: '/student/all',
   },
   {
-    title: 'products',
-    icon: icon('ic_cart'),
-    path: '/products',
+    title: 'employee',
+    icon: icon('ic_teacher'),
+    path: '/employee/all',
+  },
+  // {
+  //   title: 'products',
+  //   icon: icon('ic_cart'),
+  //   path: '/products',
+  // },
+  {
+    title: 'master',
+    icon: icon('ic_master'),
+    path: '/masters',
   },
   {
-    title: 'blog',
-    path: '/blog',
-    icon: icon('ic_blog'),
+    title: 'student fees',
+    icon: icon('ic_fee'),
+    path: '/student-fee/all',
   },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    title: 'batch-attendance',
+    icon: icon('ic_calendar-add'),
+    path: '/batch-attendance/all',
   },
 ];
 

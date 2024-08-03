@@ -1,2 +1,30 @@
 /* scrollbar */
 @import 'simplebar-react/dist/simplebar.min.css';
+
+* {
+  scrollbar-width: thin;
+}
+
+.float-menu-container {
+  position: relative;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.main-button {
+  z-index: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fab-container {
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.float-menu-container:hover .fab-container {
+  opacity: 1;
+  pointer-events: auto;
+}

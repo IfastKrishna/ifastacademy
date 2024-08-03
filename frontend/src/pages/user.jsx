@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { UserView } from '../sections/user/view';
+import { UserView } from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 
@@ -8,7 +7,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | IfastAcademy </title>
       </Helmet>
 
       <UserView />
