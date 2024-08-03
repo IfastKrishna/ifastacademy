@@ -6,6 +6,7 @@ import { useScrollToTop } from './hooks/use-scroll-to-top';
 
 import Router from './routes/sections';
 import ThemeProvider from './theme';
+import { SearchProvider } from './context/NavSerch';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ export default function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <Router />
+        <SearchProvider>
+          <Router />
+        </SearchProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

@@ -6,7 +6,7 @@ const getAllUsers = async (req, res) => {
   search = new RegExp(search, "i");
 
   try {
-    const users = await User.find({
+    const query = {
       $or: [
         { firstName: search },
         { lastName: search },
@@ -14,18 +14,26 @@ const getAllUsers = async (req, res) => {
         { phoneNo: search },
         { ifastId: search },
       ],
-    })
-      .select("-password")
-      .limit(parseInt(limit))
-      .skip((parseInt(page) - 1) * parseInt(limit));
+    };
+
+    const [users, count] = await Promise.all([
+      User.find(query)
+        .select("-password")
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit)),
+      User.countDocuments(query),
+    ]);
 
     if (users.length === 0) {
       return res.status(400).json({ message: "No user found" });
     }
 
-    return res
-      .status(200)
-      .json({ message: "Users found", data: users, isAuth: true });
+    return res.status(200).json({
+      message: "Users found",
+      totalCount: count,
+      data: users,
+      isAuth: true,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

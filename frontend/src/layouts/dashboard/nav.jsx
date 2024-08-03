@@ -14,26 +14,25 @@ import { RouterLink } from '../../routes/components';
 
 import { useResponsive } from '../../hooks/use-responsive';
 
-import { account } from '../../_mock/account';
-
 import Logo from '../../components/logo';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const upLg = useResponsive('up', 'lg');
+  const [data] = useState(useIsAuth()?.data?.data || {});
 
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderAccount = (
@@ -49,13 +48,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={data?.avatar} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{data?.firstName + ' ' + data?.lastName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {data?.role}
         </Typography>
       </Box>
     </Box>
@@ -63,8 +62,8 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
+      {navConfig.map((item, i) => (
+        <NavItem key={i} item={item} />
       ))}
     </Stack>
   );
