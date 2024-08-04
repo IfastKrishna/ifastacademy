@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const { Course } = require("./path/to/your/course/model");
+const { Course } = require("../models/master/course.models");
+require("dotenv").config();
 
 async function createDemoCourses() {
   // Connect to your MongoDB database
-  await mongoose.connect("your_mongodb_connection_string", {
+  await mongoose.connect(`${process.env.MONGODB_URI}/ifastacademy`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

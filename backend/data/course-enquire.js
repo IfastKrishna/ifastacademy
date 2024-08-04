@@ -1,9 +1,11 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const { CourseEnquire } = require("../models/course-enquire.models");
 
+// console.log(process.env.PORT);
 async function createDemoEnquiries() {
   // Connect to your MongoDB database
-  await mongoose.connect("your_mongodb_connection_string", {
+  await mongoose.connect(`${process.env.MONGODB_URI}/ifastacademy`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
