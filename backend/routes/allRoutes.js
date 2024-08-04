@@ -14,7 +14,7 @@ const AllRouters = express.Router();
 AllRouters.use("/user", UserRouter);
 AllRouters.use("/student", StudentRouter);
 AllRouters.use("/followup", FollowupRouter);
-AllRouters.use("/course-enquiry", CourseEnquiryRouter);
+AllRouters.use("/course-enquire", CourseEnquiryRouter);
 AllRouters.use("/master/batch", BatchRouter);
 AllRouters.use("/master/course", CourseRouter);
 AllRouters.use("/master/employee", EmployeeRouter);

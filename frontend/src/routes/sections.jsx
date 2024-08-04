@@ -10,6 +10,7 @@ import { EmployeeCreate } from 'src/sections/staffs/create';
 import { EmployeeEdit } from 'src/sections/staffs/edit';
 import { EmployeeView } from 'src/sections/staffs/view';
 import { MasterView } from 'src/sections/master/view';
+import CourseEnquireView from 'src/sections/course-enquire/view/course-enquire-view';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -62,8 +63,7 @@ export default function Router() {
               path: 'all',
               element: (
                 <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>Enquires</h1>
-                  <Outlet />
+                  <CourseEnquireView />
                 </ProtectedRoute>
               ),
             },
