@@ -11,6 +11,8 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { bgBlur } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
+import { useSearch } from 'src/context/NavSerch';
+import { usePathname } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +43,8 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
+  const { searchValue, handleSearchChange } = useSearch();
+  const pathname = usePathname();
 
   const handleOpen = () => {
     setOpen(!open);
@@ -66,6 +70,8 @@ export default function Searchbar() {
               fullWidth
               disableUnderline
               placeholder="Search…"
+              onChange={handleSearchChange}
+              value={searchValue[pathname]}
               startAdornment={
                 <InputAdornment position="start">
                   <Iconify

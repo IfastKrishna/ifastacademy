@@ -2,7 +2,6 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db.js");
 const app = require("./server.js");
 const { PORT } = require("./constant.js");
-
 dotenv.config({ path: "./.env" });
 
 connectDB()

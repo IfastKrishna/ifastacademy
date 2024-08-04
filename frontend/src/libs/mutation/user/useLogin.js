@@ -5,7 +5,7 @@ import Api from '../../../utils/api';
 const useLogin = () =>
   useMutation({
     mutationFn: async (user) => {
-      const { data } = await Api.post('/login', user);
+      const { data } = await Api.post('/user/login', user);
       return data;
     },
     onSuccess: (data) => {
@@ -13,7 +13,8 @@ const useLogin = () =>
       toast.success(data.message);
     },
     onError: (error) => {
-      toast.error(error?.message || 'An error occurred. Please try again.');
+      console.error(error);
+      toast.error(error?.response?.data?.message || 'An error occurred. Please try again.');
     },
   });
 

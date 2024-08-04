@@ -1,4 +1,4 @@
-const require = require("mongoose");
+const mongoose = require("mongoose");
 
 const batchSchema = new mongoose.Schema(
   {
@@ -10,7 +10,6 @@ const batchSchema = new mongoose.Schema(
 
     course: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Course",
     },
 
@@ -23,20 +22,22 @@ const batchSchema = new mongoose.Schema(
       type: Date,
     },
 
-    instructors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Employee",
-      },
-    ],
-
     students: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
       },
     ],
-
+    instructors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+      },
+    ],
+    batchTiming: {
+      type: String,
+      required: true,
+    },
     capacity: {
       type: Number,
     },

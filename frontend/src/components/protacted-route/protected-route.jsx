@@ -1,17 +1,11 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet, Navigate } from 'react-router-dom';
+import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 
-function ProtectedRoute({ roles }) {
-  const useIsLogin = () => ({
-    role: 'superadmin',
-    name: 'krishna',
-    email: 'krishna@gmail.om',
-    phoneNo: '1234567890',
-    avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-  });
+function ProtectedRoute({ roles, children }) {
+  const user = useIsAuth().data.data;
 
-  const user = useIsLogin();
   const hasRequiredRole = roles.includes(user.role);
 
   //   console.log(user);
@@ -19,7 +13,8 @@ function ProtectedRoute({ roles }) {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {hasRequiredRole ? <Outlet /> : <Navigate to="/login" />}
+      {/* {hasRequiredRole ? <Outlet /> : <Navigate to="/login" />} */}
+      {hasRequiredRole ? children : <Navigate to="/login" />}
     </Suspense>
   );
 }

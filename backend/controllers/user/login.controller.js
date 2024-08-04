@@ -2,9 +2,9 @@ const User = require("../../models/user.models");
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({
-      $or: [{ email: username }, { ifastId: username }],
+      $or: [{ email: email }, { ifastId: email }],
     });
 
     if (!user) {

@@ -24,13 +24,8 @@ const courseSchema = new mongoose.Schema(
     level: {
       type: String,
       enum: ["Beginner", "Intermediate", "Advanced"],
+      default: "Beginner",
     },
-    instructor: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Employee",
-      },
-    ],
     isActive: {
       type: Boolean,
       default: true,

@@ -26,7 +26,7 @@ StudentRouter.get(
 
 StudentRouter.get(
   "/:id",
-  isAuth(["admin", "superadmin", "employee", "student"]),
+  isAuth(["admin", "superadmin", "employee"]),
   getStudentDetailsById
 );
 

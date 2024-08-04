@@ -12,7 +12,7 @@ const UserRouter = express.Router();
 UserRouter.post("/", userRegister, createUser);
 UserRouter.post("/login", login);
 UserRouter.post("/logout", isAuth(), logout);
-UserRouter.get("/get-current", isAuth(), getCurrentUser);
+UserRouter.get("/me", isAuth(), getCurrentUser);
 UserRouter.patch("/change-password", isAuth(), changeCurrentPassword);
 UserRouter.get("/all", isAuth(["admin", "superadmin"]), getAllUsers);
 

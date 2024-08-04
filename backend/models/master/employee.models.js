@@ -9,22 +9,22 @@ const addressSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      required: true,
+      default: "North Delhi",
       trim: true,
     },
     state: {
       type: String,
-      required: true,
       trim: true,
+      default: "Delhi",
     },
     postalCode: {
       type: String,
-      required: true,
       trim: true,
+      default: "110082",
     },
     country: {
       type: String,
-      required: true,
+      default: "India",
       trim: true,
     },
   },
