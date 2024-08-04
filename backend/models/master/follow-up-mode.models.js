@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const followupModeSchema = new mongoose.Schema(
   {
@@ -11,4 +11,5 @@ const followupModeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const FollowupMode = mongoose.model("FollowupMode", followupModeSchema);
+const FollowupMode = mongoose.model("FollowupMode", followupModeSchema);
+module.exports = FollowupMode;

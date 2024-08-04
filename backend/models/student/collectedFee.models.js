@@ -1,64 +1,34 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const collectedStudentFeeSchema = new Schema({
+const studentFeeSchema = new Schema({
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Student",
     required: true,
   },
-
   paymentType: {
-    type: String,
-    enum: ["month-wise", "course-wise", "one-time", "other"],
-    default: "month-wise",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "feeCategory",
   },
-
   paymentDate: {
     type: Date,
     default: Date.now,
     required: true,
   },
-
-  paymentMethod: {
-    type: String,
-    enum: ["Cash", "Card", "Online", "Other"],
-    default: "Cash",
+  amount: {
+    type: Number,
+    required: true,
   },
-
-  payment: [
-    {
-      categoryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "FeeCategory",
-        required: true,
-      },
-      amount: {
-        type: Number,
-        required: true,
-        validate: {
-          validator: (value) => value > 0,
-          message: "amount must be a positive number",
-        },
-      },
-      month: {
-        type: String,
-        default: new Date().toLocaleString("default", { month: "long" }),
-      },
-    },
-  ],
-
+  month: {
+    type: String,
+    required: true,
+  },
   paymentStatus: {
     type: String,
     enum: ["Paid", "Unpaid"],
     required: true,
   },
-
-  confirmation: {
-    type: Boolean,
-    default: false,
-  },
-
   // Reference to the payment reference number or transaction number
   paymentReference: {
     type: String,
@@ -81,11 +51,8 @@ const collectedStudentFeeSchema = new Schema({
 });
 
 // Add indexes if needed:
-collectedStudentFeeSchema.index({ studentId: 1 });
+// studentFeeSchema.index({ studentId: 1 });
 
-const CollectedStudentFee = mongoose.model(
-  "CollectedStudentFee",
-  collectedStudentFeeSchema
-);
+const StudentFee = mongoose.model("StudentFee", studentFeeSchema);
 
 module.exports = CollectedStudentFee;

@@ -3,7 +3,14 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from '../layouts/dashboard';
 import ProtectedRoute from '../components/protacted-route';
-import Master from 'src/pages/master';
+
+import { StudentCreate } from 'src/sections/students/create';
+import { StudentEdit } from 'src/sections/students/edit';
+import { EmployeeCreate } from 'src/sections/staffs/create';
+import { EmployeeEdit } from 'src/sections/staffs/edit';
+import { EmployeeView } from 'src/sections/staffs/view';
+import { MasterView } from 'src/sections/master/view';
+import CourseEnquireView from 'src/sections/course-enquire/view/course-enquire-view';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -13,12 +20,6 @@ export const IndexPage = lazy(() => import('../pages/app'));
 export const UserPage = lazy(() => import('../pages/user'));
 export const StudentPage = lazy(() => import('../pages/students'));
 export const StaffPage = lazy(() => import('../pages/staff'));
-export const MasterPage = lazy(() => import('../pages/master'));
-// export const ClassesPage = lazy(() => import('../pages/classes'));
-// export const BatchesPage = lazy(() => import('../pages/batches'));
-// export const CoursesPage = lazy(() => import('../pages/courses'));
-// export const FeeCategoriesPage = lazy(() => import('../pages/fee-categories'));
-// export const LeadSourcesPage = lazy(() => import('../pages/lead-sources'));
 
 // ----------------------------------------------------------------------
 
@@ -40,11 +41,7 @@ export default function Router() {
           children: [
             {
               path: 'create',
-              element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin', 'student', 'user']}>
-                  <h1>Create Enquire</h1>
-                </ProtectedRoute>
-              ),
+              element: <h1>Create Enquire</h1>,
             },
             {
               path: 'view/:id',
@@ -66,8 +63,7 @@ export default function Router() {
               path: 'all',
               element: (
                 <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>Enquires</h1>
-                  <Outlet />
+                  <CourseEnquireView />
                 </ProtectedRoute>
               ),
             },
@@ -119,7 +115,7 @@ export default function Router() {
               path: 'create',
               element: (
                 <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>Create Student</h1>
+                  <StudentCreate />
                 </ProtectedRoute>
               ),
             },
@@ -127,7 +123,7 @@ export default function Router() {
               path: 'view/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>View Student</h1>
+                  <StudentEdit />
                 </ProtectedRoute>
               ),
             },
@@ -135,7 +131,7 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>Edit Student</h1>
+                  <StudentEdit />
                 </ProtectedRoute>
               ),
             },
@@ -158,7 +154,7 @@ export default function Router() {
               path: 'create',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create Staff</h1>
+                  <EmployeeCreate />
                 </ProtectedRoute>
               ),
             },
@@ -166,7 +162,7 @@ export default function Router() {
               path: 'view/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>View Staff</h1>
+                  <EmployeeEdit />
                 </ProtectedRoute>
               ),
             },
@@ -174,7 +170,7 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Edit Staff</h1>
+                  <EmployeeEdit />
                 </ProtectedRoute>
               ),
             },
@@ -182,7 +178,7 @@ export default function Router() {
               path: 'all',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Employee</h1>
+                  <EmployeeView />
                 </ProtectedRoute>
               ),
             },
@@ -190,202 +186,195 @@ export default function Router() {
         },
         {
           path: 'masters',
-          element: (
-            <>
-              <MasterPage />
-              <Outlet />
-            </>
-          ),
+          element: <MasterView />,
+        },
+        {
+          path: 'masters-followup-mode',
+          element: <Outlet />,
           children: [
             {
-              path: 'class',
-              element: <Outlet />,
-              children: [
-                {
-                  path: 'create',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Create Class</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'view/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>View Class</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'edit/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Edit Class</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'all',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Classes</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-              ],
+              path: 'create',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Create Followup Mode</h1>
+                </ProtectedRoute>
+              ),
             },
             {
-              path: 'batch',
-              element: <Outlet />,
-              children: [
-                {
-                  path: 'create',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Create Batch</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'view/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>View Batch</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'edit/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Edit Batch</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'all',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Batches</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-              ],
+              path: 'view/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>View Followup Mode</h1>
+                </ProtectedRoute>
+              ),
             },
             {
-              path: 'course',
-              element: <Outlet />,
-              children: [
-                {
-                  path: 'create',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Create Course</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'view/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>View Course</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'edit/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Edit Course</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'all',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Courses</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-              ],
+              path: 'edit/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Edit Followup Mode</h1>
+                </ProtectedRoute>
+              ),
             },
             {
-              path: 'fee-category',
-              element: <Outlet />,
-              children: [
-                {
-                  path: 'create',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Create Fee Category</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'view/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>View Fee Category</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'edit/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Edit Fee Category</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'all',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Fee Categories</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-              ],
+              path: 'all',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Followup Modes</h1>
+                </ProtectedRoute>
+              ),
+            },
+          ],
+        },
+        {
+          path: 'masters-lead-source',
+          element: <Outlet />,
+          children: [
+            {
+              path: 'create',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Create Lead Source</h1>
+                </ProtectedRoute>
+              ),
             },
             {
-              path: 'lead-source',
-              element: <Outlet />,
-              children: [
-                {
-                  path: 'create',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Create Lead Source</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'view/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>View Lead Source</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'edit/:id',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Edit Lead Source</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-                {
-                  path: 'all',
-                  element: (
-                    <ProtectedRoute roles={['admin', 'superadmin']}>
-                      <h1>Lead Sources</h1>
-                    </ProtectedRoute>
-                  ),
-                },
-              ],
+              path: 'view/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>View Lead Source</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Edit Lead Source</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'all',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Lead Sources</h1>
+                </ProtectedRoute>
+              ),
+            },
+          ],
+        },
+        {
+          path: '/masters-batch',
+          element: <Outlet />,
+          children: [
+            {
+              path: 'create',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Create Class</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'view/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>View Class</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Edit Class</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'all',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Classes</h1>
+                </ProtectedRoute>
+              ),
+            },
+          ],
+        },
+        {
+          path: 'masters-course',
+          element: <Outlet />,
+          children: [
+            {
+              path: 'create',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Create Course</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'view/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>View Course</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Edit Course</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'all',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Courses</h1>
+                </ProtectedRoute>
+              ),
+            },
+          ],
+        },
+        {
+          path: 'masters-fee-category',
+          element: <Outlet />,
+          children: [
+            {
+              path: 'create',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Create Fee Category</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'view/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>View Fee Category</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Edit Fee Category</h1>
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'all',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin']}>
+                  <h1>Fee Categories</h1>
+                </ProtectedRoute>
+              ),
             },
           ],
         },
@@ -470,7 +459,7 @@ export default function Router() {
             {
               path: 'all',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
                   <h1>Followups</h1>
                 </ProtectedRoute>
               ),
@@ -478,7 +467,7 @@ export default function Router() {
             {
               path: 'create',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
                   <h1>Create Followup</h1>
                 </ProtectedRoute>
               ),
@@ -486,7 +475,7 @@ export default function Router() {
             {
               path: 'view/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
                   <h1>View Followup</h1>
                 </ProtectedRoute>
               ),
@@ -494,7 +483,7 @@ export default function Router() {
             {
               path: 'edit/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
                   <h1>Edit Followup</h1>
                 </ProtectedRoute>
               ),
@@ -510,6 +499,8 @@ export default function Router() {
             </ProtectedRoute>
           ),
         },
+        { path: 'profile', element: <h1>Profile</h1> },
+        { path: 'settings', element: <h1>Settings</h1> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },

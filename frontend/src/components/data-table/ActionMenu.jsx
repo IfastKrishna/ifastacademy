@@ -2,9 +2,11 @@ import { IconButton, ListItemIcon, ListItemText, MenuItem, Popover } from '@mui/
 import React, { useRef } from 'react';
 import Iconify from '../iconify';
 import useDisclosure from 'src/hooks/use-disclosure';
+import { useRouter } from 'src/routes/hooks';
 
 function ActionMenu({
-  menus = [
+  row = {},
+  menus = () => [
     {
       itemText: 'View',
       // color: 'primary.main',
@@ -27,6 +29,7 @@ function ActionMenu({
 }) {
   const { open, close, isOpen } = useDisclosure();
   const anchorRef = useRef(null);
+  const router = useRouter();
 
   return (
     <>
@@ -43,7 +46,7 @@ function ActionMenu({
           sx: { width: 140 },
         }}
       >
-        {menus.map((menu, index) => (
+        {menus(row, router).map((menu, index) => (
           <MenuItem
             key={index}
             onClick={menu?.onClick}

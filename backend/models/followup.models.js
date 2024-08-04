@@ -2,20 +2,20 @@ const mongoose = require("mongoose");
 
 const followUpSchema = new mongoose.Schema(
   {
-    followUpId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     leadId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Lead", // Assuming you have a Lead model
-      required: true,
+      modelName: {
+        type: String, // e.g., "Student", "Employee", "Enquiry"
+        required: true,
+      },
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+      },
     },
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming you have a User model
-      required: true,
+      ref: "User",
+      // required: true,
     },
     dueDate: {
       type: Date,
@@ -33,7 +33,10 @@ const followUpSchema = new mongoose.Schema(
     reminders: [
       {
         date: Date,
-        sent: Boolean,
+        sent: {
+          type: Boolean,
+          default: false,
+        },
         method: String, // email, SMS, etc.
       },
     ],
@@ -42,6 +45,12 @@ const followUpSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+followUpSchema.methods.populateLead = async function () {
+  const model = mongoose.model(this.leadId.modelName);
+  this.leadId.data = await model.findById(this.leadId.id);
+  return this;
+};
+
 const FollowUp = mongoose.model("FollowUp", followUpSchema);
 
-module.exports = FollowUp;
+module.exports = { FollowUp };

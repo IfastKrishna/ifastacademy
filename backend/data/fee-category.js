@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const FeeCategory = require("./path/to/your/feecategory/model");
+require("dotenv").config();
+const FeeCategory = require("../models/master/fee-category.molels");
 
 async function createDemoFeeCategories() {
   // Connect to your MongoDB database
-  await mongoose.connect("your_mongodb_connection_string", {
+  await mongoose.connect(`${process.env.MONGODB_URI}/ifastacademy`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

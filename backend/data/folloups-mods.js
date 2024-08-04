@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
-import { FollowupMode } from "./path/to/your/followupmode/model";
+require("dotenv").config();
+const mongoose = require("mongoose");
+const FollowupMode = require("../models/master/follow-up-mode.models");
 
 async function createDemoFollowupModes() {
   // Connect to your MongoDB database
-  await mongoose.connect("your_mongodb_connection_string", {
+  await mongoose.connect(`${process.env.MONGODB_URI}/ifastacademy`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
