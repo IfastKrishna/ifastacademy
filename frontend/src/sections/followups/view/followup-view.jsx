@@ -3,31 +3,31 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataTable } from 'src/components/data-table';
 import { useSearch } from 'src/context/NavSerch';
-import useGetCourseEnquiers from 'src/libs/query/course-enquire/useGetCourseEnquiers';
 import { usePathname } from 'src/routes/hooks';
 import { columnDef } from './column-def';
 import TopContent from './top-content';
+import useGetFollowups from 'src/libs/query/followup/useGetFollowups';
 
-function CourseEnquireView() {
+function FollowupCreate() {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(5);
   const { searchValue } = useSearch();
   const pathname = usePathname();
 
-  const { data, isLoading, isSuccess } = useGetCourseEnquiers({
+  const { data, isLoading, isSuccess } = useGetFollowups({
     page,
     pageSize,
     search: searchValue[pathname],
   });
 
-  // console.log(data);
+  console.log(data);
   return (
     <Container>
       <Helmet>
-        <title>Course Enquire View | IfastAcademy</title>
+        <title>Followup View | IfastAcademy</title>
       </Helmet>
       <DataTable
-        columnDef={columnDef}
+        columnDef={[]}
         topContent={<TopContent />}
         rows={data?.data}
         loading={isLoading}
@@ -43,4 +43,4 @@ function CourseEnquireView() {
   );
 }
 
-export default CourseEnquireView;
+export default FollowupCreate;

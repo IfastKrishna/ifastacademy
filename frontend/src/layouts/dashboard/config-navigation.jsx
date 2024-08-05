@@ -13,8 +13,8 @@ const navConfig = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'enquiry',
-    path: '/enquiry/all',
+    title: 'enquire',
+    path: '/enquire/all',
     icon: icon('ic_user-plus'),
   },
   {

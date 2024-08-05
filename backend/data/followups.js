@@ -10,7 +10,7 @@ async function insertDemoData() {
 
   const followUps = [
     new FollowUp({
-      leadId: { modelName: "Student", id: "6686f218862ee1a8d199f6cf" },
+      leadId: { collections: "Student", id: "6686f218862ee1a8d199f6cf" },
       assignedTo: "66861bc09e6639cb54299a20", // Example User ID
       dueDate: new Date(),
       description: "Follow up with student regarding enrollment",

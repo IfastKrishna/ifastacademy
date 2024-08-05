@@ -13,16 +13,16 @@ function TopContent() {
       <ConfirmationModal
         onClose={close1}
         open={isOpen1}
-        confirmationTitle="Delete All Enquires"
-        confirmationDescription="Are you sure you want to delete all enquires?"
+        confirmationTitle="Delete All Followups"
+        confirmationDescription="Are you sure you want to delete all followups?"
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h5" component="h1">
-          Course Enquire
+          Followups
         </Typography>
 
-        <HeaderMenu onAdd={() => router.push('/enquire/create')} onDelete={open1} />
+        <HeaderMenu onAdd={() => router.push('/followup/create')} onDelete={open1} />
       </Box>
     </>
   );

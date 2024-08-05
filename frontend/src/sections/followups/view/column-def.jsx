@@ -2,6 +2,7 @@ import { Avatar } from '@mui/material';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 import ActionMenu from 'src/components/data-table/ActionMenu';
+import { fDate } from 'src/utils/format-time';
 
 const columnHelper = createColumnHelper();
 
@@ -10,12 +11,12 @@ const menus = (row, router) => {
     {
       itemText: 'View',
       icon: 'eva:eye-outline',
-      onClick: () => router?.push(`/followup/view/${row?._id}`),
+      onClick: () => router?.push(`/enquire/view/${row?._id}`),
     },
     {
       itemText: 'Edit',
       icon: 'eva:edit-fill',
-      onClick: () => router?.push(`/followup/edit/${row?._id}`),
+      onClick: () => router?.push(`/enquire/edit/${row?._id}`),
     },
     {
       itemText: 'Delete',
