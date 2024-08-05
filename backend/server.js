@@ -31,7 +31,7 @@ const AllRouters = require("./routes/AllRoutes");
 
 const app = express();
 const corsOptions = {
-  origin: ["http://localhost:3030"],
+  origin: ["https://ifastacademy.vercel.app", "http://localhost:3030"],
   credentials: true,
 };
 
@@ -39,7 +39,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.get("/", (req, res) => {
+app.get("/api/v1", (req, res) => {
   res.send("Hello World");
 });
 
