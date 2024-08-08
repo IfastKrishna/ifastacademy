@@ -11,7 +11,6 @@ const addCourse = async (req, res) => {
       endDate,
       level,
       requirements,
-      instructor,
     } = req.body;
 
     if (
@@ -32,7 +31,6 @@ const addCourse = async (req, res) => {
       endDate,
       level,
       requirements,
-      instructor: instructor.length > 0 ? instructor : undefined,
     });
 
     await course.save();

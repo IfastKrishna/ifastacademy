@@ -1,18 +1,16 @@
-const { LeadSource } = require("../../../models/master/lead-source.models");
+const LeadSourceModal = require("../../../models/master/lead-source.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const addLeadSource = async (req, res) => {
   try {
-    const { name, description, connect } = req.body;
-    if (!name || !connect) {
-      return res
-        .status(400)
-        .json({ message: "Name or description are required" });
+    const { name, description, contact } = req.body;
+    if (!name || !contact) {
+      return res.status(400).json({ message: "Name or contact are required" });
     }
-    await LeadSource.create({
+    await LeadSourceModal.create({
       name,
       description,
-      connect,
+      contact,
     });
     res
       .status(201)

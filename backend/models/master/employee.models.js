@@ -42,9 +42,20 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    ifastId: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dkkgmzpqd/image/upload/v1634360344/IFAST/avatars/placeholder.png",
     },
     email: {
       type: String,
@@ -53,7 +64,7 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    phoneNumber: {
+    phoneNo: {
       type: String,
       trim: true,
     },

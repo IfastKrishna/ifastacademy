@@ -1,17 +1,16 @@
-const {
-  FollowupMode,
-} = require("../../../models/master/follow-up-mode.models");
+const FollowupMode = require("../../../models/master/follow-up-mode.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const updateFollowupMode = async (req, res) => {
   try {
-    const { followupMode, _id } = req.body;
+    const { id } = req.params;
+    const { followupMode } = req.body;
     const updatedFollowupMode = await FollowupMode.findByIdAndUpdate(
-      followupModeId,
+      id,
       { followupMode },
       { new: true }
     );
-    res.status(200).json({ followupMode: updatedFollowupMode });
+    res.status(200).json({ success: true, data: updatedFollowupMode });
   } catch (error) {
     handleErrors(error, res);
   }

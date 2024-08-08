@@ -3,10 +3,20 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import useGetBatchesCount from 'src/libs/query/master/batch-class/useBatchCount';
+import useGetCoursesCount from 'src/libs/query/master/course/useCourseCount';
+import useGetFeeCategoriesCount from 'src/libs/query/master/fee-categories/useFeeCategoryCount';
+import useGetFollowupModesCount from 'src/libs/query/master/followup-mode/useFolloupModeCount';
+import useGetLeadSourceCount from 'src/libs/query/master/leace-source/useGetLeadSourceCount';
 import AppWidgetSummary from 'src/sections/overview/app-widget-summary';
 
 function MasterView() {
   const navigate = useNavigate();
+  const { data: batchCount } = useGetBatchesCount();
+  const { data: courseCount } = useGetCoursesCount();
+  const { data: feeCategoryCount } = useGetFeeCategoriesCount();
+  const { data: followupModeCount } = useGetFollowupModesCount();
+  const { data: leadSourceCount } = useGetLeadSourceCount();
 
   return (
     <Container maxWidth="xl">
@@ -20,7 +30,7 @@ function MasterView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Batches"
-            total={4000}
+            total={batchCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-batch/all')}
             icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
@@ -29,7 +39,7 @@ function MasterView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Courses"
-            total={5}
+            total={courseCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-course/all')}
             icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
@@ -38,7 +48,7 @@ function MasterView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Fee Categories"
-            total={4}
+            total={feeCategoryCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-fee-category/all')}
             icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
@@ -47,7 +57,7 @@ function MasterView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Followup Modes"
-            total={5}
+            total={followupModeCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-followup-mode/all')}
             icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
@@ -56,7 +66,7 @@ function MasterView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Lead Sources"
-            total={10}
+            total={leadSourceCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-lead-source/all')}
             icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}

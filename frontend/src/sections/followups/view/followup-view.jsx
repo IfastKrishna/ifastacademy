@@ -20,14 +20,13 @@ function FollowupCreate() {
     search: searchValue[pathname],
   });
 
-  console.log(data);
   return (
     <Container>
       <Helmet>
         <title>Followup View | IfastAcademy</title>
       </Helmet>
       <DataTable
-        columnDef={[]}
+        columnDef={columnDef}
         topContent={<TopContent />}
         rows={data?.data}
         loading={isLoading}

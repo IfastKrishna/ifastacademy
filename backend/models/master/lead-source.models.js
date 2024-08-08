@@ -24,6 +24,5 @@ const leadSourceSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-const LeadSource = mongoose.model("LeadSource", leadSourceSchema);
-module.exports = LeadSource;
+const LeadSourceModal = mongoose.model("LeadSource", leadSourceSchema);
+module.exports = LeadSourceModal;

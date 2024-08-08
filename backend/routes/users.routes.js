@@ -7,6 +7,7 @@ const userRegister = require("../middlewares/user/user-register.middleware");
 const getCurrentUser = require("../controllers/user/get-current.controller");
 const changeCurrentPassword = require("../controllers/user/change-password.controller");
 const getAllUsers = require("../controllers/user/get-all.controller");
+const { getNextIfastId } = require("../controllers/user/get-next-ifast-id");
 const UserRouter = express.Router();
 
 UserRouter.post("/", userRegister, createUser);
@@ -15,5 +16,6 @@ UserRouter.post("/logout", isAuth(), logout);
 UserRouter.get("/me", isAuth(), getCurrentUser);
 UserRouter.patch("/change-password", isAuth(), changeCurrentPassword);
 UserRouter.get("/all", isAuth(["admin", "superadmin"]), getAllUsers);
+UserRouter.get("/get-next-ifast-id", isAuth(), getNextIfastId);
 
 module.exports = UserRouter;

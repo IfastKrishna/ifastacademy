@@ -2,10 +2,10 @@ const User = require("../../models/user.models");
 
 const userRegister = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, phoneNo, password, role, ifastId } =
+    const { firstName, lastName, email, phoneNo, role, ifastId, ...rest } =
       req.body;
 
-    if ([firstName, email, phoneNo, password, role].some((field) => !field)) {
+    if ([firstName, email, phoneNo, role].some((field) => !field)) {
       return res
         .status(400)
         .send({ message: "Please fill all required fields" });
@@ -52,7 +52,7 @@ const userRegister = async (req, res, next) => {
       ifastId: newIfastId,
       email,
       phoneNo,
-      password,
+      password: phoneNo,
       role,
     });
 

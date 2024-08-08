@@ -1,21 +1,21 @@
-const { LeadSource } = require("../../../models/master/lead-source.models");
+const LeadSourceModal = require("../../../models/master/lead-source.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const updateLeadSource = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
   try {
-    const { id } = req.params;
-    const { name, description, connect } = req.body;
-    if (!name || !connect) {
-      return res
-        .status(400)
-        .json({ message: "Name or description are required" });
+    const { name, description, contact, isActive } = req.body;
+    if (!name || !contact) {
+      return res.status(400).json({ message: "Name or contact are required" });
     }
-    const leadSource = await LeadSource.findByIdAndUpdate(
+    const leadSource = await LeadSourceModal.findByIdAndUpdate(
       id,
       {
         name,
         description,
-        connect,
+        contact,
+        isActive,
       },
       { new: true }
     );

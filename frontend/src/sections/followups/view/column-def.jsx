@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Chip } from '@mui/material';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 import ActionMenu from 'src/components/data-table/ActionMenu';
@@ -11,12 +11,12 @@ const menus = (row, router) => {
     {
       itemText: 'View',
       icon: 'eva:eye-outline',
-      onClick: () => router?.push(`/enquire/view/${row?._id}`),
+      onClick: () => router?.push(`/followup/view/${row?._id}`),
     },
     {
       itemText: 'Edit',
       icon: 'eva:edit-fill',
-      onClick: () => router?.push(`/enquire/edit/${row?._id}`),
+      onClick: () => router?.push(`/followup/edit/${row?._id}`),
     },
     {
       itemText: 'Delete',
@@ -31,30 +31,58 @@ const menus = (row, router) => {
 
 export const columnDef = [
   {
-    accessorFn: (row) => `${row?.firstName} ${row?.lastName}`,
+    accessorFn: (row) => `${row?.leadDetails?.firstName} ${row?.leadDetails?.lastName}`,
     header: 'Full Name',
     size: 100,
   },
-  columnHelper.accessor('email', {
-    header: 'Email',
-    size: 120,
-  }),
   {
-    accessorFn: (row) =>
-      `${row?.address?.streetAddress} ${row?.address?.city} ${row?.address?.postalCode} ${row?.address?.state} ${row?.address?.country}`,
-    header: 'Address',
+    accessorFn: (row) => `${row?.leadDetails?.phoneNo || row?.leadDetails?.mobileNo}`,
+    header: 'Contact No',
+    size: 100,
+  },
+  {
+    accessorFn: (row) => `${'Web Development'}`,
+    header: 'Interested Courses',
     size: 200,
   },
   {
-    accessorKey: 'mobileNo',
-    header: 'Mobile No',
+    accessorFn: (row) => `${row?.assignedTo?.firstName} ${row?.assignedTo?.lastName}`,
+    header: 'Assigned To',
     size: 120,
   },
   {
-    accessorKey: 'gender',
-    header: 'Gender',
+    accessorFn: (row) => row?.assignedTo?.phoneNo,
+    header: 'Assigned To (Phone No)',
+    size: 100,
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    size: 200,
+  },
+  {
+    accessorFn: (row) => `${fDate(row?.dueDate)}`,
+    header: 'Due Date',
+    size: 100,
+  },
+  {
+    cell: ({ row: { original } }) => (
+      <Chip
+        size="small"
+        color={
+          original?.status === 'pending'
+            ? 'warning'
+            : original?.status === 'complete'
+            ? 'success'
+            : 'error'
+        }
+        label={original?.status}
+      />
+    ),
+    header: 'Status',
     size: 70,
   },
+
   {
     header: 'Action',
     cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,

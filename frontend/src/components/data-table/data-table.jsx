@@ -93,24 +93,28 @@ function DataTable({
           <TableBody>
             {loading ? (
               <TableSkeleton pageSize={pageSize} columnNo={columnDef?.length} />
+            ) : rows.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columnDef.length} align="center">
+                  <Typography component="div">Data not found</Typography>
+                </TableCell>
+              </TableRow>
             ) : (
               tableInstance.getRowModel().rows.map((rowEl) => (
                 <TableRow key={rowEl.id}>
                   {rowEl.getVisibleCells().map((cellEl) => (
                     <TableCell key={cellEl.id} colSpan={cellEl.colSpan}>
-                      {
-                        <Typography
-                          component="div"
-                          style={{
-                            whiteSpace: 'nowrap',
-                            width: cellEl.column.getSize(),
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {flexRender(cellEl.column.columnDef.cell, cellEl.getContext())}
-                        </Typography>
-                      }
+                      <Typography
+                        component="div"
+                        style={{
+                          whiteSpace: 'nowrap',
+                          width: cellEl.column.getSize(),
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {flexRender(cellEl.column.columnDef.cell, cellEl.getContext())}
+                      </Typography>
                     </TableCell>
                   ))}
                 </TableRow>

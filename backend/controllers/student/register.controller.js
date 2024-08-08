@@ -6,16 +6,22 @@ const addStudent = async (req, res) => {
     const {
       firstName,
       lastName,
-      fatherName,
-      motherName,
       email,
       phoneNo,
-      enrolledCourses,
-      address,
+      enrolledBatch,
       joiningDate,
-      dob = new Date(),
+      dob,
       role,
+      ...rest
     } = req.body;
+
+    const address = {
+      city: rest?.city,
+      state: rest?.state,
+      country: "India",
+      postalCode: rest?.postalCode,
+      streetAddress: rest?.streetAddress,
+    };
 
     const { ifastId, avatar, _id: userId } = req?.user;
 
@@ -39,14 +45,12 @@ const addStudent = async (req, res) => {
     const student = await Student.create({
       firstName,
       lastName,
-      fatherName,
-      motherName,
       userId,
       ifastId,
       avatar,
       email,
       phoneNo,
-      enrolledCourses,
+      enrolledBatch,
       address,
       joiningDate,
       dob,

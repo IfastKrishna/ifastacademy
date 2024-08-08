@@ -6,11 +6,18 @@ const feeCategorySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+
   description: {
     type: String,
+    required: false,
+  },
+
+  amount: {
+    type: Number,
+    required: false,
   },
 });
 
-const FeeCategory = mongoose.model("FeeCategory", feeCategorySchema);
+const FeeCategoryModal = mongoose.model("FeeCategory", feeCategorySchema);
 
-module.exports = FeeCategory;
+module.exports = FeeCategoryModal;

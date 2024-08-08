@@ -10,11 +10,11 @@ function TopContent({ handleClickOpen = () => {} }) {
       </Typography>
 
       <HeaderMenu
-        // onColumnFilter={() => {}}
-        onAdd={() => {}}
-        onDelete={() => {}}
-        onTemplateDownload={() => {}}
-        onUpload={() => {}}
+        onColumnFilter={() => {}}
+        // onAdd={() => {}}
+        // onDelete={() => {}}
+        // onTemplateDownload={() => {}}
+        // onUpload={() => {}}
       />
     </Box>
   );

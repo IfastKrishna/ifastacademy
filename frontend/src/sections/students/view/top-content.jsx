@@ -24,7 +24,7 @@ function TopContent() {
         <HeaderMenu
           onColumnFilter={() => {}}
           onAdd={() => router.push('/student/create')}
-          onDelete={open}
+          // onDelete={open}
         />
       </Box>
     </>
