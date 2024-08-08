@@ -1,15 +1,12 @@
-const { LeadSource } = require("../../../models/master/lead-source.models");
+const LeadSourceModal = require("../../../models/master/lead-source.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const deleteLeadSource = async (req, res) => {
   try {
     let { id } = req.params;
-    // Parse id if it's a stringified JSON
     id = JSON.parse(id);
-
     if (Array.isArray(id)) {
-      // Deleting multiple lead sources
-      const leadSource = await LeadSource.deleteMany({ _id: { $in: id } });
+      const leadSource = await LeadSourceModal.deleteMany({ _id: { $in: id } });
       if (!leadSource.deletedCount) {
         return res
           .status(404)
@@ -19,7 +16,6 @@ const deleteLeadSource = async (req, res) => {
         message: `Lead Sources with ids ${id} deleted successfully`,
       });
     } else {
-      // Deleting a single lead source
       const leadSource = await LeadSource.findByIdAndDelete(id);
       if (!leadSource) {
         return res

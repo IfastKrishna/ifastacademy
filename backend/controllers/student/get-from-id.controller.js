@@ -3,8 +3,8 @@ const handleErrors = require("../../utils/handleErrors");
 
 const getStudentDetailsById = async (req, res) => {
   try {
-    const { studentId } = req.params;
-    const student = await Student.findById(studentId);
+    const { id } = req.params;
+    const student = await Student.findById(id);
     if (!student) {
       return res.status(404).json({
         success: false,

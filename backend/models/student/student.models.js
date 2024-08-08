@@ -58,7 +58,6 @@ const studentSchema = new mongoose.Schema(
 
     ifastId: {
       type: String,
-      required: true,
       unique: true,
     },
 
@@ -92,10 +91,10 @@ const studentSchema = new mongoose.Schema(
       trim: true,
     },
 
-    enrolledCourses: [
+    enrolledBatch: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
+        ref: "Batch",
       },
     ],
 

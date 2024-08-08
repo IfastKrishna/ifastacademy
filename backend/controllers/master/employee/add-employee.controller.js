@@ -31,11 +31,9 @@ const addEmployee = async (req, res) => {
 
     // Additional jobTitle validation (optional)
     if (!["teacher", "staff"].includes(jobTitle)) {
-      return res
-        .status(400)
-        .json({
-          message: "Invalid job title! (allowed values: teacher, staff)",
-        });
+      return res.status(400).json({
+        message: "Invalid job title! (allowed values: teacher, staff)",
+      });
     }
 
     // Create and save new employee (assuming address validation is handled by the schema)

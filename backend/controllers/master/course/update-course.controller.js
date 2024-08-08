@@ -12,7 +12,6 @@ const updateCourse = async (req, res) => {
       endDate,
       level,
       requirements,
-      instructor,
     } = req.body;
 
     // Check for required fields
@@ -35,11 +34,6 @@ const updateCourse = async (req, res) => {
       level,
       requirements,
     };
-
-    // Only update instructor if it's provided and not empty
-    if (instructor && instructor.length > 0) {
-      updateData.instructor = instructor;
-    }
 
     const course = await Course.findByIdAndUpdate(id, updateData, {
       new: true,

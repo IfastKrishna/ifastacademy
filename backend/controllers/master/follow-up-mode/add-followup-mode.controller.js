@@ -1,3 +1,4 @@
+const FollowupMode = require("../../../models/master/follow-up-mode.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const addFollowupMode = async (req, res) => {
@@ -12,3 +13,5 @@ const addFollowupMode = async (req, res) => {
     handleErrors(error, res);
   }
 };
+
+module.exports = addFollowupMode;

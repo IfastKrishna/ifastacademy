@@ -40,7 +40,6 @@ export default function LoginView() {
   useEffect(() => {
     if (isLoginSuccess) {
       router.push('/');
-      console.log('Login success');
     }
   }, [isLoginSuccess, router]);
 

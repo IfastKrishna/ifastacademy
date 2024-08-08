@@ -3,7 +3,7 @@ const handleErrors = require("../../../utils/handleErrors");
 
 const deleteMultipleBatches = async (req, res) => {
   try {
-    const { ids } = req.body; // Expect an array of batch IDs in the request body
+    const { id } = req.body; // Expect an array of batch IDs in the request body
     const deletedCount = await Batch.deleteMany({ _id: { $in: ids } });
     res.status(200).json({
       message: `${deletedCount.deletedCount} batches deleted successfully!`,

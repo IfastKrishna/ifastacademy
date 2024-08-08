@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Chip } from '@mui/material';
 import ActionMenu from 'src/components/data-table/ActionMenu';
 
 const columnDef = [
@@ -12,7 +12,12 @@ const columnDef = [
   { accessorFn: (row) => row?.firstName + ' ' + row?.lastName, header: 'Full Name', size: 150 },
   { accessorKey: 'email', header: 'Email', size: 150 },
   { accessorKey: 'phoneNo', header: 'Phone', size: 100 },
-  { header: 'Action', cell: () => <ActionMenu />, size: 50 },
+  {
+    header: 'Role',
+    cell: ({ row: { original } }) => <Chip size="small" label={original?.role} />,
+    size: 100,
+  },
+  // { header: 'Action', cell: () => <ActionMenu />, size: 50 },
 ];
 
 export default columnDef;

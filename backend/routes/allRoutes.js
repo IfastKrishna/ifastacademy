@@ -9,12 +9,14 @@ const LeadSourceRouter = require("./master/lead-sources.routes");
 const FeeCategoryRouter = require("./master/fee-category.routes");
 const FollowupModeRouter = require("./master/followup-modes.routes");
 const CourseEnquiryRouter = require("./course-enquires.routes");
+const BatchAttendanceRouter = require("./batch-attendance.routes");
 const AllRouters = express.Router();
 
 AllRouters.use("/user", UserRouter);
 AllRouters.use("/student", StudentRouter);
 AllRouters.use("/followup", FollowupRouter);
 AllRouters.use("/course-enquire", CourseEnquiryRouter);
+AllRouters.use("/batch-attendance", BatchAttendanceRouter);
 AllRouters.use("/master/batch", BatchRouter);
 AllRouters.use("/master/course", CourseRouter);
 AllRouters.use("/master/employee", EmployeeRouter);
