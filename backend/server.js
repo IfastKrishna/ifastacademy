@@ -23,11 +23,11 @@
 
 // module.exports = app;
 
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const AllRouters = require("./routes/AllRoutes");
+const allRoutes = require("./routes/AllRoutes");
 
 const app = express();
 const corsOptions = {
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.use(express.static("public"));
 app.use(cookieParser());
-app.use("/api/v1", AllRouters);
+app.use("/api/v1", allRoutes);
 // // http://localhost:8080/api/v1 baseurl
 
 module.exports = app;
