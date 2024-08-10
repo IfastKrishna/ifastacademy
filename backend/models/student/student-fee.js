@@ -1,57 +1,64 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const studentFeeSchema = new Schema({
-  studentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-    required: true,
-  },
-  paymentType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "feeCategory",
-  },
-  paymentDate: {
-    type: Date,
-    default: Date.now,
-    required: true,
-  },
+const studentFeeSchema = new Schema(
+  {
+    studentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
+    },
 
-  monthlyFee: {
-    type: Number,
-    required: true,
-  },
+    batchId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Batch",
+    },
 
-  amount: {
-    type: Number,
-    required: true,
-  },
+    paymentType: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FeeCategory",
+    },
 
-  month: {
-    type: String,
-    required: true,
-  },
+    paymentDate: {
+      type: Date,
+      default: new Date(),
+    },
 
-  // Reference to the payment reference number or transaction number
-  paymentReference: {
-    type: String,
-    required: false,
-  },
+    amount: {
+      type: Number,
+      required: true,
+    },
 
-  collectedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+    month: {
+      type: String,
+      required: true,
+    },
 
-  dueDate: {
-    type: Date,
-  },
+    // Reference to the payment reference number or transaction number
+    paymentReference: {
+      type: String,
+      required: false,
+    },
 
-  remarks: {
-    type: String,
-    required: false,
+    collectedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    dueDate: {
+      type: Date,
+    },
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    remarks: {
+      type: String,
+      required: false,
+    },
   },
-});
+  { timestamps: true }
+);
 
 const StudentFee = mongoose.model("StudentFee", studentFeeSchema);
 

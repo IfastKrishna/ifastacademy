@@ -3,7 +3,7 @@ import Api from 'src/utils/api';
 
 const useGetBatchesCount = () => {
   return useQuery({
-    queryKey: ['batch-count'],
+    queryKey: ['batches-count'],
     queryFn: async () => {
       const { data } = await Api.get(`/master/batch/all/count`);
       return data;

@@ -1,11 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import Api from 'src/utils/api';
 
-const useGetBatchAttendance = () => {
+const useGetBatchAttendanceDateWise = (batchInfo) => {
+  console.log('batchInfo', batchInfo);
   return useQuery({
-    queryKey: ['batch-attendance'],
+    queryKey: ['batch-attendance', batchInfo],
     queryFn: async () => {
-      const { data } = await Api.get('/batch-attendance');
+      const { data } = await Api.get(`/batch-attendance/attendance`, {
+        params: {
+          batchInfo,
+        },
+      });
       return data;
     },
     retry: (failureCount, error) => failureCount < 1,
@@ -13,4 +18,4 @@ const useGetBatchAttendance = () => {
   });
 };
 
-export default useGetBatchAttendance;
+export default useGetBatchAttendanceDateWise;

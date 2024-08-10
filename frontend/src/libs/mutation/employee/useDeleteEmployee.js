@@ -2,17 +2,19 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import Api from 'src/utils/api';
 import toast from 'react-hot-toast';
 
-const useGetStudentById = () => {
+const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (id) => {
-      const { data } = await Api.patch(`/student/${id}`);
+      id = JSON.stringify(id);
+      const { data } = await Api.delete('/master/employee/' + id);
       return data;
     },
 
     onSuccess: () => {
-      toast.success('Student fetched successfully');
+      queryClient.invalidateQueries('employees');
+      queryClient.invalidateQueries('employees-count');
+      toast.success('Course added successfully');
     },
 
     onError: (error) => {
@@ -21,4 +23,4 @@ const useGetStudentById = () => {
   });
 };
 
-export default useGetStudentById;
+export default useDeleteEmployee;

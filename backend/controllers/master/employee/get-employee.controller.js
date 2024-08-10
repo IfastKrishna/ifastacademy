@@ -1,7 +1,7 @@
 const { Employee } = require("../../../models/master/employee.models");
 
 const getEmployees = async (req, res) => {
-  let { page = 1, limit = 10, search = "" } = req.query;
+  let { page = 1, limit = 10, search = "", joTitle = "" } = req.query;
   search = new RegExp(search, "i");
 
   try {
@@ -14,6 +14,10 @@ const getEmployees = async (req, res) => {
         { ifastId: search },
       ],
     };
+
+    if (joTitle) {
+      query.jobTitle = joTitle;
+    }
 
     const [users, count] = await Promise.all([
       Employee.find(query)

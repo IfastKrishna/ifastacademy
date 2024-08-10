@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Api from 'src/utils/api';
 
-const useGetFeeCategories = ({ page = 1, pageSize = 10, search }) => {
+const useGetFeeCategories = ({ page = 1, pageSize = 10, search = '' }) => {
   return useQuery({
     queryKey: ['fee-categories', { page, pageSize, search }],
     queryFn: async () => {

@@ -16,11 +16,18 @@ import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 import { useRouter } from 'src/routes/hooks';
+import useGetStudentsCount from 'src/libs/query/student/useStudentCount';
+import useGetEmployeesCount from 'src/libs/query/employee/useEmployeesCount';
+import useGetTodayBirthdaysCount from 'src/libs/query/user/useGetTodayBirthdaysCount';
+import HideComponent from 'src/components/Hide/hide';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
   const router = useRouter();
+  const { data: students } = useGetStudentsCount();
+  const { data: employees } = useGetEmployeesCount();
+  const { data: todayBirthdays } = useGetTodayBirthdaysCount();
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -28,14 +35,16 @@ export default function AppView() {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Today Fees"
-            total={4000}
-            color="success"
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
-          />
-        </Grid>
+        <HideComponent roles={['admin', 'superadmin', 'employee']}>
+          <Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Today Fees"
+              total={4000}
+              color="success"
+              icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            />
+          </Grid>
+        </HideComponent>
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Pending Fees"
@@ -48,7 +57,7 @@ export default function AppView() {
           <AppWidgetSummary
             title="Students"
             onClick={() => router.push('/student/all')}
-            total={500}
+            total={students?.count || 0}
             color="info"
             icon={
               <img
@@ -62,7 +71,8 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Employees"
-            total={5}
+            total={employees?.count || 0}
+            onClick={() => router.push('/employee/all')}
             color="info"
             icon={
               <img
@@ -92,7 +102,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Happy Birthday"
-            total={5}
+            total={todayBirthdays?.count}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_happybirthday.svg" />}
           />

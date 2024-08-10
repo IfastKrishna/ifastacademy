@@ -2,10 +2,10 @@ const User = require("../../models/user.models");
 
 const userRegister = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, phoneNo, role, ifastId, ...rest } =
+    const { firstName, lastName, email, phoneNo, role, ifastId, dob, ...rest } =
       req.body;
 
-    if ([firstName, email, phoneNo, role].some((field) => !field)) {
+    if ([firstName, email, dob, phoneNo, role].some((field) => !field)) {
       return res
         .status(400)
         .send({ message: "Please fill all required fields" });
@@ -32,26 +32,13 @@ const userRegister = async (req, res, next) => {
       });
     }
 
-    const userCount = (await User.countDocuments({})) + 1;
-    const formattedUserCount =
-      userCount < 10
-        ? `000${userCount}`
-        : userCount < 100
-        ? `00${userCount}`
-        : userCount < 1000
-        ? `0${userCount}`
-        : userCount.toString();
-
-    const newIfastId = !ifastId
-      ? `IFAST/${new Date().getFullYear()}/${formattedUserCount}`
-      : ifastId;
-
     const user = await User.create({
       firstName,
       lastName,
-      ifastId: newIfastId,
+      ifastId: ifastId,
       email,
       phoneNo,
+      dob,
       password: phoneNo,
       role,
     });

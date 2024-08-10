@@ -1,20 +1,22 @@
+const { Employee } = require("../../../models/master/employee.models");
+const handleErrors = require("../../../utils/handleErrors");
+
 const addEmployee = async (req, res) => {
   try {
-    // Destructure required fields from request body
-    const {
-      firstName,
-      lastName,
-      userId,
-      email,
-      jobTitle,
-      startDate,
-      address, // assuming address is required
-    } = req.body;
+    const { firstName, lastName, email, jobTitle, startDate, ...rest } =
+      req.body;
+    const userId = req?.user?._id;
+    const avatar = req?.user?.avatar;
 
+    const address = {
+      streetAddress: rest.streetAddress,
+      city: rest.city,
+      state: "Delhi",
+      postalCode: rest.postalCode,
+    };
     // Validate required fields
     if (
       !firstName ||
-      !lastName ||
       !userId ||
       !email ||
       !jobTitle ||
@@ -36,12 +38,13 @@ const addEmployee = async (req, res) => {
       });
     }
 
-    // Create and save new employee (assuming address validation is handled by the schema)
-    const newEmployee = new Employee(req.body);
+    const newEmployee = new Employee({ ...req.body, address, avatar });
     const savedEmployee = await newEmployee.save();
 
     res.status(201).json(savedEmployee);
   } catch (err) {
-    handleErrors(err, res); // Handle validation and other errors
+    handleErrors(err, res);
   }
 };
+
+module.exports = addEmployee;

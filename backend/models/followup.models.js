@@ -17,6 +17,7 @@ const followUpSchema = new mongoose.Schema(
       ref: "User",
       // required: true,
     },
+
     dueDate: {
       type: Date,
       required: true,

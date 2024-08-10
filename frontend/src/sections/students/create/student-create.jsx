@@ -34,7 +34,7 @@ function StudentCreate() {
 
   const { data: instituteId, isSuccess: idFetched } = useGetNextId({ fetching: fetchingId });
   const { mutate: createStudent, isPending, isSuccess } = useAddStudent();
-  const { data, isLoading, refetch } = useGetBatches({ pageSize: -1 });
+  const { data, isLoading } = useGetBatches({ pageSize: -1 });
 
   React.useEffect(() => {
     if (idFetched) {
@@ -148,9 +148,9 @@ function StudentCreate() {
               type="date"
               label="Date of Birth"
               variant="standard"
+              InputLabelProps={{ shrink: true }}
               {...register('dob', {
                 required: 'Date of Birth is required',
-                value: new Date().toISOString().split('T')[0],
                 validate: (value) => {
                   const date = new Date(value);
                   const today = new Date();

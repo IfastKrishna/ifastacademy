@@ -38,8 +38,6 @@ const getCourseInquiries = async (req, res) => {
     // Send response
     res.json({
       count: total,
-      page: pageNumber,
-      pageSize: size,
       data,
     });
   } catch (error) {
@@ -48,4 +46,4 @@ const getCourseInquiries = async (req, res) => {
   }
 };
 
-module.exports = { getCourseInquiries };
+module.exports = getCourseInquiries;

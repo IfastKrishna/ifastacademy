@@ -1,5 +1,7 @@
+const { default: mongoose } = require("mongoose");
 const { FollowUp } = require("../../models/followup.models");
-const mongoose = require("mongoose");
+const handleErrors = require("../../utils/handleErrors");
+
 const getAllFollowups = async (req, res) => {
   try {
     const { page = 1, pageSize = 10, search } = req.query;
@@ -78,8 +80,7 @@ const getAllFollowups = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    handleErrors(error, res);
   }
 };
 

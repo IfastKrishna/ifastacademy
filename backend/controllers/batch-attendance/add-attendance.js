@@ -1,35 +1,39 @@
 const BatchAttendance = require("../../models/batch-attendance");
 const handleErrors = require("../../utils/handleErrors");
 
-const addBatchAttendance = async (req, res) => {
+const takeBatchAttendance = async (req, res) => {
   try {
-    let {
+    const {
       batchId,
+      date,
       takenBy,
       todayTopic,
       problemFaced,
       studentsAttendance,
-      remarks,
+      generalRemarks,
     } = req.body;
-    if (!batchId || !todayTopic || !studentsAttendance || !takenBy) {
+
+    if (!batchId || !takenBy || !todayTopic || !studentsAttendance) {
       res
         .status(400)
         .json({ message: "Please provide all the required fields" });
     }
 
-    const batchAttendance = new BatchAttendance({
+    const attendance = new BatchAttendance({
       batchId,
       takenBy,
       todayTopic,
       problemFaced,
-      students,
-      remarks,
+      studentsAttendance,
+      generalRemarks,
+      date,
     });
-    const newBatchAttendance = await batchAttendance.save();
-  } catch (error) {
-    console.log(error);
-    handleErrors(error, res);
+
+    await attendance.save();
+    res.status(201).json({ message: "Attendance taken successfully" });
+  } catch (err) {
+    handleErrors(err, res);
   }
 };
 
-module.exports = addBatchAttendance;
+module.exports = takeBatchAttendance;

@@ -7,29 +7,36 @@ const courseSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     description: {
       type: String,
       trim: true,
     },
+
     duration: {
       type: String,
       required: true,
     },
+
     startDate: {
       type: Date,
     },
+
     endDate: {
       type: Date,
     },
+
     level: {
       type: String,
       enum: ["Beginner", "Intermediate", "Advanced"],
       default: "Beginner",
     },
+
     isActive: {
       type: Boolean,
       default: true,
     },
+
     requirements: {
       type: String,
       trim: true,
