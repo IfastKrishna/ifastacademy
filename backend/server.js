@@ -39,8 +39,8 @@ app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.get("/api/v1", (req, res) => {
-  res.send("Hello World");
+app.get("/", (req, res) => {
+  res.send("Hello World from Express");
 });
 
 app.use(express.static("public"));

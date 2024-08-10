@@ -5,7 +5,7 @@ const useGetStudentFees = (page = 1, pageSize = 10, search = '') => {
   return useQuery({
     queryKey: ['student-fees', page, pageSize, search],
     queryFn: async () => {
-      const { data } = await Api.get('/student-fee', {
+      const { data } = await Api.get('/student/fee/all', {
         params: {
           page,
           pageSize,

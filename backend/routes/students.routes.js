@@ -9,6 +9,8 @@ const uploadBulk = require("../controllers/student/upload-bulk.controller");
 const deleteStudent = require("../controllers/student/delete.controller");
 const getStudentsCount = require("../controllers/student/get-students-count.controller");
 const getAllStudents = require("../controllers/student/get-students.controller");
+const addStudentFee = require("../controllers/student-fee/add-studentfee");
+const getAllStudentFee = require("../controllers/student-fee/get-all-studentfee");
 const StudentRouter = express.Router();
 
 StudentRouter.get(
@@ -49,7 +51,26 @@ StudentRouter.post(
 );
 
 StudentRouter.get("/all/count", isAuth(), getStudentsCount);
-
 StudentRouter.delete("/delete", isAuth(["admin", "superadmin"]), deleteStudent);
+
+// now here from next feed we will add the routes for the student
+StudentRouter.get(
+  "/fee/all",
+  isAuth(["admin", "superadmin", "employee"]),
+  getAllStudentFee
+);
+
+StudentRouter.post(
+  "/fee",
+  isAuth(["admin", "superadmin", "employee"]),
+  addStudentFee
+);
+StudentRouter.get("/fee/:id", isAuth());
+StudentRouter.patch("/fee/:id", isAuth(["admin", "superadmin", "employee"]));
+
+// StudentRouter.delete("/student/fee/:id", isAuth());
+StudentRouter.get("/student/fee/collect-today", isAuth());
+StudentRouter.get("/student/fee/collect-all", isAuth());
+StudentRouter.get("/student/fee/pending", isAuth());
 
 module.exports = StudentRouter;

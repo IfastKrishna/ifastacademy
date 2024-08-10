@@ -3,29 +3,20 @@ const handleErrors = require("../../../utils/handleErrors");
 
 const updateEmployee = async (req, res) => {
   try {
-    const {
-      id,
-      firstName,
-      lastName,
-      userId,
-      email,
-      jobTitle,
-      startDate,
-      address,
-      ...rest
-    } = req.body;
+    const { id } = req.params;
+    const { firstName, lastName, userId, email, jobTitle, startDate, ...rest } =
+      req.body;
+
+    const address = {
+      streeAddress: rest.streetAddress,
+      city: rest.city,
+      state: rest.state,
+      postalCode: rest.postalCode,
+      country: rest.country,
+    };
 
     // Validate required fields
-    if (
-      !id ||
-      !firstName ||
-      !lastName ||
-      !userId ||
-      !email ||
-      !jobTitle ||
-      !startDate ||
-      !address
-    ) {
+    if (!firstName || !email || !jobTitle || !startDate || !address) {
       return res.status(400).json({ message: "Missing required fields!" });
     }
 

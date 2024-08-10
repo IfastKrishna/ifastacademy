@@ -1,25 +1,27 @@
+const { Batch } = require("../../../models/master/batch.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const addBatch = async (req, res) => {
   try {
-    // Destructure required fields from request body
     const {
       name,
       course,
       startDate,
+      endDate,
       capacity,
       description,
+      batchTiming,
       students,
       instructors,
     } = req.body;
 
-    // Validate required fields
-    if (!name || !course || !startDate || !capacity || !description) {
+    if (!name || !course || !startDate || !capacity || !batchTiming) {
       return res.status(400).json({ message: "Missing required fields!" });
     }
 
     // Check for existing batch with the same name
     const existingBatch = await Batch.findOne({ name });
+
     if (existingBatch) {
       return res.status(409).json({ message: "Batch name already exists!" });
     }
@@ -29,6 +31,8 @@ const addBatch = async (req, res) => {
       name,
       course,
       startDate,
+      endDate,
+      batchTiming,
       capacity,
       description,
     });
@@ -43,7 +47,11 @@ const addBatch = async (req, res) => {
 
     const savedBatch = await newBatch.save();
 
-    res.status(201).json(savedBatch);
+    res.status(200).json({
+      success: true,
+      data: savedBatch,
+      message: "Batch created successfully!",
+    });
   } catch (err) {
     handleErrors(err, res);
   }

@@ -59,6 +59,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: ["student", "employee", "admin", "superadmin"],
     },
+
+    dob: {
+      type: Date,
+    },
+
     status: {
       type: String,
       default: "active",

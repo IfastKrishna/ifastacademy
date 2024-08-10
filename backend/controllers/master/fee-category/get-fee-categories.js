@@ -10,7 +10,7 @@ const getFeeCategories = async (req, res) => {
 
     const regex = new RegExp(search, "i");
     const query = {
-      $or: [{ name: regex }, { description: regex }, { amount: search }],
+      $or: [{ name: regex }, { description: regex }],
     };
 
     const [data, totalCount] = await Promise.all([

@@ -11,6 +11,7 @@ const batchSchema = new mongoose.Schema(
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
+      required: true,
     },
 
     startDate: {
@@ -28,16 +29,19 @@ const batchSchema = new mongoose.Schema(
         ref: "Student",
       },
     ],
+
     instructors: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Employee",
       },
     ],
+
     batchTiming: {
       type: String,
       required: true,
     },
+
     capacity: {
       type: Number,
     },

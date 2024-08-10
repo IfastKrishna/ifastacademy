@@ -1,44 +1,52 @@
 const BatchAttendance = require("../../models/batch-attendance");
 const handleErrors = require("../../utils/handleErrors");
 
-const updateAttendance = async (req, res) => {
+const updateBatchAttendance = async (req, res) => {
+  const { batchId, date } = req.params;
+
   try {
-    let {
+    const {
+      takenBy,
+      todayTopic,
+      problemFaced,
+      studentsAttendance,
+      generalRemarks,
+    } = req.body;
+
+    if (!batchId || !takenBy || !todayTopic || !studentsAttendance || !date) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all the required fields." });
+    }
+
+    const parsedDate = new Date(date).setHours(0, 0, 0, 0);
+
+    const attendance = {
       batchId,
       takenBy,
       todayTopic,
       problemFaced,
       studentsAttendance,
-      remarks,
-    } = req.body;
-
-    studentsAttendance = JSON.parse(studentsAttendance);
-
-    if (!batchId || !todayTopic || !studentsAttendance.length > 0 || !takenBy) {
-      res
-        .status(400)
-        .json({ message: "Please provide all the required fields" });
-    }
+      generalRemarks,
+      date: parsedDate,
+    };
 
     const updatedAttendance = await BatchAttendance.findOneAndUpdate(
-      { batchId: batchId },
-      {
-        takenBy: takenBy,
-        todayTopic: todayTopic,
-        problemFaced: problemFaced,
-        studentsAttendance: studentsAttendance,
-        remarks: remarks,
-      },
-      { new: true }
+      { batchId, date: parsedDate },
+      attendance,
+      { new: true, upsert: true }
     );
 
-    res.status(200).json({
-      message: "Batch attendance updated successfully",
+    if (!updatedAttendance) {
+      return res.status(404).json({ message: "Attendance record not found." });
+    }
+
+    return res.status(200).json({
+      message: "Attendance updated successfully",
       data: updatedAttendance,
     });
-  } catch (error) {
-    console.log(error);
-    handleErrors(error, res);
+  } catch (err) {
+    handleErrors(err, res);
   }
 };
 

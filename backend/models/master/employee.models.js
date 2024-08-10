@@ -5,27 +5,22 @@ const addressSchema = new mongoose.Schema(
     streetAddress: {
       type: String,
       required: true,
-      trim: true,
     },
     city: {
       type: String,
       default: "North Delhi",
-      trim: true,
     },
     state: {
       type: String,
-      trim: true,
       default: "Delhi",
     },
     postalCode: {
       type: String,
-      trim: true,
       default: "110082",
     },
     country: {
       type: String,
       default: "India",
-      trim: true,
     },
   },
   { _id: false }
@@ -38,6 +33,7 @@ const employeeSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     lastName: {
       type: String,
       trim: true,
@@ -52,6 +48,10 @@ const employeeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    dob: {
+      type: Date,
+      required: true,
+    },
     avatar: {
       type: String,
       default:
@@ -59,7 +59,6 @@ const employeeSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
       trim: true,
       lowercase: true,

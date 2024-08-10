@@ -7,6 +7,7 @@ const getAllStudentFee = async (req, res) => {
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const query = {};
+
     if (search) {
       query.$or = [
         { month: { $regex: search, $options: "i" } },
@@ -14,8 +15,31 @@ const getAllStudentFee = async (req, res) => {
         { remarks: { $regex: search, $options: "i" } },
       ];
     }
+
     const [studentFee, totalStudentFee] = await Promise.all([
-      StudentFee.find(query).skip(skip).limit(limit),
+      StudentFee.find(query)
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: "studentId",
+          select: "ifastId firstName lastName avatar",
+        })
+        .populate({
+          path: "batchId",
+          populate: {
+            path: "course",
+            select: "name",
+          },
+          select: "name",
+        })
+        .populate({
+          path: "paymentType",
+          select: "name",
+        })
+        .populate({
+          path: "collectedBy",
+          select: "firstName lastName phoneNo",
+        }),
       StudentFee.countDocuments(query),
     ]);
 
@@ -25,7 +49,6 @@ const getAllStudentFee = async (req, res) => {
       count: totalStudentFee,
     });
   } catch (error) {
-    console.log(error);
     handleErrors(error, res);
   }
 };

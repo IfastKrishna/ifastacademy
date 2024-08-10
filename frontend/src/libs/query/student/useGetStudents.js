@@ -11,8 +11,8 @@ const useGetStudents = ({ page = 1, pageSize = 10, search = '' }) => {
       return data;
     },
     retry: (failureCount, error) => failureCount < 1,
-    refetchOnWindowFocus: false,
     staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 };
 

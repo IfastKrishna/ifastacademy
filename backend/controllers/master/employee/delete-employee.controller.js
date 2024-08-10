@@ -1,10 +1,10 @@
-const { json } = require("express");
 const { Employee } = require("../../../models/master/employee.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const deleteEmployee = async (req, res) => {
+  let { id } = req.params;
+  console.log(id);
   try {
-    let { id } = req.params;
     id = JSON.parse(id);
     if (Array.isArray(id)) {
       const employee = await Employee.deleteMany({ _id: { $in: id } });

@@ -26,6 +26,14 @@ import { FollowupModeView } from 'src/sections/master/followup-mode/view';
 import { LeadSourceCreate } from 'src/sections/master/lead-source/create';
 import { LeadSourceEdit } from 'src/sections/master/lead-source/edit';
 import { LeadSourceView } from 'src/sections/master/lead-source/view';
+import { ClassCreate } from 'src/sections/master/class/create';
+import { ClassEdit } from 'src/sections/master/class/edit';
+import { CreateStudentFee } from 'src/sections/student-fee/create';
+import { EditStudentFee } from 'src/sections/student-fee/edit';
+import StudentFeesView from 'src/sections/student-fee/view/student-fee-view';
+import TakeBatchAttendance from 'src/sections/batch-attendance/teake/take-batch-attendance';
+import EditBatchAttendance from 'src/sections/batch-attendance/edit/edit-batch-attendance';
+import BatchAttendanceView from 'src/sections/batch-attendance/view/batch-attendance-view';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -287,7 +295,7 @@ export default function Router() {
               path: 'create',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create Class</h1>
+                  <ClassCreate />
                 </ProtectedRoute>
               ),
             },
@@ -295,7 +303,7 @@ export default function Router() {
               path: 'view/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>View Class</h1>
+                  <ClassEdit />
                 </ProtectedRoute>
               ),
             },
@@ -303,7 +311,7 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Edit Class</h1>
+                  <ClassEdit />
                 </ProtectedRoute>
               ),
             },
@@ -401,15 +409,15 @@ export default function Router() {
               path: 'all',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Student Fees</h1>
+                  <StudentFeesView />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'create',
+              path: 'create/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create Student Fee</h1>
+                  <CreateStudentFee />
                 </ProtectedRoute>
               ),
             },
@@ -417,7 +425,7 @@ export default function Router() {
               path: 'view/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>View Student Fee</h1>
+                  <EditStudentFee />
                 </ProtectedRoute>
               ),
             },
@@ -425,7 +433,7 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Edit Student Fee</h1>
+                  <EditStudentFee />
                 </ProtectedRoute>
               ),
             },
@@ -439,29 +447,23 @@ export default function Router() {
               path: 'all',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Batch Attendance</h1>
+                  <BatchAttendanceView />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'take',
+              path: 'take/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create Batch Attendance</h1>
+                  <TakeBatchAttendance />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'view/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>View Batch Attendance</h1>
-                </ProtectedRoute>
-              ),
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Edit Batch Attendance</h1>
+                  <EditBatchAttendance />
                 </ProtectedRoute>
               ),
             },
@@ -480,7 +482,7 @@ export default function Router() {
               ),
             },
             {
-              path: 'create',
+              path: 'create/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
                   <h1>Create Followup</h1>

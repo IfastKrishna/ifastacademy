@@ -62,9 +62,11 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item, i) => (
-        <NavItem key={i} item={item} />
-      ))}
+      {navConfig
+        .filter((p) => p.role.includes(data.role))
+        .map((item, i) => (
+          <NavItem key={i} item={item} />
+        ))}
     </Stack>
   );
 
@@ -169,25 +171,8 @@ function NavItem({ item }) {
         <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
           {item.icon}
         </Box>
-
         <Box component="span">{item.title}</Box>
-
-        {item.sub && (
-          <Box component="span" sx={{ position: 'absolute', right: 15 }}>
-            <Iconify icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'} />
-          </Box>
-        )}
       </ListItemButton>
-
-      {item.sub && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <Stack spacing={0.5} sx={{ pl: 0 }}>
-            {item.sub.map((subItem) => (
-              <NavItem key={subItem.title} item={subItem} />
-            ))}
-          </Stack>
-        </Collapse>
-      )}
     </>
   );
 }

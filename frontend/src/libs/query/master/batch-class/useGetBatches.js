@@ -8,8 +8,8 @@ const useGetBatches = ({ page = 1, pageSize = 10, search }) => {
       const { data } = await Api.get('/master/batch/all', { params: { page, pageSize, search } });
       return data;
     },
-    staleTime: Infinity,
     retry: (failureCount, error) => failureCount < 1,
+    staleTime: Infinity,
   });
 };
 
