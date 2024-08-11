@@ -65,12 +65,12 @@ StudentRouter.post(
   isAuth(["admin", "superadmin", "employee"]),
   addStudentFee
 );
-StudentRouter.get("/fee/:id", isAuth());
-StudentRouter.patch("/fee/:id", isAuth(["admin", "superadmin", "employee"]));
+// StudentRouter.get("/fee/:id", isAuth());
+// StudentRouter.patch("/fee/:id", isAuth(["admin", "superadmin", "employee"]));
 
 // StudentRouter.delete("/student/fee/:id", isAuth());
-StudentRouter.get("/student/fee/collect-today", isAuth());
-StudentRouter.get("/student/fee/collect-all", isAuth());
-StudentRouter.get("/student/fee/pending", isAuth());
+// StudentRouter.get("/student/fee/collect-today", isAuth());
+// StudentRouter.get("/student/fee/collect-all", isAuth());
+// StudentRouter.get("/student/fee/pending", isAuth());
 
 module.exports = StudentRouter;

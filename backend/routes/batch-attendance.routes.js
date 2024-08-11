@@ -8,6 +8,6 @@ const BatchAttendanceRouter = express.Router();
 BatchAttendanceRouter.post("/", isAuth(), takeBatchAttendance);
 BatchAttendanceRouter.get("/get/:_id", isAuth(), getTotalAttendanceByDate);
 BatchAttendanceRouter.get("/attendance", isAuth(), getBatchAttendance);
-BatchAttendanceRouter.delete("/delete/:_id", isAuth());
+// BatchAttendanceRouter.delete("/delete/:_id", isAuth());
 
 module.exports = BatchAttendanceRouter;
