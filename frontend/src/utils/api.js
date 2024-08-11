@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://localhost:8080/api/v1/';
+export const baseURL = 'https://ifastacademy.onrender.com/api/v1/';
 export const clientURL = 'http://localhost:3000/';
 
 const Api = axios.create({
