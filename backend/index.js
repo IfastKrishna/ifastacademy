@@ -9,7 +9,7 @@ const AllRouters = require("./routes/index.js");
 const PORT = port || 8080;
 const app = express();
 const corsOptions = {
-  origin: ["https://ifastacademy.vercel.app", "http://localhost:3030"],
+  origin: ["https://ifastacademy.onrender.com", "http://localhost:3030", ],
   credentials: true,
 };
 
