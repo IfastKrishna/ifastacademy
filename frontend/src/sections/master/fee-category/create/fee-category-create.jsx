@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddFeeCategories from 'src/libs/mutation/master/fee-category/useAddFeeCategories';
 
 function FeeCategoryCreate() {
@@ -35,7 +36,7 @@ function FeeCategoryCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Create Fee Categories | IfastAcademy</title>
+        <title>Create Fee Categories | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

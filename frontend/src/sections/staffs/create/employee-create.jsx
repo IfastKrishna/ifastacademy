@@ -17,6 +17,7 @@ import { LoadingButton } from '@mui/lab';
 import useGetNextId from 'src/libs/query/user/useGetNextId';
 import useAddEmployee from 'src/libs/mutation/employee/useAddEmployee';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 
 function EmployeeCreate() {
   const [fetching, setFetching] = React.useState(false);
@@ -56,7 +57,7 @@ function EmployeeCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Add Employee | Ifast Academy</title>
+        <title>Create staff | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen menus={navBread} />
       <Box component="form" onSubmit={handleSubmit(addEmployee)} sx={{ mt: 2 }}>

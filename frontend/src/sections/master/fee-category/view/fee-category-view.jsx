@@ -11,6 +11,7 @@ import ActionMenu from 'src/components/data-table/ActionMenu';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDisclosure from 'src/hooks/use-disclosure';
 import useDeleteFeeCategories from 'src/libs/mutation/master/fee-category/useDeleteFeeCategories';
+import config from 'src/config';
 
 function FeeCategoryView() {
   const [page, setPage] = React.useState(1);
@@ -91,7 +92,7 @@ function FeeCategoryView() {
   return (
     <Container>
       <Helmet>
-        <title>Fee Categories View | IfastAcadeny</title>
+        <title>Fee Categories View | {config?.appName}</title>
       </Helmet>
       <ConfirmationModal
         open={isOpenDeleteModal}

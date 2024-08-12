@@ -15,6 +15,7 @@ import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { AsyncSelect } from 'src/components/async-select';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddBatch from 'src/libs/mutation/master/batch-class/useAddBatchClass';
 import useGetEmployees from 'src/libs/query/employee/useGetEmployees';
 import useGetCourses from 'src/libs/query/master/course/useGetCourses';
@@ -65,7 +66,7 @@ function ClassCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Create Course | IfastAcademy</title>
+        <title>Create Course | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

@@ -5,6 +5,9 @@ import useGetStudents from 'src/libs/query/student/useGetStudents';
 import { useSearch } from 'src/context/NavSerch';
 import { columnDef } from './column-def';
 import { DataTable } from 'src/components/data-table';
+import { Container } from '@mui/material';
+import { Helmet } from 'react-helmet-async';
+import config from 'src/config';
 
 function StudentView() {
   const [page, setPage] = useState(1);
@@ -25,7 +28,10 @@ function StudentView() {
   }, [data, isSuccess]);
 
   return (
-    <>
+    <Container>
+      <Helmet>
+        <title>Student View | {config?.appName}</title>
+      </Helmet>
       <DataTable
         columnDef={columnDef}
         rows={students}
@@ -39,7 +45,7 @@ function StudentView() {
         stickyHeader
         height="65vh"
       />
-    </>
+    </Container>
   );
 }
 

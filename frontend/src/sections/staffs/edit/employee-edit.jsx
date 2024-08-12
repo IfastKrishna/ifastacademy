@@ -19,6 +19,7 @@ import useGetEmployeeById from 'src/libs/query/employee/useGetEmployeeById';
 import useUpdateEmployee from 'src/libs/mutation/employee/useUpdateEmployee';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import { usePathname, useRouter } from 'src/routes/hooks';
+import config from 'src/config';
 
 function EmployeeEdit() {
   const router = useRouter();
@@ -68,7 +69,9 @@ function EmployeeEdit() {
   return (
     <Container>
       <Helmet>
-        <title>{isEditPage ? 'Edit' : 'View'} Employee | Ifast Academy</title>
+        <title>
+          {isEditPage ? 'Edit' : 'View'} Staff | {config?.appName}
+        </title>
       </Helmet>
       <BreadcrumbsGen menus={navBread} />
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
@@ -82,6 +85,7 @@ function EmployeeEdit() {
               error={!!errors?.ifastId}
               helperText={errors?.ifastId?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -94,6 +98,7 @@ function EmployeeEdit() {
               error={!!errors.firstName}
               helperText={errors.firstName ? errors.firstName.message : ''}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -105,8 +110,8 @@ function EmployeeEdit() {
               fullWidth
               error={!!errors?.lastName}
               helperText={errors?.lastName?.message}
-              InputLabelProps={{ shrink: true }}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -119,6 +124,7 @@ function EmployeeEdit() {
               error={!!errors.email}
               helperText={errors?.email?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -137,6 +143,7 @@ function EmployeeEdit() {
               error={!!errors?.phoneNo}
               helperText={errors?.phoneNo?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -149,6 +156,7 @@ function EmployeeEdit() {
               error={!!errors?.emergencyContact}
               helperText={errors?.emergencyContact?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
@@ -195,8 +203,8 @@ function EmployeeEdit() {
               fullWidth
               error={!!errors?.startDate}
               helperText={errors?.startDate?.message}
-              InputLabelProps={{ shrink: true }}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -209,8 +217,8 @@ function EmployeeEdit() {
               fullWidth
               error={!!errors?.endDate}
               helperText={errors?.endDate?.message}
-              InputLabelProps={{ shrink: true }}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
@@ -222,6 +230,7 @@ function EmployeeEdit() {
               error={!!errors?.streetAddress}
               helperText={errors?.streetAddress?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
@@ -233,6 +242,7 @@ function EmployeeEdit() {
               error={!!errors?.city}
               helperText={errors?.city?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
@@ -244,6 +254,7 @@ function EmployeeEdit() {
               error={!!errors?.postalCode}
               helperText={errors?.postalCode?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
@@ -255,6 +266,7 @@ function EmployeeEdit() {
               error={!!errors?.country}
               helperText={errors?.country?.message}
               disabled={!isEditPage}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 

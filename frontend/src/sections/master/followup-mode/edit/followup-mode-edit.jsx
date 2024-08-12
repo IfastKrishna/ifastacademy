@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useUpdateFollowupMode from 'src/libs/mutation/master/followup-mode/useUpdateFollowupMode';
 import useGetFollowupModeById from 'src/libs/query/master/followup-mode/useGetFollowupModeById';
 import { usePathname, useRouter } from 'src/routes/hooks';
@@ -44,7 +45,9 @@ function FollowupModeEdit() {
   return (
     <Container>
       <Helmet>
-        <title>Followup Mode {isEditPage ? 'Edit' : 'View'} | IfastAcademy</title>
+        <title>
+          Followup Mode {isEditPage ? 'Edit' : 'View'} | {config?.appName}
+        </title>
       </Helmet>
 
       <Box

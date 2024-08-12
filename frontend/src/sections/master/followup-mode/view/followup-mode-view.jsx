@@ -10,6 +10,7 @@ import useDisclosure from 'src/hooks/use-disclosure';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDeleteFollowupMode from 'src/libs/mutation/master/followup-mode/useDeleteFollowupMode';
 import ActionMenu from 'src/components/data-table/ActionMenu';
+import config from 'src/config';
 
 function FeeCategoryView() {
   const [page, setPage] = React.useState(1);
@@ -75,7 +76,7 @@ function FeeCategoryView() {
   return (
     <Container>
       <Helmet>
-        <title>Followup Mode | IfastAcadeny</title>
+        <title>Followup Mode | {config?.appName}</title>
       </Helmet>
 
       <ConfirmationModal

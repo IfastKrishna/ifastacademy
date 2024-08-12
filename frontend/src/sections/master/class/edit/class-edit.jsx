@@ -16,6 +16,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { AsyncSelect } from 'src/components/async-select';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useUpdateBatch from 'src/libs/mutation/master/batch-class/useUpdateBatchClass';
 import useGetEmployees from 'src/libs/query/employee/useGetEmployees';
 import useGetBatchById from 'src/libs/query/master/batch-class/useGetBatchById';
@@ -94,7 +95,9 @@ function ClassEdit() {
   return (
     <Container>
       <Helmet>
-        <title>{isEditPage ? 'Edit' : 'View'} Course | IfastAcademy</title>
+        <title>
+          {isEditPage ? 'Edit' : 'View'} Course | {config?.appName}
+        </title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

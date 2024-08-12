@@ -21,6 +21,7 @@ import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import useLogin from 'src/libs/mutation/user/useLogin';
 import { useRouter } from 'src/routes/hooks';
+import config from 'src/config';
 
 // ----------------------------------------------------------------------
 
@@ -120,7 +121,7 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to ifastacademy</Typography>
+          <Typography variant="h4">Sign in to {config.appName}</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?

@@ -14,6 +14,12 @@ const navConfig = [
     role: ['admin', 'manager', 'employee', 'superadmin', 'student'],
   },
   {
+    title: 'user',
+    path: '/user/all',
+    icon: icon('ic_user'),
+    role: ['superadmin'],
+  },
+  {
     title: 'enquire',
     path: '/enquire/all',
     icon: icon('ic_user-plus'),
@@ -25,12 +31,7 @@ const navConfig = [
     path: '/followup/all',
     role: ['admin', 'manager', 'employee', 'superadmin'],
   },
-  {
-    title: 'user',
-    path: '/user/all',
-    icon: icon('ic_user'),
-    role: ['admin', 'superadmin'],
-  },
+
   {
     title: 'student',
     icon: icon('ic_student'),
@@ -38,7 +39,7 @@ const navConfig = [
     role: ['admin', 'manager', 'employee', 'superadmin'],
   },
   {
-    title: 'employee',
+    title: 'Staff',
     icon: icon('ic_teacher'),
     path: '/employee/all',
     role: ['admin', 'superadmin'],
@@ -47,6 +48,7 @@ const navConfig = [
   //   title: 'products',
   //   icon: icon('ic_cart'),
   //   path: '/products',
+  //   role: ['admin', 'superadmin'],
   // },
   {
     title: 'master',
@@ -58,20 +60,15 @@ const navConfig = [
     title: 'student fees',
     icon: icon('ic_fee'),
     path: '/student-fee/all',
-    role: ['admin', 'manager', 'employee', 'superadmin'],
+    role: ['admin', 'employee', 'superadmin'],
   },
   {
     title: 'batch-attendance',
     icon: icon('ic_calendar-add'),
     path: '/batch-attendance/all',
-    role: ['admin', 'manager', 'employee', 'superadmin'],
+    role: ['admin', 'employee', 'superadmin'],
   },
-  {
-    title: 'settings',
-    icon: icon('ic_settings'),
-    path: '/settings',
-    role: ['admin', 'superadmin'],
-  },
+
   {
     title: 'profile',
     path: '/profile',
@@ -80,19 +77,19 @@ const navConfig = [
   },
   {
     title: 'assignments',
-    path: '/assignments/student/:id',
+    path: '/assignments/:id',
     icon: icon('ic_task'),
     role: ['student'],
   },
   {
     title: 'fees',
-    path: '/fees/student/:id',
+    path: '/fees/:id',
     icon: icon('ic_fee'),
-    role: ['student'],
+    role: ['student', 'employee'],
   },
   {
     title: 'attendance',
-    path: '/attendance/student/:id',
+    path: '/attendance/:id',
     icon: icon('ic_calendar'),
     role: ['student'],
   },

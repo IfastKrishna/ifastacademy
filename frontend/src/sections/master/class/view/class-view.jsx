@@ -13,6 +13,7 @@ import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import { fDate } from 'src/utils/format-time';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDeleteBatch from 'src/libs/mutation/master/batch-class/useDeleteBatchClass';
+import config from 'src/config';
 
 function ClassView() {
   const [classId, setClassId] = React.useState(null);
@@ -120,7 +121,7 @@ function ClassView() {
   return (
     <Container>
       <Helmet>
-        <title>Class/Batch View | IfastAcadeny</title>
+        <title>Class/Batch View | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

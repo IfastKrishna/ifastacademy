@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useUpdateFeeCategories from 'src/libs/mutation/master/fee-category/useUpdateFeeCategories';
 import useGetFeeCategories from 'src/libs/query/master/fee-categories/useGetFeeCategories';
 import useGetFeeCategoriesById from 'src/libs/query/master/fee-categories/useGetFeeCategoriesById';
@@ -44,7 +45,9 @@ function FeeCategoryEdit() {
   return (
     <Container>
       <Helmet>
-        <title>Fee Categories {isEditPage ? 'Edit' : 'View'} | IfastAcademy</title>
+        <title>
+          Fee Categories {isEditPage ? 'Edit' : 'View'} | {config?.appName}
+        </title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

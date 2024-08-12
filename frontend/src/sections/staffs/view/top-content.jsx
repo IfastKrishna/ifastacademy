@@ -18,7 +18,7 @@ function TopContent() {
       />
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 1 }}>
         <Typography variant="h5" component="h1">
-          Employees
+          Staffs
         </Typography>
 
         <HeaderMenu onAdd={() => router.push('/employee/create')} />

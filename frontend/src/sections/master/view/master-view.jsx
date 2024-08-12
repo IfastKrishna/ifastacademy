@@ -3,6 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import config from 'src/config';
 import useGetBatchesCount from 'src/libs/query/master/batch-class/useBatchCount';
 import useGetCoursesCount from 'src/libs/query/master/course/useCourseCount';
 import useGetFeeCategoriesCount from 'src/libs/query/master/fee-categories/useFeeCategoryCount';
@@ -21,7 +22,7 @@ function MasterView() {
   return (
     <Container maxWidth="xl">
       <Helmet>
-        <title>Master View | IfastAcademy</title>
+        <title>Master View | {config?.appName}</title>
       </Helmet>
       <Typography variant="h4" sx={{ mb: 5 }}>
         Master View

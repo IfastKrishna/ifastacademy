@@ -7,6 +7,7 @@ import useGetCourseEnquiers from 'src/libs/query/course-enquire/useGetCourseEnqu
 import { usePathname } from 'src/routes/hooks';
 import { columnDef } from './column-def';
 import TopContent from './top-content';
+import config from 'src/config';
 
 function CourseEnquireView() {
   const [page, setPage] = React.useState(1);
@@ -24,7 +25,7 @@ function CourseEnquireView() {
   return (
     <Container>
       <Helmet>
-        <title>Course Enquire View | IfastAcademy</title>
+        <title>Course Enquire View | {config?.appName}</title>
       </Helmet>
       <DataTable
         columnDef={columnDef}

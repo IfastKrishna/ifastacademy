@@ -25,9 +25,6 @@ export default defineConfig({
   },
   server: {
     port: 3030,
-    proxy: {
-      '/api': 'https://ifastacademy.onrender.com',
-    },
   },
   preview: {
     port: 3030,

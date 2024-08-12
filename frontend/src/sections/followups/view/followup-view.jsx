@@ -7,6 +7,7 @@ import { usePathname } from 'src/routes/hooks';
 import { columnDef } from './column-def';
 import TopContent from './top-content';
 import useGetFollowups from 'src/libs/query/followup/useGetFollowups';
+import config from 'src/config';
 
 function FollowupCreate() {
   const [page, setPage] = React.useState(1);
@@ -23,7 +24,7 @@ function FollowupCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Followup View | IfastAcademy</title>
+        <title>Followup View | {config?.appName}</title>
       </Helmet>
       <DataTable
         columnDef={columnDef}

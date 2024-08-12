@@ -15,6 +15,7 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import config from 'src/config';
 import useGetBatchAttendanceDateWise from 'src/libs/query/batch-attendance/useGetBatchAttendance';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 
@@ -43,7 +44,7 @@ function BatchAttendanceView() {
   return (
     <Container>
       <Helmet>
-        <title>Batch Attendance View | IfastAcademy</title>
+        <title>Batch Attendance View | {config.appName}</title>
       </Helmet>
       <Grid2 container spacing={2}>
         <Grid2 xs={12}>

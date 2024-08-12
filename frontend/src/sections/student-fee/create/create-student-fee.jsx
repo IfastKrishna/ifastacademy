@@ -22,6 +22,7 @@ import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 import useGetFeeCategories from 'src/libs/query/master/fee-categories/useGetFeeCategories';
 import useAddStudentFee from 'src/libs/mutation/student-fee/useAddStudentFee';
 import { useEffect } from 'react';
+import config from 'src/config';
 
 const CreateStudentFee = () => {
   const { id } = useParams();
@@ -88,7 +89,7 @@ const CreateStudentFee = () => {
   return (
     <Container>
       <Helmet>
-        <title>Create Student Fee | IfastAcademy</title>
+        <title>Create Student Fee | {config?.appName}</title>
       </Helmet>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={2}>
