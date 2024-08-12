@@ -21,6 +21,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import config from 'src/config';
 import useAddBatchAttendace from 'src/libs/mutation/batch-attendance/useAddBatchAttendace';
 import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
@@ -77,7 +78,7 @@ function TakeBatchAttendance() {
   return (
     <Container>
       <Helmet>
-        <title>Take Batch Attendance | IfastAcademy</title>
+        <title>Take Batch Attendance | {config?.appName}</title>
       </Helmet>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={2}>

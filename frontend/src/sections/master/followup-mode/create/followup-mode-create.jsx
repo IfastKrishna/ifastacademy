@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddFollowupMode from 'src/libs/mutation/master/followup-mode/useAddFollowupMode';
 
 function FollowupModeCreate() {
@@ -26,7 +27,7 @@ function FollowupModeCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Followup Mode Create | IfastAcademy</title>
+        <title>Followup Mode Create | {config?.appName}</title>
       </Helmet>
 
       <Box

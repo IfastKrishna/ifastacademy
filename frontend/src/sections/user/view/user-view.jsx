@@ -4,13 +4,11 @@ import useDisclosure from 'src/hooks/use-disclosure';
 import useGetUsers from 'src/libs/query/user/useGetUsers';
 import columnDef from '../column-def';
 import TopContent from '../top-content';
-import { ConfirmationModal } from 'src/components/confirmation-model';
-import { FileUploader } from 'src/components/file-uploader';
-import { FileView } from 'src/components/file-view';
-import { FloatMenu } from 'src/components/float-menu';
 import { useSearch } from 'src/context/NavSerch';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { usePathname, useRouter } from 'src/routes/hooks';
+import { Helmet } from 'react-helmet-async';
+import config from 'src/config';
 
 function UserView() {
   const { searchValue } = useSearch();
@@ -32,15 +30,11 @@ function UserView() {
     }
   }, [data, isSuccess]);
 
-  let { isOpen: isOpen2, close: close2, open: open2 } = useDisclosure(false);
-  let { isOpen: isOpen1, close: close1, open: open1 } = useDisclosure(false);
-
   return (
-    <Box>
-      {/* <FileView /> */}
-
-      <FileUploader isOpen={isOpen2} onClose={close2} />
-      <ConfirmationModal open={isOpen1} onClose={close1} />
+    <Container>
+      <Helmet>
+        <title>User View | {config?.appName}</title>
+      </Helmet>
       <DataTable
         columnDef={columnDef}
         rows={users}
@@ -54,14 +48,7 @@ function UserView() {
         loading={isPending}
         topContent={<TopContent />}
       />
-      {/* <Box sx={{ p: '10px 0', zIndex: 999 }}>
-        <FloatMenu
-          onDeleteHandler={open1}
-          onUploadHandler={open2}
-          onAddHandler={() => router.push('/user/create')}
-        />
-      </Box> */}
-    </Box>
+    </Container>
   );
 }
 

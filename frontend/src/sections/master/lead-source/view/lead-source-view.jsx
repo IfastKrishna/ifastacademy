@@ -7,6 +7,7 @@ import { useSearch } from 'src/context/NavSerch';
 import { usePathname } from 'src/routes/hooks';
 import { columnDef } from './column-def';
 import useGetLeadSources from 'src/libs/query/master/leace-source/useGetLeadSource';
+import config from 'src/config';
 
 function LeadSourceView() {
   const [page, setPage] = React.useState(1);
@@ -22,7 +23,7 @@ function LeadSourceView() {
   return (
     <Container>
       <Helmet>
-        <title>Lead Source View | IfastAcadeny</title>
+        <title>Lead Source View | {config?.appName}</title>
       </Helmet>
 
       <DataTable

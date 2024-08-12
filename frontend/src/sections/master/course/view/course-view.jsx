@@ -12,6 +12,7 @@ import { fDate } from 'src/utils/format-time';
 import useDisclosure from 'src/hooks/use-disclosure';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDeleteCourse from 'src/libs/mutation/master/course/useDeleteCourse';
+import config from 'src/config';
 
 function CourseView() {
   const [page, setPage] = useState(1);
@@ -109,7 +110,7 @@ function CourseView() {
   return (
     <Container>
       <Helmet>
-        <title>Course View | IfastAcademy</title>
+        <title>Course View | {config?.appName}</title>
       </Helmet>
       <ConfirmationModal
         confirmationTitle="Are you sure you want to delete this course?"

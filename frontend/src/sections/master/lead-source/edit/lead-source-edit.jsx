@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useUpdateLeadSource from 'src/libs/mutation/master/lead-source/useUpdateLeadSource';
 import useGetLeadSourceById from 'src/libs/query/master/leace-source/useGetLeadSourceById';
 import { usePathname, useRouter } from 'src/routes/hooks';
@@ -45,7 +46,9 @@ function LeadSourceEdit() {
   return (
     <Container>
       <Helmet>
-        <title>Lead Source {isEdit ? 'Edit' : 'View'} | IfastAcademy</title>
+        <title>
+          Lead Source {isEdit ? 'Edit' : 'View'} | {config?.appName}
+        </title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

@@ -8,7 +8,7 @@ const columnDef = [
     cell: ({ getValue }) => <Avatar src={getValue()} alt="Avatar" />,
     size: 50,
   },
-  { accessorKey: 'ifastId', header: 'Ifast ID', size: 150 },
+  { accessorKey: 'ifastId', header: 'User ID', size: 150 },
   { accessorFn: (row) => row?.firstName + ' ' + row?.lastName, header: 'Full Name', size: 150 },
   { accessorKey: 'email', header: 'Email', size: 150 },
   { accessorKey: 'phoneNo', header: 'Phone', size: 100 },

@@ -9,6 +9,7 @@ import ActionMenu from 'src/components/data-table/ActionMenu';
 import { Helmet } from 'react-helmet-async';
 import useGetStudentFees from 'src/libs/query/student-fee/useGetStudentFees';
 import { fDate } from 'src/utils/format-time';
+import config from 'src/config';
 
 function StudentFeesView() {
   const [page, setPage] = useState(1);
@@ -126,7 +127,7 @@ function StudentFeesView() {
   return (
     <Container>
       <Helmet>
-        <title>Employee | Ifast Academy</title>
+        <title>Employee | {config?.appName}</title>
       </Helmet>
 
       <DataTable

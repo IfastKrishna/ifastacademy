@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddLeadSource from 'src/libs/mutation/master/lead-source/useAddLeadSource';
 
 function LeadSourceCreate() {
@@ -35,7 +36,7 @@ function LeadSourceCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Create Lead Source | IfastAcademy</title>
+        <title>Create Lead Source | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

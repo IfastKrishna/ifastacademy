@@ -16,6 +16,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddStudent from 'src/libs/mutation/student/useAddStudent';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 import useGetNextId from 'src/libs/query/user/useGetNextId';
@@ -71,7 +72,7 @@ function StudentCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Student Create | IfastAcademy</title>
+        <title>Student Create | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen menus={navBread} />
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>

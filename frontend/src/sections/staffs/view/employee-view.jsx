@@ -12,6 +12,7 @@ import useDisclosure from 'src/hooks/use-disclosure';
 import { Helmet } from 'react-helmet-async';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDeleteEmployee from 'src/libs/mutation/employee/useDeleteEmployee';
+import config from 'src/config';
 
 function EmployeeView() {
   const [page, setPage] = useState(1);
@@ -102,7 +103,7 @@ function EmployeeView() {
       size: 120,
     }),
     columnHelper.accessor('ifastId', {
-      header: 'IFAST ID',
+      header: 'Staff ID',
       size: 120,
     }),
 
@@ -130,15 +131,15 @@ function EmployeeView() {
   return (
     <Container>
       <Helmet>
-        <title>Employee | Ifast Academy</title>
+        <title>Staff | {config?.appName}</title>
       </Helmet>
       <ConfirmationModal
         open={isOpen}
         onClose={close}
         onConfirm={confirmDelete}
         confirming={deletingEmployee}
-        confirmationDescription="Are you sure you want to delete this employee?"
-        confirmationTitle="Delete Employee"
+        confirmationDescription="Are you sure you want to delete this staff?"
+        confirmationTitle="Delete Staff"
       />
       <DataTable
         columnDef={columnDef}

@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import config from 'src/config';
 import useAddCourse from 'src/libs/mutation/master/course/useAddCourse';
 
 function CourseCreate() {
@@ -35,7 +36,7 @@ function CourseCreate() {
   return (
     <Container>
       <Helmet>
-        <title>Create Course | IfastAcademy</title>
+        <title>Create Course | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[

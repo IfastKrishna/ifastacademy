@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '@mui/material';
+import { Avatar, Tooltip } from '@mui/material';
 import { createColumnHelper } from '@tanstack/react-table';
 import ActionMenu from 'src/components/data-table/ActionMenu';
 import { fDate } from 'src/utils/format-time';
@@ -44,9 +44,20 @@ export const columnDef = [
     size: 50,
   },
   {
-    accessorFn: (row) => `${row?.firstName} ${row?.lastName}`,
+    accessorKey: 'ifastId',
+    header: 'Student ID',
+    size: 150,
+  },
+  {
     header: 'Full Name',
     size: 100,
+    cell: ({ row }) => (
+      <Tooltip placement="top" title={`${row.original.firstName} ${row.original.lastName}`}>
+        <div>
+          {row.original.firstName} {row.original.lastName}
+        </div>
+      </Tooltip>
+    ),
   },
   columnHelper.accessor('email', {
     header: 'Email',
