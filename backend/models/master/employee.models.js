@@ -38,25 +38,30 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+
     ifastId: {
       type: String,
       required: true,
       unique: true,
       trim: true,
     },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+
     dob: {
       type: Date,
       required: true,
     },
+
     avatar: {
       type: String,
       default:
         "https://res.cloudinary.com/dkkgmzpqd/image/upload/v1634360344/IFAST/avatars/placeholder.png",
     },
+
     email: {
       type: String,
       unique: true,
@@ -77,7 +82,14 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       enum: ["teacher", "staff"],
     },
-    startDate: {
+
+    batchIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Batch",
+      },
+    ],
+    joiningDate: {
       type: Date,
       required: true,
     },

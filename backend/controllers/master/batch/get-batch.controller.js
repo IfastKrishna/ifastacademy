@@ -27,10 +27,8 @@ const getAllBatches = async (req, res) => {
 
     // Calculate the total number of batches that match the search criteria
     if (pageSize === -1) {
-      const batches = await Batch.find(searchCriteria)
-        .populate("course")
-        .populate("students")
-        .populate("instructors");
+      const batches = await Batch.find(searchCriteria).populate("course");
+
       return res.status(200).send({
         data: batches,
         count: batches.length,
@@ -40,12 +38,7 @@ const getAllBatches = async (req, res) => {
 
     const [batchCount, batches] = await Promise.all([
       Batch.countDocuments(searchCriteria),
-      Batch.find(searchCriteria)
-        .skip(skip)
-        .limit(pageSize)
-        .populate("course")
-        .populate("students")
-        .populate("instructors"),
+      Batch.find(searchCriteria).skip(skip).limit(pageSize).populate("course"),
     ]);
 
     res.status(200).send({

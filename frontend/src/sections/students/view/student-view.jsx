@@ -13,7 +13,7 @@ function StudentView() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [students, setStudents] = useState([]);
-  const { searchValue } = useSearch(); // Corrected variable name
+  const { searchValue } = useSearch();
   const pathname = usePathname();
   const { data, isLoading, isSuccess } = useGetStudents({
     page,

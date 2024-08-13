@@ -1,17 +1,18 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import config from 'src/config';
+import { ProfileView } from 'src/sections/profile/view';
 
 function Profile() {
   return (
     <Box>
       <Helmet>
-        <title> Profile | IfastAcademy </title>
+        <title> Profile | {config?.appName} </title>
       </Helmet>
-      Profile
+      <ProfileView />
     </Box>
   );
 }
 
 export default Profile;
-s;

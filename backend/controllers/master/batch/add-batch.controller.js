@@ -11,8 +11,6 @@ const addBatch = async (req, res) => {
       capacity,
       description,
       batchTiming,
-      students,
-      instructors,
     } = req.body;
 
     if (!name || !course || !startDate || !capacity || !batchTiming) {
@@ -36,14 +34,6 @@ const addBatch = async (req, res) => {
       capacity,
       description,
     });
-
-    if (students.length > 0) {
-      newBatch.students = students;
-    }
-
-    if (instructors.length > 0) {
-      newBatch.instructors = instructors;
-    }
 
     const savedBatch = await newBatch.save();
 

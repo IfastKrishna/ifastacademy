@@ -26,7 +26,15 @@ const addStudent = async (req, res) => {
     const { ifastId, avatar, _id: userId } = req?.user;
 
     if (
-      [firstName, email, phoneNo, joiningDate, dob, address].some(
+      [
+        firstName,
+        email,
+        phoneNo,
+        joiningDate,
+        dob,
+        address,
+        enrolledBatch,
+      ].some(
         (field) =>
           !field || field === "" || field === null || field === undefined
       )

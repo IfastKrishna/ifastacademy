@@ -25,10 +25,11 @@ const userRegister = async (req, res, next) => {
       });
     }
 
-    const userExists = await User.findOne({ $and: [{ email }, { phoneNo }] });
+    const userExists = await User.findOne({ email });
+
     if (userExists) {
       return res.status(400).json({
-        message: "User already exists with this email or phone number",
+        message: "User already exists with this email ",
       });
     }
 

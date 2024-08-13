@@ -3,12 +3,13 @@ import {
   Box,
   Container,
   TextField,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   FormHelperText,
+  Checkbox,
+  ListItemText,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
@@ -18,14 +19,17 @@ import useGetNextId from 'src/libs/query/user/useGetNextId';
 import useAddEmployee from 'src/libs/mutation/employee/useAddEmployee';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import config from 'src/config';
+import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 
-function EmployeeCreate() {
+function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medium' }) {
   const [fetching, setFetching] = React.useState(false);
+  const [batchesId, setBatchesId] = React.useState([]);
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -34,20 +38,29 @@ function EmployeeCreate() {
     },
   });
 
-  const { data, isSuccess: FetchedStudent } = useGetNextId({ fetching });
+  const { data: nextIdData, isSuccess: FetchedStudent } = useGetNextId({ fetching });
+  const { data: batchIds, isLoading } = useGetBatches({ pageSize: -1 });
   const { mutate: addEmployee, isSuccess, isPending } = useAddEmployee();
+
   useEffect(() => {
     if (FetchedStudent) {
-      setValue('ifastId', data);
+      setValue('ifastId', nextIdData);
     }
-  }, [FetchedStudent]);
+  }, [FetchedStudent, nextIdData, setValue]);
 
   useEffect(() => {
     if (isSuccess) {
       reset();
-      setFetching(!fetching);
+      setFetching((prev) => !prev);
+      setBatchesId([]);
     }
-  }, [isSuccess]);
+  }, [isSuccess, reset]);
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setBatchesId(typeof value === 'string' ? value.split(',') : value);
+    setValue('enrolledBatch', value);
+  };
 
   const navBread = [
     { title: 'Employees', url: 'employee/all' },
@@ -60,23 +73,24 @@ function EmployeeCreate() {
         <title>Create staff | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen menus={navBread} />
-      <Box component="form" onSubmit={handleSubmit(addEmployee)} sx={{ mt: 2 }}>
+      <Box component="form" onSubmit={handleSubmit((data) => addEmployee(data))} sx={{ mt: 2 }}>
         <Grid2 container spacing={2}>
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Institute ID"
-              variant="standard"
-              {...register('ifastId', { required: 'Institute ID is required', value: data })}
+              variant={variant}
+              {...register('ifastId', { required: 'Institute ID is required', value: nextIdData })}
               fullWidth
               error={!!errors?.ifastId}
               helperText={errors?.ifastId?.message}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
           <Grid2 xs={12} sm={6}>
             <TextField
               label="First Name"
-              variant="standard"
+              variant={variant}
               {...register('firstName', { required: 'First name is required' })}
               fullWidth
               error={!!errors.firstName}
@@ -87,19 +101,18 @@ function EmployeeCreate() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Last Name"
-              variant="standard"
+              variant={variant}
               {...register('lastName')}
               fullWidth
               error={!!errors?.lastName}
               helperText={errors?.lastName?.message}
-              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Email"
-              variant="standard"
+              variant={variant}
               {...register('email', { required: 'Email is required' })}
               fullWidth
               error={!!errors.email}
@@ -110,7 +123,7 @@ function EmployeeCreate() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Phone Number"
-              variant="standard"
+              variant={variant}
               {...register('phoneNo', {
                 required: 'Phone number is required',
                 pattern: {
@@ -127,7 +140,7 @@ function EmployeeCreate() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Emergency Contact"
-              variant="standard"
+              variant={variant}
               {...register('emergencyContact')}
               fullWidth
               error={!!errors?.emergencyContact}
@@ -139,7 +152,7 @@ function EmployeeCreate() {
             <TextField
               label="Date of Birth"
               type="date"
-              variant="standard"
+              variant={variant}
               {...register('dob', { required: 'Date of Birth is required' })}
               fullWidth
               error={!!errors?.dob}
@@ -149,7 +162,7 @@ function EmployeeCreate() {
           </Grid2>
 
           <Grid2 xs={12} sm={6}>
-            <FormControl fullWidth variant="standard" error={!!errors?.jobTitle}>
+            <FormControl fullWidth variant={variant} error={!!errors?.jobTitle}>
               <InputLabel>Select Job Title</InputLabel>
               <Controller
                 name="jobTitle"
@@ -167,18 +180,57 @@ function EmployeeCreate() {
             </FormControl>
           </Grid2>
 
+          {watch('jobTitle') === 'teacher' && (
+            <Grid2 xs={12} sm={6}>
+              <FormControl fullWidth size={size} variant={variant} error={!!errors?.enrolledBatch}>
+                <InputLabel id="batch-select-label">Select Batches</InputLabel>
+                <Controller
+                  name="enrolledBatch"
+                  control={control}
+                  rules={{ required: 'Enrolled Batch is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      labelId="batch-select-label"
+                      id="batch-select"
+                      multiple
+                      value={batchesId}
+                      onChange={handleChange}
+                      renderValue={(selected) =>
+                        selected
+                          ?.map((id) => {
+                            const batch = batchIds?.data?.find((b) => b._id === id);
+                            return batch?.name;
+                          })
+                          ?.join(', ')
+                      }
+                    >
+                      {batchIds?.data?.map((batch) => (
+                        <MenuItem key={batch?._id} value={batch?._id}>
+                          <Checkbox checked={batchesId.indexOf(batch?._id) > -1} />
+                          <ListItemText primary={batch?.name} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                <FormHelperText>{errors?.enrolledBatch?.message}</FormHelperText>
+              </FormControl>
+            </Grid2>
+          )}
+
           <Grid2 xs={12} sm={6}>
             <TextField
-              label="Start Date"
+              label="Joining Date"
               type="date"
-              variant="standard"
-              {...register('startDate', {
+              variant={variant}
+              {...register('joiningDate', {
                 required: 'Start Date is required',
-                value: new Date().toISOString().split('T')[0],
               })}
               fullWidth
-              error={!!errors?.startDate}
-              helperText={errors?.startDate?.message}
+              error={!!errors?.joiningDate}
+              helperText={errors?.joiningDate?.message}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
 
@@ -186,7 +238,7 @@ function EmployeeCreate() {
             <TextField
               label="End Date"
               type="date"
-              variant="standard"
+              variant={variant}
               {...register('endDate')}
               fullWidth
               error={!!errors?.endDate}
@@ -198,38 +250,41 @@ function EmployeeCreate() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Notes"
-              variant="standard"
+              variant={variant}
               {...register('notes')}
               fullWidth
               error={!!errors?.notes}
               helperText={errors?.notes?.message}
             />
           </Grid2>
+
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Street Address"
-              variant="standard"
+              variant={variant}
               {...register('streetAddress', { required: 'Street Address is required' })}
               fullWidth
               error={!!errors?.streetAddress}
               helperText={errors?.streetAddress?.message}
             />
           </Grid2>
+
           <Grid2 xs={12} sm={6}>
             <TextField
               label="City"
-              variant="standard"
-              {...register('city', { required: 'City is required', value: 'North Delhi' })}
+              variant={variant}
+              {...register('city', { required: 'City is required' })}
               fullWidth
               error={!!errors?.city}
               helperText={errors?.city?.message}
             />
           </Grid2>
+
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Postal Code"
-              variant="standard"
-              {...register('postalCode', { required: 'Postal Code is required', value: '110082' })}
+              variant={variant}
+              {...register('postalCode', { required: 'Postal Code is required' })}
               fullWidth
               error={!!errors?.postalCode}
               helperText={errors?.postalCode?.message}
@@ -237,7 +292,13 @@ function EmployeeCreate() {
           </Grid2>
 
           <Grid2 xs={12}>
-            <LoadingButton loading={isPending} type="submit" variant="contained" fullWidth>
+            <LoadingButton
+              loading={isPending}
+              type="submit"
+              variant="contained"
+              fullWidth
+              size={btnSize}
+            >
               Submit
             </LoadingButton>
           </Grid2>

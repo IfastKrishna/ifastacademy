@@ -86,6 +86,12 @@ export const columnDef = [
     size: 100,
   },
   {
+    accessorFn: (row) => row?.enrolledBatch?.map((batch) => batch.name).join(', '),
+    header: 'Batches',
+    size: 150,
+  },
+
+  {
     header: 'Action',
     cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,
     size: 50,

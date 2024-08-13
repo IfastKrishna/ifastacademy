@@ -19,7 +19,17 @@ const getAllStudents = async (req, res) => {
 
     // Execute the queries
     const [students, count] = await Promise.all([
-      Student.find(query).skip(skip).limit(limit),
+      Student.find(query)
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: "enrolledBatch",
+          select: "name", // Specify fields to include from the Batch schema
+          populate: {
+            path: "course", // If Batch references Course
+            select: "name", // Specify fields to include from the Course schema
+          },
+        }),
       Student.countDocuments(query),
     ]);
 

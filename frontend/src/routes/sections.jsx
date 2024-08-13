@@ -34,6 +34,7 @@ import StudentFeesView from 'src/sections/student-fee/view/student-fee-view';
 import TakeBatchAttendance from 'src/sections/batch-attendance/teake/take-batch-attendance';
 import EditBatchAttendance from 'src/sections/batch-attendance/edit/edit-batch-attendance';
 import BatchAttendanceView from 'src/sections/batch-attendance/view/batch-attendance-view';
+import { UserCreate } from 'src/sections/user/create';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -43,6 +44,7 @@ export const IndexPage = lazy(() => import('../pages/app'));
 export const UserPage = lazy(() => import('../pages/user'));
 export const StudentPage = lazy(() => import('../pages/students'));
 export const StaffPage = lazy(() => import('../pages/staff'));
+export const ProfilePage = lazy(() => import('../pages/profile'));
 
 // ----------------------------------------------------------------------
 
@@ -98,11 +100,7 @@ export default function Router() {
           children: [
             {
               path: 'create',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create User</h1>
-                </ProtectedRoute>
-              ),
+              element: <UserCreate />,
             },
             {
               path: 'view/:id',
@@ -516,7 +514,7 @@ export default function Router() {
             </ProtectedRoute>
           ),
         },
-        { path: 'profile', element: <h1>Profile</h1> },
+        { path: 'profile', element: <ProfilePage /> },
         { path: 'settings', element: <h1>Settings</h1> },
         { path: 'blog', element: <BlogPage /> },
       ],
