@@ -11,7 +11,6 @@ import { EmployeeEdit } from 'src/sections/staffs/edit';
 import { EmployeeView } from 'src/sections/staffs/view';
 import { MasterView } from 'src/sections/master/view';
 
-import { FollowupCreate } from 'src/sections/followups/view';
 import { CourseEnquireView } from 'src/sections/course-enquire/view';
 import { ClassView } from 'src/sections/master/class/view';
 import { CourseCreate } from 'src/sections/master/course/create';
@@ -34,6 +33,15 @@ import StudentFeesView from 'src/sections/student-fee/view/student-fee-view';
 import TakeBatchAttendance from 'src/sections/batch-attendance/teake/take-batch-attendance';
 import EditBatchAttendance from 'src/sections/batch-attendance/edit/edit-batch-attendance';
 import BatchAttendanceView from 'src/sections/batch-attendance/view/batch-attendance-view';
+import { UserCreate } from 'src/sections/user/create';
+import { CourseEnquireCreate } from 'src/sections/course-enquire/create';
+import { CourseEnquiresEdit } from 'src/sections/course-enquire/edit';
+import NewAdmission from 'src/sections/students/new-admision/new-adminsion';
+import { FollowupCreate } from 'src/sections/followups/create';
+import { FollowupView } from 'src/sections/followups/view';
+import { FollowupEdit } from 'src/sections/followups/edit';
+import { SubmittedFees } from 'src/sections/students/submitted-fees';
+import { StudentAttendanceView } from 'src/sections/students/attendance';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -43,6 +51,7 @@ export const IndexPage = lazy(() => import('../pages/app'));
 export const UserPage = lazy(() => import('../pages/user'));
 export const StudentPage = lazy(() => import('../pages/students'));
 export const StaffPage = lazy(() => import('../pages/staff'));
+export const ProfilePage = lazy(() => import('../pages/profile'));
 
 // ----------------------------------------------------------------------
 
@@ -64,31 +73,19 @@ export default function Router() {
           children: [
             {
               path: 'create',
-              element: <h1>Create Enquire</h1>,
+              element: <CourseEnquireCreate />,
             },
             {
               path: 'view/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>View Enquire</h1>
-                </ProtectedRoute>
-              ),
+              element: <CourseEnquiresEdit />,
             },
             {
               path: 'edit/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <h1>Edit Enquire</h1>
-                </ProtectedRoute>
-              ),
+              element: <CourseEnquiresEdit />,
             },
             {
               path: 'all',
-              element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
-                  <CourseEnquireView />
-                </ProtectedRoute>
-              ),
+              element: <CourseEnquireView />,
             },
           ],
         },
@@ -98,27 +95,15 @@ export default function Router() {
           children: [
             {
               path: 'create',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Create User</h1>
-                </ProtectedRoute>
-              ),
+              element: <UserCreate />,
             },
             {
               path: 'view/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>View User</h1>
-                </ProtectedRoute>
-              ),
+              element: <h1>View User</h1>,
             },
             {
               path: 'edit/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
-                  <h1>Edit User</h1>
-                </ProtectedRoute>
-              ),
+              element: <h1>Edit User</h1>,
             },
             {
               path: 'all',
@@ -137,15 +122,23 @@ export default function Router() {
             {
               path: 'create',
               element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'employee', 'superadmin']}>
                   <StudentCreate />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'new-admission/:id',
+              element: (
+                <ProtectedRoute roles={['admin', 'employee', 'superadmin']}>
+                  <NewAdmission />
                 </ProtectedRoute>
               ),
             },
             {
               path: 'view/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'employee', 'superadmin']}>
                   <StudentEdit />
                 </ProtectedRoute>
               ),
@@ -153,7 +146,7 @@ export default function Router() {
             {
               path: 'edit/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'employee', 'superadmin']}>
                   <StudentEdit />
                 </ProtectedRoute>
               ),
@@ -161,10 +154,22 @@ export default function Router() {
             {
               path: 'all',
               element: (
-                <ProtectedRoute roles={['admin', 'teacher', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'employee', 'superadmin']}>
                   <StudentPage />
                 </ProtectedRoute>
               ),
+            },
+            {
+              path: 'fees',
+              element: <SubmittedFees />,
+            },
+            {
+              path: 'batch',
+              element: <h1>Coming Soon..🐱</h1>,
+            },
+            {
+              path: 'attendance',
+              element: <StudentAttendanceView />,
             },
           ],
         },
@@ -408,7 +413,7 @@ export default function Router() {
             {
               path: 'all',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <StudentFeesView />
                 </ProtectedRoute>
               ),
@@ -416,7 +421,7 @@ export default function Router() {
             {
               path: 'create/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <CreateStudentFee />
                 </ProtectedRoute>
               ),
@@ -424,7 +429,7 @@ export default function Router() {
             {
               path: 'view/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <EditStudentFee />
                 </ProtectedRoute>
               ),
@@ -432,10 +437,13 @@ export default function Router() {
             {
               path: 'edit/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <EditStudentFee />
                 </ProtectedRoute>
               ),
+            },
+            {
+              path: 'batch',
             },
           ],
         },
@@ -446,7 +454,7 @@ export default function Router() {
             {
               path: 'all',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <BatchAttendanceView />
                 </ProtectedRoute>
               ),
@@ -454,7 +462,7 @@ export default function Router() {
             {
               path: 'take/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <TakeBatchAttendance />
                 </ProtectedRoute>
               ),
@@ -462,7 +470,7 @@ export default function Router() {
             {
               path: 'edit/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <EditBatchAttendance />
                 </ProtectedRoute>
               ),
@@ -476,16 +484,16 @@ export default function Router() {
             {
               path: 'all',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
-                  <FollowupCreate />
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
+                  <FollowupView />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'create/:id',
+              path: 'create/:collection/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
-                  <h1>Create Followup</h1>
+                  <FollowupCreate />
                 </ProtectedRoute>
               ),
             },
@@ -493,7 +501,7 @@ export default function Router() {
               path: 'view/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
-                  <h1>View Followup</h1>
+                  <FollowupEdit />
                 </ProtectedRoute>
               ),
             },
@@ -501,7 +509,7 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
-                  <h1>Edit Followup</h1>
+                  <FollowupEdit />
                 </ProtectedRoute>
               ),
             },
@@ -516,8 +524,21 @@ export default function Router() {
             </ProtectedRoute>
           ),
         },
-        { path: 'profile', element: <h1>Profile</h1> },
-        { path: 'settings', element: <h1>Settings</h1> },
+        {
+          path: 'profile',
+          element: <Outlet />,
+          children: [
+            {
+              path: '',
+              element: <ProfilePage />,
+            },
+            {
+              path: 'edit',
+              element: <h1>Edit Profile</h1>,
+            },
+          ],
+        },
+        { path: 'settings', element: <h1>Coming soon...</h1> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },

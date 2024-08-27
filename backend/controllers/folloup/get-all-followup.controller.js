@@ -30,34 +30,18 @@ const getAllFollowups = async (req, res) => {
       });
 
     const populatedFollowUps = await Promise.all(
-      followUps.map(async (followUp) => {
-        // Step 2: Determine the collection name based on modelName
-        let collectionName;
-        switch (followUp.leadId.modelName) {
-          case "Student":
-            collectionName = "students";
-            break;
-          case "Employee":
-            collectionName = "employees";
-            break;
-          case "CourseEnquire":
-            collectionName = "courseenquires";
-            break;
-          default:
-            collectionName = null;
-        }
-
+      followUps.map(async (followup) => {
         // Step 3: Populate leadDetails if collectionName is determined
-        if (collectionName) {
+        if (followup?.leadId?.collectionName) {
           const leadDetails = await mongoose.connection
-            .collection(collectionName)
-            .findOne({ _id: followUp.leadId.id });
+            .collection(followup?.leadId?.collectionName)
+            .findOne({ _id: followup?.leadId?.id });
 
-          followUp = followUp.toObject();
-          followUp.leadDetails = leadDetails;
+          followup = followup.toObject();
+          followup.leadDetails = leadDetails;
         }
 
-        return followUp;
+        return followup;
       })
     );
 

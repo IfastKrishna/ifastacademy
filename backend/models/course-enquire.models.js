@@ -12,6 +12,7 @@ const addressSchema = new mongoose.Schema(
       default: "North Delhi",
       trim: true,
     },
+
     state: {
       type: String,
       trim: true,
@@ -37,39 +38,43 @@ const courseEnquireSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     lastName: {
       type: String,
-      required: true,
     },
+
     qualification: {
       type: String,
       required: true,
     },
-    collageOrSchool: {
-      type: String,
-      enum: ["collage", "school"],
-    },
+
     dob: {
       type: Date,
       required: true,
     },
+
     gender: {
       type: String,
       required: true,
       enum: ["male", "female", "other"],
     },
-    mobileNo: {
-      type: String,
-      required: true,
-    },
-    alternativeMobileNo: {
-      type: String,
-    },
+
     email: {
       type: String,
       required: true,
     },
+
+    phoneNo: {
+      type: String,
+      required: true,
+    },
+
+    alternativePhoneNo: {
+      type: String,
+    },
+
     address: addressSchema,
+
     courseInterest: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -77,37 +82,28 @@ const courseEnquireSchema = new mongoose.Schema(
         required: true,
       },
     ],
+
     interestLevel: {
       type: String,
+      enum: ["high", "medium", "low"],
       required: true,
     },
-    followupDetails: {
-      type: String,
-    },
-    requiredDemoClass: {
-      type: String,
-      enum: ["Yes", "No"],
-      default: "No",
-    },
-    nextFollowupDate: {
-      type: Date,
-    },
+
     leadSource: {
       type: String,
       required: true,
     },
+
     enquireDate: {
       type: Date,
-      required: true,
+      default: Date.now,
     },
-    refName: {
+
+    status: {
       type: String,
+      default: "pending",
+      enum: ["pending", "cancelled"],
     },
-    assignTo: {
-      type: String,
-      required: true,
-    },
-    note: String,
   },
   { timestamps: true }
 );

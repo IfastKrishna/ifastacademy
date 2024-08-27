@@ -25,8 +25,8 @@ import useGetStudents from 'src/libs/query/student/useGetStudents';
 import { usePathname, useRouter } from 'src/routes/hooks';
 
 function ClassEdit() {
-  const [studentSearchTerm, setStudentSearchTerm] = React.useState('');
-  const [instructorSearchTerm, setInstructorSearchTerm] = React.useState('');
+  // const [studentSearchTerm, setStudentSearchTerm] = React.useState('');
+  // const [instructorSearchTerm, setInstructorSearchTerm] = React.useState('');
   const {
     handleSubmit,
     reset,
@@ -34,8 +34,8 @@ function ClassEdit() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      students: [],
-      instructors: [],
+      // students: [],
+      // instructors: [],
     },
   });
 
@@ -45,17 +45,18 @@ function ClassEdit() {
   const { data: batchData, isSuccess: batchFetched } = useGetBatchById({ id });
   const { mutate: updateBatch, isPending, isSuccess } = useUpdateBatch();
   const { data: courses } = useGetCourses({ page: 1 });
-  const { data: students, isLoading: studentsLoading } = useGetStudents({
-    page: 1,
-    search: studentSearchTerm,
-    pageSize: 10,
-  });
-  const { data: instructors, isLoading: instructorLoading } = useGetEmployees({
-    page: 1,
-    pageSize: 10,
-    search: instructorSearchTerm,
-    jobTitle: 'teacher',
-  });
+
+  // const { data: students, isLoading: studentsLoading } = useGetStudents({
+  //   page: 1,
+  //   search: studentSearchTerm,
+  //   pageSize: 10,
+  // });
+  // const { data: instructors, isLoading: instructorLoading } = useGetEmployees({
+  //   page: 1,
+  //   pageSize: 10,
+  //   search: instructorSearchTerm,
+  //   jobTitle: 'teacher',
+  // });
 
   useEffect(() => {
     if (batchFetched) {
@@ -69,14 +70,14 @@ function ClassEdit() {
         capacity: batchData?.data?.capacity,
         batchTiming: batchData?.data?.batchTiming,
         description: batchData?.data?.description,
-        students: students?.data?.filter((s) => batchData?.data?.students?.includes(s._id)),
-        instructors: instructors?.data?.filter((i) =>
-          batchData?.data?.instructors?.includes(i._id)
-        ),
+        // students: students?.data?.filter((s) => batchData?.data?.students?.includes(s._id)),
+        // instructors: instructors?.data?.filter((i) =>
+        //   batchData?.data?.instructors?.includes(i._id)
+        // ),
       };
       reset(fetchedBatchData);
     }
-  }, [batchFetched, students, instructors]);
+  }, [batchFetched]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -86,8 +87,8 @@ function ClassEdit() {
   }, [isSuccess]);
 
   const onSubmit = (data) => {
-    data.students = data.students.map((s) => s._id);
-    data.instructors = data.instructors.map((s) => s._id);
+    // data.students = data.students.map((s) => s._id);
+    // data.instructors = data.instructors.map((s) => s._id);
     data._id = id;
     updateBatch(data);
   };
@@ -139,7 +140,7 @@ function ClassEdit() {
               rules={{ required: 'Course is required' }}
               disabled={!isEditPage}
               render={({ field }) => (
-                <FormControl fullWidth error={!!errors.level} variant="standard">
+                <FormControl fullWidth error={!!errors.course} variant="standard">
                   <InputLabel>Select Course</InputLabel>
                   <Select {...field}>
                     {courses?.data?.map((course) => (
@@ -148,7 +149,7 @@ function ClassEdit() {
                       </MenuItem>
                     ))}
                   </Select>
-                  <FormHelperText>{errors.level?.message}</FormHelperText>
+                  <FormHelperText>{errors.course?.message}</FormHelperText>
                 </FormControl>
               )}
             />
@@ -225,6 +226,7 @@ function ClassEdit() {
                   variant="standard"
                   label="Requirements"
                   disabled={!isEditPage}
+                  InputLabelProps={{ shrink: true }}
                 />
               )}
             />
@@ -234,6 +236,7 @@ function ClassEdit() {
               name="capacity"
               control={control}
               defaultValue=""
+              rules={{ required: 'Capacity is required' }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -242,6 +245,9 @@ function ClassEdit() {
                   label="Capacity (Number)"
                   type="number"
                   disabled={!isEditPage}
+                  error={!!errors.capacity}
+                  helperText={errors.capacity?.message}
+                  InputLabelProps={{ shrink: true }}
                 />
               )}
             />
@@ -261,6 +267,9 @@ function ClassEdit() {
                   variant="standard"
                   label="Batch Timing"
                   disabled={!isEditPage}
+                  error={!!errors.batchTiming}
+                  helperText={errors.batchTiming?.message}
+                  InputLabelProps={{ shrink: true }}
                 />
               )}
             />
@@ -281,7 +290,7 @@ function ClassEdit() {
               )}
             />
           </Grid2>
-          <Grid2 xs={12}>
+          {/* <Grid2 xs={12}>
             <Controller
               name="instructors"
               control={control}
@@ -343,7 +352,7 @@ function ClassEdit() {
                 />
               )}
             />
-          </Grid2>
+          </Grid2> */}
           {isEditPage && (
             <Grid2 xs={12}>
               <LoadingButton type="submit" loading={isPending} fullWidth variant="contained">

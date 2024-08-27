@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import Api from 'src/utils/api';
 
-const useGetCourseEnquiers = ({ page = 1, pageSize = 10, search = '' }) => {
+const useGetCourseEnquires = ({ page, pageSize, search }) => {
   return useQuery({
     queryKey: ['course-enquires', { page, pageSize, search }],
     queryFn: async () => {
-      const { data } = await Api.get('/course-enquire/all', {
-        params: { page, pageSize, search },
-      });
+      const { data } = await Api.get('/course-enquire/all');
       return data;
     },
     staleTime: Infinity,
+    retry: (failureCount, error) => {
+      if (error.status === 404) return false;
+      return failureCount < 3;
+    },
   });
 };
 
-export default useGetCourseEnquiers;
+export default useGetCourseEnquires;

@@ -42,14 +42,12 @@ function ActionMenu({
         onClose={close}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: { width: 140 },
-        }}
       >
         {menus(row, router).map((menu, index) => (
           <MenuItem
             key={index}
             onClick={menu?.onClick}
+            disabled={menu?.disabled}
             sx={{ color: menu?.color, display: 'flex', gap: '10px', alignItems: 'center' }}
           >
             <Iconify icon={menu?.icon} width={20} />

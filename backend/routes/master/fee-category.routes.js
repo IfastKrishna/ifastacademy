@@ -10,32 +10,32 @@ const FeeCategoryRouter = express.Router();
 
 FeeCategoryRouter.get(
   "/all",
-  isAuth(["admin", "teacher", "staff", "student", "superadmin"]),
+  isAuth(["admin", "employee", "student", "superadmin"]),
   getFeeCategories
 );
 
-FeeCategoryRouter.post(
-  "/",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
-  addFeeCategories
-);
+FeeCategoryRouter.post("/", isAuth(["admin", "superadmin"]), addFeeCategories);
 
 FeeCategoryRouter.post(
   "/bulk",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
+  isAuth(["admin", "superadmin"]),
   (req, res) => {}
 );
 
-FeeCategoryRouter.patch("/:id", isAuth(), updateFeeCategories);
+FeeCategoryRouter.patch(
+  "/:id",
+  isAuth(["admin", "superadmin"]),
+  updateFeeCategories
+);
 FeeCategoryRouter.get(
   "/:id",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
+  isAuth(["admin", "superadmin"]),
   getFeeCategoriesById
 );
 
 FeeCategoryRouter.delete(
   "/:id",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
+  isAuth(["admin", "superadmin"]),
   deleteFeeCategories
 );
 

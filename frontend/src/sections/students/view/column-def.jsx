@@ -19,13 +19,13 @@ const menus = (row, router) => {
       onClick: () => router?.push(`/student/edit/${row?._id}`),
     },
     {
-      itemText: 'Followup',
-      icon: 'mdi-light:message-processing',
-      onClick: () => router?.push(`/followup/view/${row?._id}`),
+      itemText: 'New Followup',
+      icon: 'eva:phone-fill',
+      onClick: () => router?.push(`/followup/create/students/${row?._id}`),
     },
     {
-      itemText: 'Submit Fee',
-      icon: 'pepicons-pop:money-note',
+      itemText: 'New Fee',
+      icon: 'eva:credit-card-fill',
       onClick: () => router?.push(`/student-fee/create/${row?._id}`),
     },
     {
@@ -85,6 +85,12 @@ export const columnDef = [
     header: 'State',
     size: 100,
   },
+  {
+    accessorFn: (row) => row?.enrolledBatch?.map((batch) => batch.name).join(', '),
+    header: 'Batches',
+    size: 150,
+  },
+
   {
     header: 'Action',
     cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,

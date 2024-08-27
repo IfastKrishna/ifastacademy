@@ -1,5 +1,19 @@
 import { Avatar, Chip } from '@mui/material';
 import ActionMenu from 'src/components/data-table/ActionMenu';
+import useUserBlockUnblock from 'src/libs/mutation/user/useUserBlockUnblock';
+
+const menus = (row, router) => {
+  const { mutate: update } = useUserBlockUnblock();
+  return [
+    {
+      itemText: row?.status ? 'Block' : 'Unblock',
+      icon: row?.status
+        ? 'material-symbols-light:hide-source'
+        : 'material-symbols-light:hide-source-outline',
+      onClick: () => update(row?._id),
+    },
+  ];
+};
 
 const columnDef = [
   {
@@ -17,7 +31,11 @@ const columnDef = [
     cell: ({ row: { original } }) => <Chip size="small" label={original?.role} />,
     size: 100,
   },
-  // { header: 'Action', cell: () => <ActionMenu />, size: 50 },
+  {
+    header: 'Block',
+    cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,
+    size: 50,
+  },
 ];
 
 export default columnDef;

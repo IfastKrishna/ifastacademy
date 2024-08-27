@@ -3,7 +3,6 @@ const User = require("../../models/user.models");
 const handleErrors = require("../../utils/handleErrors");
 
 const countUsersWithBirthdayToday = async (req, res) => {
-  console.log("countUsersWithBirthdayToday ::: request received");
   try {
     // Get today's date without time using moment.js
     const today = moment().startOf("day");

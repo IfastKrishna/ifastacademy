@@ -9,9 +9,13 @@ const changeCurrentPassword = require("../controllers/user/change-password.contr
 const getAllUsers = require("../controllers/user/get-all.controller");
 const { getNextIfastId } = require("../controllers/user/get-next-ifast-id");
 const countUsersWithBirthdayToday = require("../controllers/user/getTodayBirthdays");
+const userBlockUnblock = require("../controllers/user/blockUnblock");
+const getUserByRole = require("../controllers/user/get-user-by-role");
 const UserRouter = express.Router();
 
 UserRouter.post("/", userRegister, createUser);
+UserRouter.get("/roles/:role", getUserByRole);
+UserRouter.patch("/:id", isAuth(["admin", "superadmin"]), userBlockUnblock);
 UserRouter.post("/login", login);
 UserRouter.post("/logout", isAuth(), logout);
 UserRouter.get("/me", isAuth(), getCurrentUser);

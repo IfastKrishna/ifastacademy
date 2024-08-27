@@ -1,6 +1,7 @@
 import { AddCircle, RemoveCircle } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
+  Box,
   Button,
   Container,
   FormControl,
@@ -9,6 +10,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
@@ -18,19 +24,33 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import useGetStudentById from 'src/libs/query/student/useGetStudentById';
 import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
-import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 import useGetFeeCategories from 'src/libs/query/master/fee-categories/useGetFeeCategories';
 import useAddStudentFee from 'src/libs/mutation/student-fee/useAddStudentFee';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import config from 'src/config';
+import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import useGetStudentFeesById from 'src/libs/query/student-fee/useGetSudentFeesById';
+import { fDate } from 'src/utils/format-time';
 
-const CreateStudentFee = () => {
+const CreateStudentFee = ({
+  variant = 'standard',
+  size = 'medium',
+  btnSize = 'medium',
+  btnVariant = 'contained',
+}) => {
   const { id } = useParams();
   const { data: feeCategories } = useGetFeeCategories({});
-  const { data: student } = useGetStudentById({ id });
-  const { data: batchOrClasses } = useGetBatches({ page: 1, pageSize: 20 });
+  const { data: student, isSuccess: studentDataLoaded } = useGetStudentById({ id });
+  const { data: studentFee } = useGetStudentFeesById({ id });
+  // console.log(studentFee, 'studentFee');
   const { data: user } = useIsAuth();
 
+  React.useEffect(() => {
+    if (studentDataLoaded) {
+      const batches = student?.data?.enrolledBatch;
+      setValue('batchId', batches?.length > 0 ? batches?.[0]?._id : '');
+    }
+  }, [studentDataLoaded]);
   const {
     mutate: addStudentFee,
     isPending: studentFeeAdding,
@@ -41,6 +61,7 @@ const CreateStudentFee = () => {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset,
   } = useForm({
     defaultValues: {
@@ -49,6 +70,7 @@ const CreateStudentFee = () => {
       collectedBy: user?.data?._id || '',
       paymentMode: '',
       batchId: '',
+
       fees: [{ category: '', month: '', amount: '' }],
     },
   });
@@ -86,11 +108,46 @@ const CreateStudentFee = () => {
     }
   }, [addedStudentFee, reset, user?.data?._id]);
 
+  const navBread = [
+    { title: 'Students', url: 'student/all' },
+    { title: 'StudentFees', url: 'student-fee/all' },
+    { title: 'Create', url: 'student-fee/create' },
+  ];
+
   return (
     <Container>
       <Helmet>
         <title>Create Student Fee | {config?.appName}</title>
       </Helmet>
+      <BreadcrumbsGen menus={navBread} />
+      <Box sx={{ mb: 2 }} />
+      <TableContainer sx={{ mb: 2 }}>
+        <Table>
+          <TableHead>
+            <TableCell>Receipt No</TableCell>
+            <TableCell>Batch</TableCell>
+            <TableCell>Month</TableCell>
+            <TableCell>Fee Category</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Payment Date</TableCell>
+            <TableCell>Collected By</TableCell>
+          </TableHead>
+          {studentFee?.data?.map((fee) => (
+            <TableRow key={fee._id}>
+              <TableCell>{fee.paymentReference}</TableCell>
+              <TableCell>{fee.batchId.name}</TableCell>
+              <TableCell>{fee.month}</TableCell>
+              <TableCell>{fee.paymentType?.name}</TableCell>
+              <TableCell>{fee.amount}</TableCell>
+              <TableCell>{fDate(fee.paymentDate)}</TableCell>
+              <TableCell>
+                {fee.collectedBy?.firstName + ' (' + fee.collectedBy.ifastId + ')'}
+              </TableCell>
+            </TableRow>
+          ))}
+        </Table>
+      </TableContainer>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={2}>
           <Grid2 xs={12} sm={6}>
@@ -98,7 +155,8 @@ const CreateStudentFee = () => {
               fullWidth
               value={student?.data?.ifastId || ''}
               label="Student ID"
-              variant="standard"
+              size={size}
+              variant={variant}
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
             />
@@ -109,7 +167,8 @@ const CreateStudentFee = () => {
               fullWidth
               label="Student Name"
               value={`${student?.data.firstName || ''} ${student?.data?.lastName || ''}`}
-              variant="standard"
+              size={size}
+              variant={variant}
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
             />
@@ -120,7 +179,8 @@ const CreateStudentFee = () => {
               fullWidth
               value={student?.data.phoneNo || ''}
               label="Student Phone"
-              variant="standard"
+              size={size}
+              variant={variant}
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
             />
@@ -137,7 +197,8 @@ const CreateStudentFee = () => {
                   {...field}
                   fullWidth
                   label="Receipt Number"
-                  variant="standard"
+                  size={size}
+                  variant={variant}
                   InputLabelProps={{ shrink: true }}
                   error={!!errors.paymentReference}
                   helperText={errors.paymentReference?.message}
@@ -157,7 +218,8 @@ const CreateStudentFee = () => {
                   fullWidth
                   type="date"
                   label="Payment Date"
-                  variant="standard"
+                  size={size}
+                  variant={variant}
                   InputLabelProps={{ shrink: true }}
                   error={!!errors.paymentDate}
                   helperText={errors.paymentDate?.message}
@@ -173,7 +235,13 @@ const CreateStudentFee = () => {
               defaultValue={user?.data?._id || ''}
               rules={{ required: 'Collected By is required' }}
               render={({ field }) => (
-                <FormControl fullWidth error={!!errors.collectedBy} variant="standard" disabled>
+                <FormControl
+                  fullWidth
+                  error={!!errors.collectedBy}
+                  size={size}
+                  variant={variant}
+                  disabled
+                >
                   <InputLabel shrink={true}>Collected By</InputLabel>
                   <Select {...field}>
                     <MenuItem value={user?.data?._id}>
@@ -193,7 +261,7 @@ const CreateStudentFee = () => {
               defaultValue=""
               rules={{ required: 'Payment Mode is required' }}
               render={({ field }) => (
-                <FormControl fullWidth error={!!errors.paymentMode} variant="standard">
+                <FormControl fullWidth error={!!errors.paymentMode} size={size} variant={variant}>
                   <InputLabel shrink={true}>Payment Mode</InputLabel>
                   <Select {...field}>
                     <MenuItem value="cash">Cash</MenuItem>
@@ -210,12 +278,14 @@ const CreateStudentFee = () => {
               name="batchId"
               control={control}
               defaultValue=""
-              rules={{ required: 'Batch/Class is required' }}
+              rules={{
+                required: 'Batch/Class is required',
+              }}
               render={({ field }) => (
-                <FormControl fullWidth error={!!errors.batchId} variant="standard">
+                <FormControl fullWidth error={!!errors.batchId} size={size} variant={variant}>
                   <InputLabel shrink={true}>Batch/Class</InputLabel>
                   <Select {...field}>
-                    {batchOrClasses?.data?.map((batch) => (
+                    {student?.data?.enrolledBatch?.map((batch) => (
                       <MenuItem key={batch._id} value={batch._id}>
                         {batch.name}
                       </MenuItem>
@@ -238,7 +308,8 @@ const CreateStudentFee = () => {
                   render={({ field }) => (
                     <FormControl
                       fullWidth
-                      variant="standard"
+                      size={size}
+                      variant={variant}
                       error={!!errors?.fees?.[index]?.category}
                     >
                       <InputLabel shrink={true}>Fee Category</InputLabel>
@@ -263,7 +334,8 @@ const CreateStudentFee = () => {
                   render={({ field }) => (
                     <FormControl
                       fullWidth
-                      variant="standard"
+                      size={size}
+                      variant={variant}
                       error={!!errors?.fees?.[index]?.month}
                     >
                       <InputLabel shrink={true}>Month</InputLabel>
@@ -299,7 +371,8 @@ const CreateStudentFee = () => {
                       helperText={errors?.fees?.[index]?.amount?.message}
                       fullWidth
                       label="Amount"
-                      variant="standard"
+                      size={size}
+                      variant={variant}
                       InputLabelProps={{ shrink: true }}
                     />
                   )}
@@ -316,7 +389,8 @@ const CreateStudentFee = () => {
           <Grid2 xs={12}>
             <Button
               color="primary"
-              variant="contained"
+              size={btnSize}
+              variant={btnVariant}
               onClick={() =>
                 append({
                   category: '',
@@ -333,7 +407,13 @@ const CreateStudentFee = () => {
           </Grid2>
 
           <Grid2 xs={12}>
-            <LoadingButton fullWidth variant="contained" type="submit" loading={studentFeeAdding}>
+            <LoadingButton
+              fullWidth
+              size={btnSize}
+              variant="contained"
+              type="submit"
+              loading={studentFeeAdding}
+            >
               Submit
             </LoadingButton>
           </Grid2>

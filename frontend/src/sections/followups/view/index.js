@@ -1,1 +1,1 @@
-export { default as FollowupCreate } from './followup-view';
+export { default as FollowupView } from './followup-view';

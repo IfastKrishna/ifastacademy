@@ -3,18 +3,9 @@ const handleErrors = require("../../../utils/handleErrors");
 
 const updateBatch = async (req, res) => {
   const { id } = req.params;
-  console.log("CHeck Batch Id Come or :::::::::", id);
   try {
-    const {
-      name,
-      course,
-      startDate,
-      capacity,
-      description,
-      students,
-      instructors,
-      batchTiming,
-    } = req.body;
+    const { name, course, startDate, capacity, description, batchTiming } =
+      req.body;
 
     // Validate required fields
     if (!name || !course || !startDate || !capacity || !batchTiming) {
@@ -54,13 +45,6 @@ const updateBatch = async (req, res) => {
       description,
       batchTiming,
     };
-
-    if (Array.isArray(students)) {
-      updateBatch.students = students;
-    }
-    if (Array.isArray(instructors)) {
-      updateBatch.instructors = instructors;
-    }
 
     // Save the updated batch
     const updated = await Batch.findByIdAndUpdate(id, updateBatch, {

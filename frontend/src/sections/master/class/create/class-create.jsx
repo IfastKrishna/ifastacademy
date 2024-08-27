@@ -22,8 +22,8 @@ import useGetCourses from 'src/libs/query/master/course/useGetCourses';
 import useGetStudents from 'src/libs/query/student/useGetStudents';
 
 function ClassCreate() {
-  const [studentSearchTerm, setStudentSearchTerm] = React.useState('');
-  const [instructorSearchTerm, setInstructorSearchTerm] = React.useState('');
+  // const [studentSearchTerm, setStudentSearchTerm] = React.useState('');
+  // const [instructorSearchTerm, setInstructorSearchTerm] = React.useState('');
   const {
     handleSubmit,
     reset,
@@ -31,25 +31,22 @@ function ClassCreate() {
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      students: [],
-      instructors: [],
-    },
+    defaultValues: {},
   });
 
   const { mutate: addBatch, isPending, isSuccess } = useAddBatch();
   const { data: courses, isLoading: courseLoading } = useGetCourses({ page: 1 });
-  const { data: students, isLoading: studentsLoading } = useGetStudents({
-    page: 1,
-    search: studentSearchTerm,
-    pageSize: 10,
-  });
-  const { data: instructors, isLoading: instructorLoading } = useGetEmployees({
-    page: 1,
-    pageSize: 10,
-    search: instructorSearchTerm,
-    jobTitle: 'teacher',
-  });
+  // const { data: students, isLoading: studentsLoading } = useGetStudents({
+  //   page: 1,
+  //   search: studentSearchTerm,
+  //   pageSize: 10,
+  // });
+  // const { data: instructors, isLoading: instructorLoading } = useGetEmployees({
+  //   page: 1,
+  //   pageSize: 10,
+  //   search: instructorSearchTerm,
+  //   jobTitle: 'teacher',
+  // });
 
   useEffect(() => {
     if (isSuccess) {
@@ -58,15 +55,15 @@ function ClassCreate() {
   }, [isSuccess]);
 
   const onSubmit = (data) => {
-    data.students = data.students.map((s) => s._id);
-    data.instructors = data.instructors.map((s) => s._id);
+    // data.students = data.students.map((s) => s._id);
+    // data.instructors = data.instructors.map((s) => s._id);
     addBatch(data);
   };
 
   return (
     <Container>
       <Helmet>
-        <title>Create Course | {config?.appName}</title>
+        <title>Create class | {config?.appName}</title>
       </Helmet>
       <BreadcrumbsGen
         menus={[
@@ -103,7 +100,7 @@ function ClassCreate() {
               defaultValue=""
               rules={{ required: 'Course is required' }}
               render={({ field }) => (
-                <FormControl fullWidth error={!!errors.level} variant="standard">
+                <FormControl fullWidth error={!!errors.course} variant="standard">
                   <InputLabel>Select Course</InputLabel>
                   <Select {...field}>
                     {courses?.data?.map((course) => (
@@ -112,7 +109,7 @@ function ClassCreate() {
                       </MenuItem>
                     ))}
                   </Select>
-                  <FormHelperText>{errors.level?.message}</FormHelperText>
+                  <FormHelperText>{errors.course?.message}</FormHelperText>
                 </FormControl>
               )}
             />
@@ -184,11 +181,13 @@ function ClassCreate() {
               )}
             />
           </Grid2>
+
           <Grid2 xs={12} sm={6}>
             <Controller
               name="capacity"
               control={control}
               defaultValue=""
+              rules={{ required: 'Capacity is required' }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -196,6 +195,8 @@ function ClassCreate() {
                   variant="standard"
                   label="Capacity (Number)"
                   type="number"
+                  error={!!errors.capacity}
+                  helperText={errors.capacity?.message}
                 />
               )}
             />
@@ -213,11 +214,14 @@ function ClassCreate() {
                   type="time"
                   fullWidth
                   variant="standard"
-                  label="Batch Timing"
+                  label="Class/Batch Timing"
+                  error={!!errors.batchTiming}
+                  helperText={errors.batchTiming?.message}
                 />
               )}
             />
           </Grid2>
+
           <Grid2 xs={12} sm={6}>
             <Controller
               name="description"
@@ -228,7 +232,8 @@ function ClassCreate() {
               )}
             />
           </Grid2>
-          <Grid2 xs={12}>
+
+          {/* <Grid2 xs={12}>
             <Controller
               name="instructors"
               control={control}
@@ -286,7 +291,7 @@ function ClassCreate() {
                 />
               )}
             />
-          </Grid2>
+          </Grid2> */}
           <Grid2 xs={12}>
             <LoadingButton type="submit" loading={isPending} fullWidth variant="contained">
               Create

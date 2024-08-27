@@ -1,3 +1,5 @@
+const { CourseEnquire } = require("../../models/course-enquire.models");
+const { FollowUp } = require("../../models/followup.models");
 const { Student } = require("../../models/student/student.models");
 const handleErrors = require("../../utils/handleErrors");
 
@@ -12,23 +14,24 @@ const addStudent = async (req, res) => {
       joiningDate,
       dob,
       role,
+      enquiryId,
       ...rest
     } = req.body;
 
     const address = {
-      city: rest?.city,
-      state: rest?.state,
+      city: rest?.city || "",
+      state: rest?.state || "",
       country: "India",
-      postalCode: rest?.postalCode,
-      streetAddress: rest?.streetAddress,
+      postalCode: rest?.postalCode || "",
+      streetAddress: rest?.streetAddress || "",
     };
 
     const { ifastId, avatar, _id: userId } = req?.user;
 
+    // Check for missing required fields
     if (
-      [firstName, email, phoneNo, joiningDate, dob, address].some(
-        (field) =>
-          !field || field === "" || field === null || field === undefined
+      ![firstName, email, phoneNo, joiningDate, dob, enrolledBatch].every(
+        (field) => field
       )
     ) {
       return res
@@ -36,12 +39,13 @@ const addStudent = async (req, res) => {
         .json({ message: "Please fill all required fields" });
     }
 
+    // Check if the student already exists
     const studentExists = await Student.findOne({ email, ifastId });
-
     if (studentExists) {
       return res.status(400).json({ message: "Student already exists" });
     }
 
+    // Create the student
     const student = await Student.create({
       firstName,
       lastName,
@@ -56,6 +60,17 @@ const addStudent = async (req, res) => {
       dob,
       role,
     });
+
+    // Handle enquiry and follow-up deletion if enquiryId is provided
+    if (enquiryId) {
+      await Promise.all([
+        CourseEnquire.deleteOne({ _id: enquiryId }),
+        FollowUp.deleteMany({
+          "leadId.collectionName": "courseenquires",
+          "leadId.id": enquiryId,
+        }),
+      ]);
+    }
 
     res.json({
       success: true,

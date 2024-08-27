@@ -9,17 +9,13 @@ const getCoursesCount = require("../../controllers/master/course/get-courses-cou
 const CourseRouter = express.Router();
 
 CourseRouter.get("/all", isAuth(), getCourse);
-CourseRouter.post(
-  "/",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
-  addCourse
-);
+CourseRouter.post("/", isAuth(["admin", "superadmin", "employee"]), addCourse);
 
 CourseRouter.get("/:id", isAuth(), getCourseById);
 
 CourseRouter.patch(
   "/:id",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
+  isAuth(["admin", "superadmin", "employee"]),
   updateCourse
 );
 

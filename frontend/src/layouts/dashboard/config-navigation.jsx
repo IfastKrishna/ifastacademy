@@ -36,7 +36,7 @@ const navConfig = [
     title: 'student',
     icon: icon('ic_student'),
     path: '/student/all',
-    role: ['admin', 'manager', 'employee', 'superadmin'],
+    role: ['admin', 'employee', 'superadmin'],
   },
   {
     title: 'Staff',
@@ -57,16 +57,16 @@ const navConfig = [
     role: ['admin', 'superadmin'],
   },
   {
-    title: 'student fees',
-    icon: icon('ic_fee'),
-    path: '/student-fee/all',
-    role: ['admin', 'employee', 'superadmin'],
+    title: 'Enrolled Batch',
+    icon: icon('ic_task'),
+    path: '/course-assignment/all',
+    role: ['employee'],
   },
   {
-    title: 'batch-attendance',
+    title: 'Batch Attendance',
     icon: icon('ic_calendar-add'),
     path: '/batch-attendance/all',
-    role: ['admin', 'employee', 'superadmin'],
+    role: ['employee'],
   },
 
   {
@@ -76,22 +76,34 @@ const navConfig = [
     role: ['student'],
   },
   {
-    title: 'assignments',
-    path: '/assignments/:id',
+    title: 'My Batch',
+    path: '/student/batch',
     icon: icon('ic_task'),
     role: ['student'],
   },
   {
-    title: 'fees',
-    path: '/fees/:id',
+    title: 'Batch Wise Fee',
+    path: 'batch-wise-fee/:batchId',
     icon: icon('ic_fee'),
-    role: ['student', 'employee'],
+    role: ['employee'],
+  },
+  {
+    title: 'My Fees',
+    path: '/student/fees',
+    icon: icon('ic_fee'),
+    role: ['student'],
   },
   {
     title: 'attendance',
-    path: '/attendance/:id',
+    path: 'student/attendance',
     icon: icon('ic_calendar'),
     role: ['student'],
+  },
+  {
+    title: 'Settings',
+    path: '/settings',
+    icon: icon('ic_settings'),
+    role: ['admin', 'superadmin', 'employee', 'student'],
   },
 ];
 

@@ -3,7 +3,7 @@ const handleErrors = require("../../../utils/handleErrors");
 
 const addEmployee = async (req, res) => {
   try {
-    const { firstName, lastName, email, jobTitle, startDate, ...rest } =
+    const { firstName, lastName, email, jobTitle, joiningDate, ...rest } =
       req.body;
     const userId = req?.user?._id;
     const avatar = req?.user?.avatar;
@@ -15,13 +15,24 @@ const addEmployee = async (req, res) => {
       postalCode: rest.postalCode,
     };
     // Validate required fields
+    const requiredFields = [
+      firstName,
+      userId,
+      email,
+      jobTitle,
+      joiningDate,
+      address,
+    ];
+
+    if (jobTitle === "teacher") {
+      requiredFields.push(rest.enrolledBatch);
+    }
+
     if (
-      !firstName ||
-      !userId ||
-      !email ||
-      !jobTitle ||
-      !startDate ||
-      !address
+      requiredFields.some(
+        (field) =>
+          field === undefined || field === "" || field === null || !field
+      )
     ) {
       return res.status(400).json({ message: "Missing required fields!" });
     }
@@ -38,7 +49,14 @@ const addEmployee = async (req, res) => {
       });
     }
 
-    const newEmployee = new Employee({ ...req.body, address, avatar });
+    const newEmployee = new Employee({
+      ...req.body,
+      address,
+      avatar,
+      batchIds: rest.enrolledBatch,
+      userId,
+    });
+
     const savedEmployee = await newEmployee.save();
 
     res.status(201).json(savedEmployee);

@@ -56,10 +56,10 @@ function StudentCreate() {
       target: { value },
     } = event;
     setBatchesId(typeof value === 'string' ? value.split(',') : value);
+    setValue('enrolledBatch', typeof value === 'string' ? value.split(',') : value);
   };
 
   const onSubmit = (data) => {
-    data.enrolledBatch = batchesId;
     data.role = 'student';
     createStudent(data);
   };
@@ -152,14 +152,14 @@ function StudentCreate() {
               InputLabelProps={{ shrink: true }}
               {...register('dob', {
                 required: 'Date of Birth is required',
-                validate: (value) => {
-                  const date = new Date(value);
-                  const today = new Date();
-                  const age = today.getFullYear() - date.getFullYear();
-                  if (age < 12) {
-                    return 'Student must be atleast 12 years old';
-                  }
-                },
+                // validate: (value) => {
+                //   const date = new Date(value);
+                //   const today = new Date();
+                //   const age = today.getFullYear() - date.getFullYear();
+                //   if (age < 12) {
+                //     return 'Student must be atleast 12 years old';
+                //   }
+                // },
               })}
               error={!!errors?.dob}
               helperText={errors?.dob?.message}
@@ -183,6 +183,7 @@ function StudentCreate() {
               <Controller
                 name="enrolledBatch"
                 control={control}
+                rules={{ required: 'Enrolled Batch is required' }}
                 render={({ field }) => (
                   <Select
                     {...field}

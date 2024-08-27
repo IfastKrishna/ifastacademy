@@ -23,20 +23,6 @@ const batchSchema = new mongoose.Schema(
       type: Date,
     },
 
-    students: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Student",
-      },
-    ],
-
-    instructors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Employee",
-      },
-    ],
-
     batchTiming: {
       type: String,
       required: true,
@@ -44,8 +30,13 @@ const batchSchema = new mongoose.Schema(
 
     capacity: {
       type: Number,
+      required: true,
     },
 
+    monthlyFee: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       trim: true,

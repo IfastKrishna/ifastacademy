@@ -25,17 +25,20 @@ const userRegister = async (req, res, next) => {
       });
     }
 
-    const userExists = await User.findOne({ $and: [{ email }, { phoneNo }] });
+    const userExists = await User.findOne({
+      $or: [{ email: email }, { ifastId: ifastId }],
+    });
+
     if (userExists) {
       return res.status(400).json({
-        message: "User already exists with this email or phone number",
+        message: "User already exists with this email or Ifast ID",
       });
     }
 
     const user = await User.create({
       firstName,
       lastName,
-      ifastId: ifastId,
+      ifastId,
       email,
       phoneNo,
       dob,
@@ -48,7 +51,6 @@ const userRegister = async (req, res, next) => {
     );
 
     req.user = userWithoutPassword;
-
     next();
   } catch (error) {
     console.error(error);

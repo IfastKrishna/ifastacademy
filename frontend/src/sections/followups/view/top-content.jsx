@@ -22,7 +22,7 @@ function TopContent() {
           Followups
         </Typography>
 
-        <HeaderMenu onAdd={() => router.push('/followup/create')} onDelete={open1} />
+        <HeaderMenu onDelete={open1} />
       </Box>
     </>
   );

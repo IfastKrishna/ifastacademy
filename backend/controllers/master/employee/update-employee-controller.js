@@ -15,8 +15,16 @@ const updateEmployee = async (req, res) => {
       country: rest.country,
     };
 
-    // Validate required fields
-    if (!firstName || !email || !jobTitle || !startDate || !address) {
+    if (jobTitle === "teacher") {
+      requiredFields.push(rest.enrolledBatch);
+    }
+
+    if (
+      requiredFields.some(
+        (field) =>
+          field === undefined || field === "" || field === null || !field
+      )
+    ) {
       return res.status(400).json({ message: "Missing required fields!" });
     }
 
@@ -40,6 +48,7 @@ const updateEmployee = async (req, res) => {
       jobTitle,
       startDate,
       address,
+      batchIds: rest.enrolledBatch,
       ...rest,
     };
 
