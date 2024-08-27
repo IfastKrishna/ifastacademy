@@ -11,6 +11,10 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
+    if (user.status === false) {
+      return res.status(400).json({ message: "User is blocked" });
+    }
+
     const isMatch = await user.isPasswordCorrect(password);
 
     if (!isMatch) {

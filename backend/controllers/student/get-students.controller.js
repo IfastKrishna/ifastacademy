@@ -4,7 +4,7 @@ const handleErrors = require("../../utils/handleErrors");
 const getAllStudents = async (req, res) => {
   let { page = 1, pageSize = 5, search = "" } = req.query;
   try {
-    const skip = (parseInt(page) - 1) * parseInt(pageSize); // Corrected skip calculation
+    const skip = (parseInt(page) - 1) * parseInt(pageSize);
     const limit = parseInt(pageSize);
     const query = {
       $or: [

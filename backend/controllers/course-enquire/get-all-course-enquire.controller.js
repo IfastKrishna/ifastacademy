@@ -1,4 +1,5 @@
 const { CourseEnquire } = require("../../models/course-enquire.models");
+const handleErrors = require("../../utils/handleErrors");
 
 // Controller function to get all inquiries with pagination and search
 const getCourseInquiries = async (req, res) => {
@@ -24,6 +25,15 @@ const getCourseInquiries = async (req, res) => {
     const results = await CourseEnquire.aggregate([
       { $match: searchCriteria },
       {
+        $lookup: {
+          from: "courses",
+          localField: "courseInterest",
+          foreignField: "_id",
+          as: "courseInterest",
+        },
+      },
+
+      {
         $facet: {
           metadata: [{ $count: "total" }],
           data: [{ $skip: (pageNumber - 1) * size }, { $limit: size }],
@@ -36,13 +46,13 @@ const getCourseInquiries = async (req, res) => {
     const data = results[0].data;
 
     // Send response
-    res.json({
+    res.status(200).json({
       count: total,
       data,
+      message: "Course inquiries fetched successfully",
     });
   } catch (error) {
-    console.error("Error fetching course inquiries:", error);
-    res.status(500).json({ message: "Internal server error" });
+    handleErrors(error, res);
   }
 };
 

@@ -11,11 +11,20 @@ const getStudentsCount = require("../controllers/student/get-students-count.cont
 const getAllStudents = require("../controllers/student/get-students.controller");
 const addStudentFee = require("../controllers/student-fee/add-studentfee");
 const getAllStudentFee = require("../controllers/student-fee/get-all-studentfee");
+const getStudentFeeById = require("../controllers/student-fee/get-studentfee-byid");
+const {
+  getStudentPaidFees,
+  getStudentUnpaidFees,
+  getTotalAbsentDaysBatchWise,
+  getStudentBatches,
+  getStudentCurrMonthAttendance,
+  getStudentAttendanceReport,
+} = require("../controllers/student/student.controller");
 const StudentRouter = express.Router();
 
 StudentRouter.get(
   "/all",
-  isAuth(["admin", "superadmin", "employee", "staff", "teacher"]),
+  isAuth(["admin", "superadmin", "employee"]),
   getAllStudents
 );
 
@@ -25,6 +34,40 @@ StudentRouter.post(
   userRegister,
   addStudent
 );
+// report for routes
+StudentRouter.get(
+  "/get-total-paid-fee/:studentId",
+  isAuth(),
+  getStudentPaidFees
+);
+
+StudentRouter.get(
+  "/get-total-un-paid-fee/:studentId",
+  isAuth(),
+  getStudentUnpaidFees
+);
+
+StudentRouter.get(
+  "/get-absent-days/:studentId",
+  isAuth(),
+  getTotalAbsentDaysBatchWise
+);
+
+StudentRouter.get(
+  "/get-batches-attendance/:studentId",
+  isAuth(),
+  getStudentCurrMonthAttendance
+);
+
+StudentRouter.get(
+  "/get-attendance-report/:studentId",
+  isAuth(),
+  getStudentAttendanceReport
+);
+
+// end of report routes
+
+StudentRouter.get("/my-batches", isAuth(), getStudentBatches);
 
 StudentRouter.get(
   "/:id",
@@ -65,7 +108,9 @@ StudentRouter.post(
   isAuth(["admin", "superadmin", "employee"]),
   addStudentFee
 );
-// StudentRouter.get("/fee/:id", isAuth());
+
+StudentRouter.get("/fee/:id", isAuth(), getStudentFeeById);
+
 // StudentRouter.patch("/fee/:id", isAuth(["admin", "superadmin", "employee"]));
 
 // StudentRouter.delete("/student/fee/:id", isAuth());

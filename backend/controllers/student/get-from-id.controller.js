@@ -3,7 +3,6 @@ const handleErrors = require("../../utils/handleErrors");
 
 const getStudentDetailsById = async (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
   try {
     const student = await Student.findById(id).populate({
       path: "enrolledBatch",

@@ -5,15 +5,10 @@ import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 
 function ProtectedRoute({ roles, children }) {
   const user = useIsAuth().data.data;
-
   const hasRequiredRole = roles.includes(user.role);
-
-  //   console.log(user);
-  //   console.log(hasRequiredRole);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {/* {hasRequiredRole ? <Outlet /> : <Navigate to="/login" />} */}
       {hasRequiredRole ? children : <Navigate to="/login" />}
     </Suspense>
   );

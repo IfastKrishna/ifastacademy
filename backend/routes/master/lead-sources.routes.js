@@ -11,22 +11,22 @@ const LeadSourceRouter = express.Router();
 
 LeadSourceRouter.get(
   "/all",
-  isAuth(["admin", "superadmin", "teacher", "staff"]),
+  isAuth(["admin", "superadmin", "employee", "staff"]),
   getLeadSources
 );
 LeadSourceRouter.get(
   "/:id",
-  isAuth(["admin", "superadmin", "staff", "teacher"]),
+  isAuth(["admin", "superadmin", "employee", "teacher"]),
   getLeadSourceById
 );
 LeadSourceRouter.post(
   "/",
-  isAuth(["admin", "superadmin", "teacher", "staff"]),
+  isAuth(["admin", "superadmin", "staff"]),
   addLeadSource
 );
 LeadSourceRouter.patch(
   "/:id",
-  isAuth(["admin", "superadmin", "teacher", "staff"]),
+  isAuth(["admin", "superadmin"]),
   updateLeadSource
 );
 LeadSourceRouter.delete(
@@ -35,6 +35,7 @@ LeadSourceRouter.delete(
   deleteLeadSource
 );
 LeadSourceRouter.get("/all/count", isAuth(), getLeadSourcesCount);
+
 LeadSourceRouter.post(
   "/bulk",
   isAuth(["admin", "superadmin", "teacher", "staff"]),

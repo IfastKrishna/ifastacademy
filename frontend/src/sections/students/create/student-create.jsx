@@ -56,10 +56,10 @@ function StudentCreate() {
       target: { value },
     } = event;
     setBatchesId(typeof value === 'string' ? value.split(',') : value);
+    setValue('enrolledBatch', typeof value === 'string' ? value.split(',') : value);
   };
 
   const onSubmit = (data) => {
-    data.enrolledBatch = batchesId;
     data.role = 'student';
     createStudent(data);
   };

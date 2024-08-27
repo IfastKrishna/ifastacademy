@@ -10,6 +10,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
@@ -24,6 +29,8 @@ import useAddStudentFee from 'src/libs/mutation/student-fee/useAddStudentFee';
 import React, { useEffect } from 'react';
 import config from 'src/config';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import useGetStudentFeesById from 'src/libs/query/student-fee/useGetSudentFeesById';
+import { fDate } from 'src/utils/format-time';
 
 const CreateStudentFee = ({
   variant = 'standard',
@@ -34,6 +41,8 @@ const CreateStudentFee = ({
   const { id } = useParams();
   const { data: feeCategories } = useGetFeeCategories({});
   const { data: student, isSuccess: studentDataLoaded } = useGetStudentById({ id });
+  const { data: studentFee } = useGetStudentFeesById({ id });
+  // console.log(studentFee, 'studentFee');
   const { data: user } = useIsAuth();
 
   React.useEffect(() => {
@@ -112,6 +121,32 @@ const CreateStudentFee = ({
       </Helmet>
       <BreadcrumbsGen menus={navBread} />
       <Box sx={{ mb: 2 }} />
+      <TableContainer sx={{ mb: 2 }}>
+        <Table>
+          <TableHead>
+            <TableCell>Receipt No</TableCell>
+            <TableCell>Batch</TableCell>
+            <TableCell>Month</TableCell>
+            <TableCell>Fee Category</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Payment Date</TableCell>
+            <TableCell>Collected By</TableCell>
+          </TableHead>
+          {studentFee?.data?.map((fee) => (
+            <TableRow key={fee._id}>
+              <TableCell>{fee.paymentReference}</TableCell>
+              <TableCell>{fee.batchId.name}</TableCell>
+              <TableCell>{fee.month}</TableCell>
+              <TableCell>{fee.paymentType?.name}</TableCell>
+              <TableCell>{fee.amount}</TableCell>
+              <TableCell>{fDate(fee.paymentDate)}</TableCell>
+              <TableCell>
+                {fee.collectedBy?.firstName + ' (' + fee.collectedBy.ifastId + ')'}
+              </TableCell>
+            </TableRow>
+          ))}
+        </Table>
+      </TableContainer>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={2}>

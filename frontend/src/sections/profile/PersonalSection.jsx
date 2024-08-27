@@ -8,38 +8,35 @@ function PersonalInformation({
   firstName = 'John',
   lastName = 'Doe',
   email = 'johndoe@gmail.com',
-  phoneNo = '+91 9905242174',
-  id = 'IFAST/2023/0032',
+  phoneNo = '9905242174',
+  ifastId = 'IFAST/2023/0032',
 }) {
   return (
     <Box sx={{ p: 2, mt: 2, border: '1px solid #ddd', borderRadius: 1 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', aligns: 'center' }}>
         <Typography variant="h5">{title}</Typography>
-        <Button size="small" variant="contained" sx={{ display: 'flex', gap: 1 }}>
-          <Iconify icon="pepicons-pop:pen" /> Edit
-        </Button>
       </Box>
       <Box sx={{ mt: 2, width: '100%' }}>
         <Grid2 container spacing={2}>
-          <Grid2 item xs={12} sm={6}>
+          <Grid2 xs={12} sm={6}>
             <Typography variant="body2">First Name</Typography>
             <Typography variant="h6">{firstName}</Typography>
           </Grid2>
-          <Grid2 item xs={12} sm={6}>
+          <Grid2 xs={12} sm={6}>
             <Typography variant="body2">Last Name</Typography>
             <Typography variant="h6">{lastName}</Typography>
           </Grid2>
-          <Grid2 item xs={12} sm={6}>
+          <Grid2 xs={12} sm={6}>
             <Typography variant="body2">Email</Typography>
             <Typography variant="h6">{email}</Typography>
           </Grid2>
-          <Grid2 item xs={12} sm={6}>
+          <Grid2 xs={12} sm={6}>
             <Typography variant="body2">Phone No</Typography>
             <Typography variant="h6">+91 {phoneNo}</Typography>
           </Grid2>
-          <Grid2 item xs={12} sm={6}>
+          <Grid2 xs={12} sm={6}>
             <Typography variant="body2">ID</Typography>
-            <Typography variant="h6">{id}</Typography>
+            <Typography variant="h6">{ifastId}</Typography>
           </Grid2>
         </Grid2>
       </Box>

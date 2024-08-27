@@ -13,6 +13,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Controller, useForm } from 'react-hook-form';
+import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import config from 'src/config';
 import useAddUser from 'src/libs/query/user/useAddUser';
 import useGetNextId from 'src/libs/query/user/useGetNextId';
@@ -37,7 +38,7 @@ function UserCreate({ variant = 'standard', size = 'medium', btnSize = 'medium' 
 
   React.useEffect(() => {
     if (userRegistered) {
-      reset({});
+      reset();
     }
   }, [userRegistered]);
 
@@ -45,11 +46,22 @@ function UserCreate({ variant = 'standard', size = 'medium', btnSize = 'medium' 
     addUser(formData);
   };
 
+  const menus = [
+    {
+      title: 'Users',
+      url: '  user/all',
+    },
+    {
+      title: 'Create',
+      url: 'user/create',
+    },
+  ];
   return (
     <Container>
       <Helmet>
         <title>User Create | {config?.appName}</title>
       </Helmet>
+      <BreadcrumbsGen menus={menus} />
       <h1>User Create</h1>
       <Box sx={{ mt: 2 }} component="form" onSubmit={handleSubmit(handleAddUser)}>
         <Grid2 container spacing={2}>

@@ -7,25 +7,22 @@ function HeadInformation({
   firstName = 'John',
   role = 'superadmin',
   lastName = 'Doe',
-  id = 'IFAST/2023/0032',
+  ifastId = 'IFAST/2023/0032',
+  avatar = 'https://www.w3schools.com/howto/img_avatar.png',
 }) {
   return (
     <Box sx={{ p: 2, mt: 2, border: '1px solid #ddd', borderRadius: 1 }}>
       <Box sx={{ width: '100%' }}>
         <Grid2 container spacing={2}>
-          <Grid2 item xs={12} sm={1.2}>
-            <Avatar
-              sx={{ width: 80, height: 80 }}
-              src="https://www.w3schools.com/howto/img_avatar.png"
-              alt="Avatar"
-            />
+          <Grid2 xs={12} sm={1.2}>
+            <Avatar sx={{ width: 80, height: 80 }} src={avatar} alt="Avatar" />
           </Grid2>
-          <Grid2 item xs={12} sm={8}>
+          <Grid2 xs={12} sm={8}>
             <Typography variant="h6">
               {firstName} {lastName}
             </Typography>
             <Chip size="small" color="success" label={role} />
-            <Typography variant="body2">{id}</Typography>
+            <Typography variant="body2">{ifastId}</Typography>
           </Grid2>
         </Grid2>
       </Box>

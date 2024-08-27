@@ -115,6 +115,29 @@ const studentSchema = new mongoose.Schema(
       trim: true,
     },
 
+    monthlyAttendanceReport: [
+      {
+        present: {
+          type: Number,
+          default: 0,
+        },
+        absent: {
+          type: Number,
+          default: 0,
+        },
+        month: {
+          type: String,
+        },
+        year: {
+          type: String,
+        },
+        batchId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Batch",
+        },
+      },
+    ],
+
     notes: {
       type: String,
       trim: true,
