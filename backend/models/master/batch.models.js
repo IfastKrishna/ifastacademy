@@ -37,6 +37,11 @@ const batchSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["Active", "Inactive"],
+      default: "Active",
+    },
     description: {
       type: String,
       trim: true,

@@ -1,5 +1,6 @@
 const User = require("../models/user.models");
 const jwt = require("jsonwebtoken");
+const handleErrors = require("../utils/handleErrors");
 
 const isAuth = (requiredRoles = []) => {
   return async (req, res, next) => {
@@ -32,8 +33,7 @@ const isAuth = (requiredRoles = []) => {
       req.user = user;
       next();
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      handleErrors(error, res);
     }
   };
 };

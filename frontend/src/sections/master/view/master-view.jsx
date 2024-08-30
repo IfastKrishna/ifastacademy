@@ -28,49 +28,49 @@ function MasterView() {
         Master View
       </Typography>
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Batches"
             total={batchCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-batch/all')}
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_batch.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Courses"
             total={courseCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-course/all')}
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_course.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Fee Categories"
             total={feeCategoryCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-fee-category/all')}
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_categories.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Followup Modes"
             total={followupModeCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-followup-mode/all')}
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_share.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Lead Sources"
             total={leadSourceCount?.count || 0}
             color="success"
             onClick={() => navigate('/masters-lead-source/all')}
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_lead_source.svg" />}
           />
         </Grid>
       </Grid>

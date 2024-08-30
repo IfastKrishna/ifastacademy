@@ -29,8 +29,8 @@ export default function AppWidgetSummary({
         py: 5,
         borderRadius: 2,
         ...sx,
-        courser: 'pointer',
       }}
+      style={{ cursor: !!onClick ? 'pointer' : 'default' }}
       {...other}
     >
       {icon && <Box sx={{ width: 64, height: 64 }}>{icon}</Box>}

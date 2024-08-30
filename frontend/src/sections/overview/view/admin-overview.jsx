@@ -36,41 +36,56 @@ export default function AdminOverview() {
 
       <Grid container spacing={3}>
         <HideComponent roles={['admin', 'superadmin', 'employee']}>
-          <Grid xs={12} sm={6} md={3}>
+          <Grid xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Today Fees"
+              title="Total Collected Fee"
               total={4000}
               color="success"
-              icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+              icon={<img alt="icon" src="/assets/icons/ic_money_bag.svg" />}
             />
           </Grid>
         </HideComponent>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Pending Fees"
+            title="Today Collected Fee"
             total={40000}
             color="error"
-            icon={<img alt="icon" src="/assets/icons/navbar/ic_fee.svg" />}
+            icon={<img alt="icon" src="/assets/icons/ic_money_bag.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Students"
+            title="Student"
             onClick={() => router.push('/student/all')}
             total={students?.count || 0}
             color="info"
             icon={
               <img
                 alt="icon"
-                src="/assets/icons/navbar/ic_user.svg"
+                src="/assets/icons/navbar/ic_student.svg"
                 style={{ width: '60px', height: '60px' }}
               />
             }
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Employees"
+            title="Dropout Student"
+            onClick={() => router.push('/student/all')}
+            total={students?.count || 0}
+            color="info"
+            icon={
+              <img
+                alt="icon"
+                src="/assets/icons/ic_user-minus.svg"
+                style={{ width: '60px', height: '60px' }}
+              />
+            }
+          />
+        </Grid>
+        <Grid xs={12} sm={6} md={4}>
+          <AppWidgetSummary
+            title="Staff"
             total={employees?.count || 0}
             onClick={() => router.push('/employee/all')}
             color="info"
@@ -83,23 +98,23 @@ export default function AdminOverview() {
             }
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Today Followups"
-            total={1723315}
+            title="Today Followup"
+            total={10}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_folllowups.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Today Admissions"
+            title="Today Admission"
             total={3}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_user_check.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Happy Birthday"
             total={todayBirthdays?.count}
@@ -107,9 +122,9 @@ export default function AdminOverview() {
             icon={<img alt="icon" src="/assets/icons/navbar/ic_happybirthday.svg" />}
           />
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
-            title="Assets Problems"
+            title="Resource Issue"
             total={5}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_laptop.svg" />}

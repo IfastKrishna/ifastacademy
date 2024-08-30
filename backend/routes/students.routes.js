@@ -67,7 +67,7 @@ StudentRouter.get(
 
 // end of report routes
 
-StudentRouter.get("/my-batches", isAuth(), getStudentBatches);
+StudentRouter.get("/my-batches/:studentId", isAuth(), getStudentBatches);
 
 StudentRouter.get(
   "/:id",

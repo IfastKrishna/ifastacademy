@@ -42,6 +42,8 @@ import { FollowupView } from 'src/sections/followups/view';
 import { FollowupEdit } from 'src/sections/followups/edit';
 import { SubmittedFees } from 'src/sections/students/submitted-fees';
 import { StudentAttendanceView } from 'src/sections/students/attendance';
+import { StudentMyBatchView } from 'src/sections/students/my-batch/view';
+import { ProfileEdit } from 'src/sections/profile/edit';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -52,6 +54,7 @@ export const UserPage = lazy(() => import('../pages/user'));
 export const StudentPage = lazy(() => import('../pages/students'));
 export const StaffPage = lazy(() => import('../pages/staff'));
 export const ProfilePage = lazy(() => import('../pages/profile'));
+export const Setting = lazy(() => import('../pages/setting'));
 
 // ----------------------------------------------------------------------
 
@@ -165,7 +168,7 @@ export default function Router() {
             },
             {
               path: 'batch',
-              element: <h1>Coming Soon..🐱</h1>,
+              element: <StudentMyBatchView />,
             },
             {
               path: 'attendance',
@@ -534,11 +537,11 @@ export default function Router() {
             },
             {
               path: 'edit',
-              element: <h1>Edit Profile</h1>,
+              element: <ProfileEdit />,
             },
           ],
         },
-        { path: 'settings', element: <h1>Coming soon...</h1> },
+        { path: 'settings', element: <Setting /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
