@@ -1,17 +1,22 @@
 // const mongoose = require("mongoose");
 const StudentFee = require("../../models/student/student-fee");
-const { Student } = require("../../models/student/student.models");
 const handleErrors = require("../../utils/handleErrors");
 
 const getStudentFeeById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const batch = Student.findById(id).populate("enrolledBatch");
     const studentFee = await StudentFee.find({
       studentId: id,
     })
-      .populate("batchId", "name")
+      .populate({
+        path: "batchId",
+        select: "name course",
+        populate: {
+          path: "course",
+          select: "name",
+        },
+      })
       .populate("collectedBy", "firstName lastName ifastId")
       .populate("paymentType", "name");
 

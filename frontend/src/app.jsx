@@ -7,6 +7,7 @@ import { useScrollToTop } from './hooks/use-scroll-to-top';
 import Router from './routes/sections';
 import ThemeProvider from './theme';
 import { SearchProvider } from './context/NavSerch';
+import { UIProvider } from './context/CostomeUi';
 
 // ----------------------------------------------------------------------
 
@@ -14,9 +15,11 @@ export default function App() {
   useScrollToTop();
   return (
     <ThemeProvider>
-      <SearchProvider>
-        <Router />
-      </SearchProvider>
+      <UIProvider>
+        <SearchProvider>
+          <Router />
+        </SearchProvider>
+      </UIProvider>
     </ThemeProvider>
   );
 }

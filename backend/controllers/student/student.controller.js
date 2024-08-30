@@ -139,15 +139,16 @@ const getTotalAbsentDaysBatchWise = async (req, res) => {
       enrolledBatch.map(async (batch) => {
         const result = await BatchAttendance.aggregate([
           {
-            $match: { batchId: mongoose.Types.ObjectId(batch._id) },
+            $match: { batchId: new mongoose.Types.ObjectId(batch._id) },
           },
           {
             $unwind: "$studentsAttendance",
           },
           {
             $match: {
-              "studentsAttendance.studentId":
-                mongoose.Types.ObjectId(studentId),
+              "studentsAttendance.studentId": new mongoose.Types.ObjectId(
+                studentId
+              ),
               "studentsAttendance.status": "absent",
             },
           },
@@ -199,7 +200,7 @@ const getStudentCurrMonthAttendance = async (req, res) => {
         const result = await BatchAttendance.aggregate([
           {
             $match: {
-              batchId: mongoose.Types.ObjectId(batch._id),
+              batchId: new mongoose.Types.ObjectId(batch._id),
               year: currentYear,
               month: currentMonth + 1, // MongoDB stores months from 1 to 12, so add 1
             },
@@ -209,8 +210,9 @@ const getStudentCurrMonthAttendance = async (req, res) => {
           },
           {
             $match: {
-              "studentsAttendance.studentId":
-                mongoose.Types.ObjectId(studentId),
+              "studentsAttendance.studentId": new mongoose.Types.ObjectId(
+                studentId
+              ),
             },
           },
           {

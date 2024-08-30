@@ -1,4 +1,5 @@
 const User = require("../../models/user.models");
+const handleErrors = require("../../utils/handleErrors");
 
 const userBlockUnblock = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ const userBlockUnblock = async (req, res) => {
     }
     return res.status(200).json({ message: "User unblocked successfully" });
   } catch (error) {
-    handleErrors;
+    handleErrors(error, res);
   }
 };
 

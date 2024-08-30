@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import SettingsVew from 'src/sections/settings/view/settings-vew';
 
 function Setting() {
   return (
@@ -7,7 +8,7 @@ function Setting() {
       <Helmet>
         <title> Setting | IfastAcademy </title>
       </Helmet>
-      Setting
+      <SettingsVew />
     </div>
   );
 }

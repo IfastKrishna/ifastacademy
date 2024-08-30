@@ -11,24 +11,35 @@ function ProfileView() {
   const { data } = useIsAuth();
   const router = useRouter();
   return (
-    <Container component={Paper} sx={{ py: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', aligns: 'center' }}>
-        <Typography variant="h4">My Profile</Typography>
-        <Button
-          size="small"
-          variant="contained"
-          sx={{ display: 'flex', gap: 1 }}
-          onClick={() => {
-            router.push('/profile/edit');
-          }}
-        >
-          <Iconify icon="pepicons-pop:pen" /> Edit
-        </Button>
-      </Box>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          padding: {
+            xs: 2,
+            md: 4,
+          },
+          marginTop: 4,
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', aligns: 'center' }}>
+          <Typography variant="h4">My Profile</Typography>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ display: 'flex', gap: 1 }}
+            onClick={() => {
+              router.push('/profile/edit');
+            }}
+          >
+            <Iconify icon="pepicons-pop:pen" /> Edit
+          </Button>
+        </Box>
 
-      <HeadInformation {...data?.data} />
-      <PersonalInformation {...data?.data} />
-      {data?.data?.address && <Address {...data?.data.address} />}
+        <HeadInformation {...data?.data} />
+        <PersonalInformation {...data?.data} />
+        {data?.data?.address && <Address {...data?.data.address} />}
+      </Paper>
     </Container>
   );
 }

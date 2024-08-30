@@ -57,7 +57,7 @@ const navConfig = [
     role: ['admin', 'superadmin'],
   },
   {
-    title: 'Enrolled Batch',
+    title: 'My Batches',
     icon: icon('ic_task'),
     path: '/course-assignment/all',
     role: ['employee'],
@@ -76,7 +76,7 @@ const navConfig = [
     role: ['student'],
   },
   {
-    title: 'My Batch',
+    title: 'My Batches',
     path: '/student/batch',
     icon: icon('ic_task'),
     role: ['student'],
@@ -98,6 +98,12 @@ const navConfig = [
     path: 'student/attendance',
     icon: icon('ic_calendar'),
     role: ['student'],
+  },
+  {
+    title: 'Security',
+    path: 'profile/security',
+    icon: icon('ic_security'),
+    role: ['student', 'employee', 'admin', 'superadmin'],
   },
   {
     title: 'Settings',

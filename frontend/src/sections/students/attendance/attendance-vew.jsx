@@ -9,15 +9,12 @@ function StudentAttendanceVew() {
   const user = useIsAuth()?.data?.data;
   return (
     <Container>
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        Attendance
-      </Typography>
       <Typography variant="h5" sx={{ my: 2 }}>
-        Current Month
+        Current Month Attendance
       </Typography>
       <AttendanceCard />
       <Typography variant="h5" sx={{ my: 2 }}>
-        Monthly Report
+        Monthly Attendance Report
       </Typography>
       <Grid container spacing={2}>
         <Grid xs={12} md={6} lg={4}>
@@ -25,9 +22,8 @@ function StudentAttendanceVew() {
             title="July"
             chart={{
               series: [
-                { label: 'Present', value: 26 },
-                { label: 'Absent', value: 4 },
-                { label: 'Holyday', value: 4 },
+                { label: 'Present', value: 20 },
+                { label: 'Absent', value: 10 },
               ],
             }}
           />
@@ -39,7 +35,6 @@ function StudentAttendanceVew() {
               series: [
                 { label: 'Present', value: 26 },
                 { label: 'Absent', value: 4 },
-                { label: 'Holyday', value: 4 },
               ],
             }}
           />
@@ -49,9 +44,8 @@ function StudentAttendanceVew() {
             title="May"
             chart={{
               series: [
-                { label: 'Present', value: 26 },
-                { label: 'Absent', value: 4 },
-                { label: 'Holyday', value: 4 },
+                { label: 'Present', value: 30 },
+                { label: 'Absent', value: 0 },
               ],
             }}
           />
