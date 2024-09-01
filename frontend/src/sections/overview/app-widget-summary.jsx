@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { fShortenNumber } from 'src/utils/format-number';
+import { Tooltip } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +37,9 @@ export default function AppWidgetSummary({
       {icon && <Box sx={{ width: 64, height: 64 }}>{icon}</Box>}
 
       <Stack spacing={0.5}>
-        <Typography variant="h4">{fShortenNumber(total)}</Typography>
+        <Tooltip title={total} placement="top">
+          <Typography variant="h4">{fShortenNumber(total)}</Typography>
+        </Tooltip>
 
         <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
           {title}

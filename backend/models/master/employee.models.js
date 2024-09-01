@@ -89,8 +89,20 @@ const employeeSchema = new mongoose.Schema(
         ref: "Batch",
       },
     ],
+
     joiningDate: {
       type: Date,
+      required: true,
+    },
+
+    salary: {
+      type: Number,
+      required: true,
+    },
+
+    baseOnSalary: {
+      type: String,
+      enum: ["monthly", "per-student(%)"],
       required: true,
     },
     endDate: {

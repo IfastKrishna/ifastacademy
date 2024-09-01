@@ -3,17 +3,20 @@ import { Box, Container, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useUI } from 'src/context/CostomeUi';
 import useUpdateUserProfile from 'src/libs/mutation/user/useUpdateProfile';
 import useIsAuth from 'src/libs/query/isAuth/useIsAuth';
 import { useRouter } from 'src/routes/hooks';
 
-function ProfileEdit({
-  variant = 'standard',
-  size = 'medium',
-  btnSize = 'medium',
-  btnVariant = 'contained',
-  btnColor = 'primary',
-}) {
+function ProfileEdit() {
+  const { uiSettings } = useUI();
+  console.log(uiSettings);
+  let variant = uiSettings?.TextFieldVariant;
+  let size = uiSettings?.TextFieldSize;
+  let btnSize = uiSettings?.btnSize;
+  let btnVariant = uiSettings?.btnVariant;
+  let btnColor = uiSettings?.btnColor;
+
   const {
     control,
     handleSubmit,

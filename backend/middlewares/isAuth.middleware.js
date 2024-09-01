@@ -30,6 +30,7 @@ const isAuth = (requiredRoles = []) => {
         );
       }
 
+      // console.log(user, "user");
       req.user = user;
       next();
     } catch (error) {

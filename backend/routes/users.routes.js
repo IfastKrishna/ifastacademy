@@ -21,8 +21,9 @@ UserRouter.post("/login", login);
 UserRouter.post("/logout", isAuth(), logout);
 UserRouter.get("/me", isAuth(), getCurrentUser);
 
-UserRouter.patch("/change-password", isAuth(), changeCurrentPassword);
+UserRouter.post("/change-password", isAuth(), changeCurrentPassword);
 UserRouter.patch("/update-profile/:id", isAuth(), updateUserProfile);
+UserRouter.patch("/reset-password", isAuth(), changeCurrentPassword);
 
 UserRouter.get("/all", isAuth(["admin", "superadmin"]), getAllUsers);
 UserRouter.get("/get-next-ifast-id", isAuth(), getNextIfastId);
