@@ -44,6 +44,9 @@ import { SubmittedFees } from 'src/sections/students/submitted-fees';
 import { StudentAttendanceView } from 'src/sections/students/attendance';
 import { StudentMyBatchView } from 'src/sections/students/my-batch/view';
 import { ProfileEdit } from 'src/sections/profile/edit';
+import Security from 'src/sections/profile/security/security';
+import BatchCourseView from 'src/sections/batch-course/view/batch-course-vew';
+import { BatchWiseAttendance, BatchWiseFee } from 'src/sections/batch-wise';
 
 export const Page404 = lazy(() => import('../pages/page-not-found'));
 export const LoginPage = lazy(() => import('../pages/login'));
@@ -451,7 +454,7 @@ export default function Router() {
           ],
         },
         {
-          path: 'batch-attendance',
+          path: 'batch-wise',
           element: <Outlet />,
           children: [
             {
@@ -474,7 +477,24 @@ export default function Router() {
               path: 'edit/:id',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
-                  <EditBatchAttendance />
+                  <BatchWiseAttendance />
+                </ProtectedRoute>
+              ),
+            },
+
+            {
+              path: 'attendance',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
+                  <BatchWiseAttendance />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: 'fee',
+              element: (
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
+                  <BatchWiseFee />
                 </ProtectedRoute>
               ),
             },
@@ -539,12 +559,27 @@ export default function Router() {
               path: 'edit',
               element: <ProfileEdit />,
             },
+            {
+              path: 'security',
+              element: <Security />,
+            },
+          ],
+        },
+        {
+          path: 'my-batch-course',
+          element: <Outlet />,
+          children: [
+            {
+              path: '',
+              element: <BatchCourseView />,
+            },
           ],
         },
         { path: 'settings', element: <Setting /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
+
     {
       path: 'login',
       element: <LoginPage />,

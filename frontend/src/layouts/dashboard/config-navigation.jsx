@@ -59,13 +59,19 @@ const navConfig = [
   {
     title: 'My Batches',
     icon: icon('ic_task'),
-    path: '/course-assignment/all',
+    path: '/my-batch-course',
     role: ['employee'],
   },
   {
-    title: 'Batch Attendance',
+    title: 'Batch Wise Attendance',
     icon: icon('ic_calendar-add'),
-    path: '/batch-attendance/all',
+    path: '/batch-wise/attendance',
+    role: ['employee'],
+  },
+  {
+    title: 'Batch Wise Fees',
+    path: '/batch-wise/fee',
+    icon: icon('ic_fee'),
     role: ['employee'],
   },
 
@@ -81,12 +87,7 @@ const navConfig = [
     icon: icon('ic_task'),
     role: ['student'],
   },
-  {
-    title: 'Batch Wise Fee',
-    path: 'batch-wise-fee/:batchId',
-    icon: icon('ic_fee'),
-    role: ['employee'],
-  },
+
   {
     title: 'My Fees',
     path: '/student/fees',

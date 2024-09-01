@@ -20,6 +20,14 @@ import useGetStudentsCount from 'src/libs/query/student/useStudentCount';
 import useGetEmployeesCount from 'src/libs/query/employee/useEmployeesCount';
 import useGetTodayBirthdaysCount from 'src/libs/query/user/useGetTodayBirthdaysCount';
 import HideComponent from 'src/components/Hide/hide';
+import useTodayFollowup from 'src/libs/query/dashboard/useTodayFollowup';
+import useTodayAdmission from 'src/libs/query/dashboard/todayAdmistion';
+import useTotalDropoutStudent from 'src/libs/query/dashboard/useTotalDropoutStudent';
+import { Box, Paper } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { fDate } from 'src/utils/format-time';
+import useTotalCollectedFeeInThisMonth from 'src/libs/query/dashboard/useTotalCollectedFeeInThisMonth';
+import useTodayCollectedFee from 'src/libs/query/dashboard/useTodayCollectedFee';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +36,63 @@ export default function AdminOverview() {
   const { data: students } = useGetStudentsCount();
   const { data: employees } = useGetEmployeesCount();
   const { data: todayBirthdays } = useGetTodayBirthdaysCount();
+  const todayFollowup = useTodayFollowup()?.data;
+  const todayAdmission = useTodayAdmission()?.data;
+  const dropoutStudents = useTotalDropoutStudent()?.data;
+  const totalCalculatedFees = useTotalCollectedFeeInThisMonth()?.data;
+  const todayCalculatedFees = useTodayCollectedFee()?.data;
+
+  const columns = [
+    {
+      field: 'fullName',
+      headerName: 'Full name',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      valueGetter: (value, row) =>
+        `${row?.leadDetails?.firstName || ''} ${row?.leadDetails?.lastName || ''}`,
+    },
+    {
+      field: 'Phone number',
+      valueGetter: (value, row) => row?.leadDetails?.phoneNo,
+      headerName: 'Phone number',
+      type: 'number',
+      width: 150,
+      // editable: true,
+    },
+    {
+      field: 'AssignedTo',
+      headerName: 'Assigned To',
+      valueGetter: (value, row) =>
+        `${row?.assignedTo?.firstName} ${row?.assignedTo?.lastName}- ${row?.assignedTo?.ifastId}`,
+    },
+    {
+      field: 'Notes',
+      headerName: 'Notes',
+      width: 200,
+      valueGetter: (value, row) => row?.notes,
+    },
+    {
+      field: 'dueDate',
+      headerName: 'Due Date',
+      width: 150,
+      valueGetter: (value, row) => fDate(row?.dueDate),
+    },
+
+    {
+      field: 'FollowupDetails',
+      headerName: 'Followup Details',
+      width: 200,
+      valueGetter: (value, row) => row?.followupDetails,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 150,
+      valueGetter: (value, row) => row?.status,
+    },
+  ];
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -38,8 +103,8 @@ export default function AdminOverview() {
         <HideComponent roles={['admin', 'superadmin', 'employee']}>
           <Grid xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Total Collected Fee"
-              total={4000}
+              title="Total Collected Fee In This Month"
+              total={totalCalculatedFees?.total}
               color="success"
               icon={<img alt="icon" src="/assets/icons/ic_money_bag.svg" />}
             />
@@ -48,7 +113,7 @@ export default function AdminOverview() {
         <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Today Collected Fee"
-            total={40000}
+            total={todayCalculatedFees?.total}
             color="error"
             icon={<img alt="icon" src="/assets/icons/ic_money_bag.svg" />}
           />
@@ -71,8 +136,7 @@ export default function AdminOverview() {
         <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Dropout Student"
-            onClick={() => router.push('/student/all')}
-            total={students?.count || 0}
+            total={dropoutStudents?.count}
             color="info"
             icon={
               <img
@@ -101,7 +165,7 @@ export default function AdminOverview() {
         <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Today Followup"
-            total={10}
+            total={todayFollowup?.count}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_folllowups.svg" />}
           />
@@ -109,7 +173,7 @@ export default function AdminOverview() {
         <Grid xs={12} sm={6} md={4}>
           <AppWidgetSummary
             title="Today Admission"
-            total={3}
+            total={todayAdmission?.count}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/navbar/ic_user_check.svg" />}
           />
@@ -131,7 +195,7 @@ export default function AdminOverview() {
           />
         </Grid>
 
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
             title="Website Visits"
             subheader="(+43%) than last year"
@@ -284,8 +348,29 @@ export default function AdminOverview() {
               { id: '5', name: 'Sprint Showcase' },
             ]}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
+      <Box component={Paper} sx={{ py: 3, px: 2, mt: 3, maxHeight: 400, width: '100%' }}>
+        <Typography variant="h6" sx={{ my: 2 }}>
+          Today Followups
+        </Typography>
+
+        <DataGrid
+          rows={todayFollowup?.data || []}
+          getRowId={(row) => row?._id}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          // pageSizeOptions={[5, 10, 20]}
+          // checkboxSelection
+          disableRowSelectionOnClick
+        />
+      </Box>
     </Container>
   );
 }

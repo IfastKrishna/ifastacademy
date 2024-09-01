@@ -10,8 +10,10 @@ const FeeCategoryRouter = require("./master/fee-category.routes");
 const FollowupModeRouter = require("./master/followup-modes.routes");
 const CourseEnquiryRouter = require("./course-enquires.routes");
 const BatchAttendanceRouter = require("./batch-attendance.routes");
+const DashboardRouter = require("./dashbord.routes");
 const AllRouters = express.Router();
 
+AllRouters.use("/dashboard", DashboardRouter);
 AllRouters.use("/user", UserRouter);
 AllRouters.use("/student", StudentRouter);
 AllRouters.use("/followup", FollowupRouter);

@@ -1,13 +1,13 @@
 const { Batch } = require("../../../models/master/batch.models");
+const { Employee } = require("../../../models/master/employee.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const getAllBatches = async (req, res) => {
   try {
-    let { page = 1, pageSize = 10, search } = req.query;
-
+    let { page = 1, pageSize, search } = req.query;
     // Ensure page and pageSize are numbers
     page = parseInt(page, 10);
-    pageSize = parseInt(pageSize, 10);
+    pageSize = pageSize === "all" ? -1 : parseInt(pageSize, 10);
 
     // Ensure page and pageSize are within valid ranges
     if (isNaN(page) || page < 1) page = 1;
@@ -16,6 +16,19 @@ const getAllBatches = async (req, res) => {
     const skip = (page - 1) * pageSize;
 
     const searchCriteria = {};
+    let batchIds = [];
+
+    if (req.user.role === "employee") {
+      const employee = await Employee.findOne({
+        userId: req?.user?._id,
+      }).select("batchIds");
+      batchIds = employee?.batchIds;
+    }
+
+    if (batchIds.length) {
+      searchCriteria._id = { $in: batchIds };
+    }
+
     if (search) {
       const regex = new RegExp(search, "i"); // Case-insensitive search
       searchCriteria.$or = [
@@ -25,7 +38,7 @@ const getAllBatches = async (req, res) => {
       ];
     }
 
-    // Calculate the total number of batches that match the search criteria
+    // Fetch all records if pageSize is -1 (i.e., "all")
     if (pageSize === -1) {
       const batches = await Batch.find(searchCriteria).populate("course");
 

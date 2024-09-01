@@ -67,7 +67,7 @@ const CreateStudentFee = ({
     defaultValues: {
       paymentReference: '',
       paymentDate: new Date().toISOString().split('T')[0],
-      collectedBy: user?.data?._id || '',
+      collectedBy: user?.data?.role == 'employee' ? user?.data?.userId : user?.data?._id || '',
       paymentMode: '',
       batchId: '',
 
@@ -141,7 +141,7 @@ const CreateStudentFee = ({
               <TableCell>{fee.amount}</TableCell>
               <TableCell>{fDate(fee.paymentDate)}</TableCell>
               <TableCell>
-                {fee.collectedBy?.firstName + ' (' + fee.collectedBy.ifastId + ')'}
+                {fee.collectedBy?.firstName + ' (' + fee.collectedBy?.ifastId + ')'}
               </TableCell>
             </TableRow>
           ))}
