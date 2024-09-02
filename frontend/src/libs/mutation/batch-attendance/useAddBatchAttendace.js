@@ -6,7 +6,7 @@ const useAddBatchAttendace = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data) => {
-      const { data: res } = await Api.post('/batch-attendance', data);
+      const { data: res } = await Api.patch('/batch-attendance/create-update', data);
       return res;
     },
 

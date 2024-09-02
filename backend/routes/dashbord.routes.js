@@ -9,6 +9,7 @@ const {
   totalAdmissionInThisMonth,
   todayFollowUp,
   totalCollectedFeesByRange,
+  batchWiseStudentFeeList,
 } = require("../controllers/dasboard/admin-employee.controller");
 const isAuth = require("../middlewares/isAuth.middleware");
 const DashboardRouter = express.Router();
@@ -36,6 +37,8 @@ DashboardRouter.get(
   isAuth(),
   totalAdmissionInThisMonth
 );
+
+DashboardRouter.get("/batch-wise-fee-list", isAuth(), batchWiseStudentFeeList);
 
 DashboardRouter.get("/today-followup", isAuth(), todayFollowUp);
 

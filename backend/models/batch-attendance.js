@@ -1,22 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const studentAttendanceSchema = new Schema({
-  studentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-    enum: ["present", "absent"],
-  },
-  remarks: {
-    type: String,
-  },
-});
-
 const batchAttendanceSchema = new Schema({
   batchId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -39,7 +23,23 @@ const batchAttendanceSchema = new Schema({
   problemFaced: {
     type: String,
   },
-  studentsAttendance: [studentAttendanceSchema],
+  studentsAttendance: [
+    {
+      studentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+        required: true,
+      },
+      status: {
+        type: String,
+        required: true,
+        enum: ["present", "absent"],
+      },
+      remarks: {
+        type: String,
+      },
+    },
+  ],
   generalRemarks: {
     type: String,
   },

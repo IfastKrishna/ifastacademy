@@ -1,4 +1,5 @@
 const { Batch } = require("../../../models/master/batch.models");
+const { Student } = require("../../../models/student/student.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const getTotalStudentInBatch = async (req, res) => {
@@ -10,12 +11,9 @@ const getTotalStudentInBatch = async (req, res) => {
     }
 
     // Find the batch and populate the students array
-    const batch = await Batch.findById(batchId)
-      .populate({
-        path: "students",
-        select: "ifastId firstName lastName email phoneNo",
-      })
-      .select("students name");
+    const batch = await Student.find({
+      enrolledBatch: { $in: [batchId] },
+    }).select("firstName lastName ifastId avatar phoneNo");
 
     if (!batch) {
       return res.status(404).json({ message: "Batch not found" });

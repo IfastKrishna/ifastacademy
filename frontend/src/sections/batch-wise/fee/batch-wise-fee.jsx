@@ -1,33 +1,39 @@
+import React from 'react';
 import {
   Box,
+  Collapse,
   Container,
   FormControl,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
-  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import React from 'react';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
-import { useUI } from 'src/context/CostomeUi';
-import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
-import { LoadingButton } from '@mui/lab';
 import dayjs from 'dayjs';
+import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
+import useGetBatchWiseFeeList from 'src/libs/query/master/batch-class/useGetBatchWiseFee';
+import { useUI } from 'src/context/CostomeUi';
 
 function BatchWiseFee() {
-  const { data: batches, isSuccess: loadedBatches } = useGetBatches({ page: 1, pageSize: 'all' });
   const { uiSettings } = useUI();
+  const { data: batches, isSuccess: loadedBatches } = useGetBatches({ page: 1, pageSize: 'all' });
   const {
     control,
-    handleSubmit,
-    getValues,
     reset,
     watch,
     formState: { errors },
@@ -39,9 +45,17 @@ function BatchWiseFee() {
     },
   });
 
-  const [startDate, setStartDate] = React.useState(dayjs(watch('startDate')).format('YYYY-MM-DD'));
-  const [endDate, setEndDate] = React.useState(dayjs(watch('endDate')).format('YYYY-MM-DD'));
-  const [batchId, setBatchId] = React.useState(watch('batchId'));
+  const feeList = useGetBatchWiseFeeList({
+    startDate: dayjs(watch('startDate')).format('YYYY-MM-DD'),
+    endDate: dayjs(watch('endDate')).format('YYYY-MM-DD'),
+    batchId: watch('batchId'),
+  }).data;
+
+  const [open, setOpen] = React.useState({});
+
+  const handleClick = (id) => {
+    setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   React.useEffect(() => {
     if (loadedBatches) {
@@ -52,9 +66,6 @@ function BatchWiseFee() {
       });
     }
   }, [loadedBatches, reset, batches]);
-
-  const batchWiseFee = (data) => {};
-  console.log(getValues());
 
   return (
     <Container>
@@ -77,8 +88,8 @@ function BatchWiseFee() {
               <FormControl
                 fullWidth
                 error={!!errors.batchId}
-                variant={uiSettings.textFieldVariant}
-                size={uiSettings.textFieldSize}
+                variant={uiSettings?.textFieldVariant}
+                size={uiSettings?.textFieldSize}
               >
                 <InputLabel shrink={true}>Batch Name</InputLabel>
                 <Controller
@@ -87,7 +98,9 @@ function BatchWiseFee() {
                   rules={{ required: 'Batch Name is required' }}
                   render={({ field }) => (
                     <Select label="Batch Name" {...field}>
-                      <MenuItem value="">Select Batch</MenuItem>
+                      <MenuItem value="" disabled>
+                        Select Batch
+                      </MenuItem>
                       {batches?.data?.map((batch) => (
                         <MenuItem key={batch._id} value={batch._id}>
                           {batch.name}
@@ -103,8 +116,8 @@ function BatchWiseFee() {
             <Grid2 xs={6} md={4}>
               <FormControl
                 error={!!errors.startDate}
-                variant={uiSettings.textFieldVariant}
-                size={uiSettings.textFieldSize}
+                variant={uiSettings?.textFieldVariant}
+                size={uiSettings?.textFieldSize}
                 fullWidth
               >
                 <Controller
@@ -120,6 +133,11 @@ function BatchWiseFee() {
                         format="DD/MM/YYYY"
                         slotProps={{
                           day: { selectedDay: field.value },
+                          textField: {
+                            fullWidth: true,
+                            variant: uiSettings?.textFieldVariant,
+                            size: uiSettings?.textFieldSize,
+                          },
                         }}
                       />
                     </LocalizationProvider>
@@ -132,8 +150,8 @@ function BatchWiseFee() {
             <Grid2 xs={6} md={4}>
               <FormControl
                 error={!!errors.endDate}
-                variant={uiSettings.textFieldVariant}
-                size={uiSettings.textFieldSize}
+                variant={uiSettings?.textFieldVariant}
+                size={uiSettings?.textFieldSize}
                 fullWidth
               >
                 <Controller
@@ -158,6 +176,11 @@ function BatchWiseFee() {
                         format="DD/MM/YYYY"
                         slotProps={{
                           day: { selectedDay: field.value },
+                          textField: {
+                            fullWidth: true,
+                            variant: uiSettings?.textFieldVariant,
+                            size: uiSettings?.textFieldSize,
+                          },
                         }}
                       />
                     </LocalizationProvider>
@@ -167,6 +190,53 @@ function BatchWiseFee() {
               </FormControl>
             </Grid2>
           </Grid2>
+
+          {feeList?.data?.map((student, index) => (
+            <Box key={index} sx={{ mb: 2, mt: 3 }}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+                onClick={() => handleClick(student.ifastId)}
+              >
+                <Typography variant="h6">
+                  {student.firstName} {student.lastName} ({student.ifastId})
+                </Typography>
+                <IconButton size="small">
+                  {open[student.ifastId] ? <ExpandLess /> : <ExpandMore />}
+                </IconButton>
+              </Paper>
+              <Collapse in={open[student?.ifastId]} timeout="auto" unmountOnExit>
+                <TableContainer sx={{ textWrap: 'nowrap' }}>
+                  <Table size="small" aria-label="fees">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>Payment Date</TableCell>
+                        <TableCell>Payment Reference</TableCell>
+                        <TableCell>Collected By</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {student.feeList.map((fee, feeIndex) => (
+                        <TableRow key={feeIndex}>
+                          <TableCell>{fee.amount}</TableCell>
+                          <TableCell>{new Date(fee.paymentDate).toLocaleDateString()}</TableCell>
+                          <TableCell>{fee.paymentReference}</TableCell>
+                          <TableCell>{fee.collectedBy}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Collapse>
+            </Box>
+          ))}
         </Box>
       </Paper>
     </Container>

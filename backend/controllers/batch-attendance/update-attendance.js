@@ -1,53 +1,54 @@
 const BatchAttendance = require("../../models/batch-attendance");
 const handleErrors = require("../../utils/handleErrors");
 
-const updateBatchAttendance = async (req, res) => {
-  const { batchId, date } = req.params;
-
+const updateAndCreateBatchAttendance = async (req, res) => {
   try {
     const {
+      batchId,
+      date,
       takenBy,
       todayTopic,
       problemFaced,
-      studentsAttendance,
+      attendance,
       generalRemarks,
     } = req.body;
 
-    if (!batchId || !takenBy || !todayTopic || !studentsAttendance || !date) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all the required fields." });
+    // Check for required fields
+    if (!batchId || !takenBy || !todayTopic || !attendance || !date) {
+      return res.status(400).json({
+        message: "Please provide all the required fields.",
+      });
     }
 
-    const parsedDate = new Date(date).setHours(0, 0, 0, 0);
+    // Parse the date and set time to midnight
+    const parsedDate = new Date(date);
 
-    const attendance = {
+    // Construct attendance data
+    const attendanceData = {
       batchId,
       takenBy,
       todayTopic,
       problemFaced,
-      studentsAttendance,
+      studentsAttendance: attendance,
       generalRemarks,
       date: parsedDate,
     };
 
-    const updatedAttendance = await BatchAttendance.findOneAndUpdate(
+    // Upsert the attendance data
+    const attendanceSave = await BatchAttendance.findOneAndUpdate(
       { batchId, date: parsedDate },
-      attendance,
-      { new: true, upsert: true }
+      attendanceData,
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
-    if (!updatedAttendance) {
-      return res.status(404).json({ message: "Attendance record not found." });
-    }
-
+    // Send success response
     return res.status(200).json({
       message: "Attendance updated successfully",
-      data: updatedAttendance,
+      data: attendanceSave,
     });
   } catch (err) {
     handleErrors(err, res);
   }
 };
 
-module.exports = updateBatchAttendance;
+module.exports = updateAndCreateBatchAttendance;
