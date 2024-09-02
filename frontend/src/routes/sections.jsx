@@ -30,8 +30,6 @@ import { ClassEdit } from 'src/sections/master/class/edit';
 import { CreateStudentFee } from 'src/sections/student-fee/create';
 import { EditStudentFee } from 'src/sections/student-fee/edit';
 import StudentFeesView from 'src/sections/student-fee/view/student-fee-view';
-import TakeBatchAttendance from 'src/sections/batch-attendance/teake/take-batch-attendance';
-import EditBatchAttendance from 'src/sections/batch-attendance/edit/edit-batch-attendance';
 import BatchAttendanceView from 'src/sections/batch-attendance/view/batch-attendance-view';
 import { UserCreate } from 'src/sections/user/create';
 import { CourseEnquireCreate } from 'src/sections/course-enquire/create';
@@ -498,7 +496,7 @@ export default function Router() {
             {
               path: 'create/:collection/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <FollowupCreate />
                 </ProtectedRoute>
               ),
@@ -506,7 +504,7 @@ export default function Router() {
             {
               path: 'view/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <FollowupEdit />
                 </ProtectedRoute>
               ),
@@ -514,7 +512,7 @@ export default function Router() {
             {
               path: 'edit/:id',
               element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'teacher']}>
+                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
                   <FollowupEdit />
                 </ProtectedRoute>
               ),

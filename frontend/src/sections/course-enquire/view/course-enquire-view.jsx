@@ -1,35 +1,35 @@
-import { Chip, Container, Tooltip } from '@mui/material';
+import { Chip, Container, Tooltip, Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { DataTable } from 'src/components/data-table';
-import { useSearch } from 'src/context/NavSerch';
-import { usePathname } from 'src/routes/hooks';
-import TopContent from './top-content';
+import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
+import { Delete } from '@mui/icons-material';
+import Iconify from 'src/components/iconify';
 import config from 'src/config';
 import useGetCourseEnquires from 'src/libs/query/course-enquire/useGetCourseEnquiers';
 import { fDate } from 'src/utils/format-time';
 import useUpdateEnquireStatus from 'src/libs/mutation/course-enquire/useUpdateEnquireStatus';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDisclosure from 'src/hooks/use-disclosure';
-import ActionMenu from 'src/components/data-table/ActionMenu';
 import useDeleteEnquire from 'src/libs/mutation/course-enquire/useDeleteEnquire';
-import { de } from 'date-fns/locale';
+import { usePathname } from 'src/routes/hooks';
+import { useSearch } from 'src/context/NavSerch';
 
 function CourseEnquireView() {
-  const [page, setPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(5);
+  const [paginationModel, setPaginationModel] = React.useState({ page: 0, pageSize: 5 });
   const [enquireId, setEnquireId] = React.useState(null);
+  const [selectedRows, setSelectedRows] = React.useState([]);
   const { searchValue } = useSearch();
   const pathname = usePathname();
   const { isOpen: deleteModeOn, open: onDeleteOpen, close: onDeleteClose } = useDisclosure();
 
   const { data, isLoading, isSuccess } = useGetCourseEnquires({
-    page,
-    pageSize,
+    page: paginationModel.page + 1,
+    pageSize: paginationModel.pageSize,
     search: searchValue[pathname],
   });
 
   const { mutate: updateStatus } = useUpdateEnquireStatus();
+
   const {
     mutate: onDeleteEnquire,
     isPending: deleingEnquire,
@@ -43,123 +43,95 @@ function CourseEnquireView() {
     }
   }, [deletedEnquire]);
 
-  const menus = (row, router) => {
-    return [
-      {
-        itemText: 'View',
-        icon: 'eva:eye-outline',
-        onClick: () => router?.push(`/enquire/view/${row?._id}`),
-      },
-      {
-        itemText: 'Edit',
-        icon: 'eva:edit-fill',
-        onClick: () => router?.push(`/enquire/edit/${row?._id}`),
-      },
-      {
-        itemText: 'New Followup',
-        icon: 'eva:phone-fill',
-        onClick: () => router?.push(`/followup/create/courseenquires/${row?._id}`),
-      },
-      {
-        itemText: 'New Admission',
-        icon: 'eva:person-fill',
-        onClick: () => router?.push(`/student/new-admission/${row?._id}`),
-      },
-      {
-        itemText: 'Cancel Enquire',
-        disabled: row?.status == 'cancelled',
-        icon: 'eva:minus-circle-fill',
-        onClick: () => {
-          updateStatus({
-            ...row,
-            streetAddress: row?.address?.streetAddress,
-            city: row?.address?.city,
-            postalCode: row?.address?.postalCode,
-            state: row?.address?.state,
-            status: 'cancelled',
-          });
-        },
-      },
-      {
-        itemText: 'Delete',
-        color: 'error.main',
-        icon: 'eva:trash-2-outline',
-        onClick: () => {
-          setEnquireId(row?._id);
-          onDeleteOpen();
-        },
-      },
-    ];
-  };
-
-  const columnDef = [
+  const columns = [
     {
-      accessorFn: (row) => `${row?.firstName} ${row?.lastName}`,
-      header: 'Full Name',
-      size: 150,
+      field: 'fullName',
+      headerName: 'Full Name',
+      valueGetter: (params, row) => `${row?.firstName || ''} ${row?.lastName || ''}`,
     },
     {
-      header: 'Email',
-      cell: ({ row: { original } }) => (
-        <Tooltip title={original?.email}>
-          <span>{original?.email}</span>
-        </Tooltip>
-      ),
-      size: 120,
+      field: 'email',
+      headerName: 'Email',
+      valueGetter: (params, row) => row?.email || '',
     },
     {
-      accessorKey: 'phoneNo',
-      header: 'Mobile No',
-      size: 120,
+      field: 'phoneNo',
+      headerName: 'Mobile No',
+      width: 120,
+      valueGetter: (params, row) => row?.phoneNo || '',
     },
     {
-      accessorKey: 'gender',
-      header: 'Gender',
-      size: 70,
+      field: 'gender',
+      headerName: 'Gender',
+      width: 70,
+      valueGetter: (params, row) => row?.gender || '',
     },
     {
-      cell: ({ row: { original } }) => (
-        <Tooltip
-          title={`${original?.address?.streetAddress} ${original?.address?.city} $
-          ${original?.address?.postalCode} ${original?.address?.state} ${original?.address?.country}`}
-        >
-          <span>{original?.address?.streetAddress}</span>
-        </Tooltip>
-      ),
-      header: 'Address',
-      size: 150,
+      field: 'address',
+      headerName: 'Address',
+      width: 200,
+      valueGetter: (params, row) =>
+        `${row?.address?.streetAddress || ''}, ${row?.address?.city || ''}, ${
+          row?.address?.postalCode || ''
+        }, ${row?.address?.state || ''}, ${row?.address?.country || ''}`,
     },
     {
-      cell: ({ row: { original } }) => (
-        <Tooltip title={original?.courseInterest?.map((course) => course?.name).join(', ')}>
-          <span>{original?.courseInterest?.map((course) => course?.name).join(', ')}</span>
-        </Tooltip>
-      ),
-
-      header: 'Course Interest',
+      field: 'courseInterest',
+      headerName: 'Course Interest',
+      width: 200,
+      valueGetter: (params, row) => row?.courseInterest?.map((course) => course?.name).join(', '),
     },
     {
-      header: 'Enquire Date',
-      accessorFn: (row) => fDate(row?.enquireDate),
+      field: 'enquireDate',
+      headerName: 'Enquire Date',
+      width: 150,
+      valueGetter: (params, row) => fDate(row?.enquireDate),
     },
     {
-      header: 'Status',
-      cell: ({ row: { original } }) => (
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
         <Chip
           size="small"
-          label={original.status}
-          color={original.status == 'pending' ? 'warning' : 'error'}
+          label={params.value}
+          color={params.value === 'pending' ? 'warning' : 'error'}
         />
       ),
-      size: 100,
     },
-
     {
-      header: 'Action',
-      cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,
-      size: 50,
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<Delete />}
+          label="Delete"
+          onClick={() => {
+            setEnquireId(params.row._id);
+            onDeleteOpen();
+          }}
+        />,
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:edit-fill" width={20} />}
+          disabled={params.row?.status === 'completed'}
+          label="Edit"
+          showInMenu
+        />,
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:eye-outline" width={20} />}
+          label="View"
+          showInMenu
+        />,
+      ],
     },
   ];
+
+  const handleDeleteSelectedRows = () => {
+    onDeleteEnquire(selectedRows);
+    setSelectedRows([]);
+  };
 
   return (
     <Container>
@@ -176,19 +148,58 @@ function CourseEnquireView() {
           onDeleteEnquire([enquireId]);
         }}
       />
-      <DataTable
-        columnDef={columnDef}
-        topContent={<TopContent />}
-        rows={data?.data}
-        loading={isLoading}
-        page={page}
-        pageSize={pageSize}
-        height={'55vh'}
-        setPage={setPage}
-        setPageSize={setPageSize}
-        total={data?.count}
-        stickyHeader
-      />
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Course Enquires
+      </Typography>
+      <Paper
+        elevation={3}
+        sx={{
+          height: 'calc(100vh - 200px)',
+          width: '100%',
+        }}
+      >
+        <DataGrid
+          keepNonExistentRowsSelected
+          columns={columns}
+          rows={data?.data || []}
+          loading={isLoading}
+          getRowId={(row) => row._id}
+          rowCount={data?.count || 0}
+          pageSizeOptions={[5, 10, 20, 30]}
+          disableSelectionOnClick
+          paginationMode="server"
+          checkboxSelection
+          paginationModel={paginationModel}
+          onPaginationModelChange={({ page, pageSize }) => setPaginationModel({ page, pageSize })}
+          onRowSelectionModelChange={setSelectedRows}
+          slots={{
+            toolbar: () => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', p: 2 }}>
+                <GridToolbar />
+                {selectedRows.length > 0 && (
+                  <Button color="error" startIcon={<Delete />} onClick={handleDeleteSelectedRows}>
+                    Delete Selected Rows
+                  </Button>
+                )}
+              </Box>
+            ),
+          }}
+          slotProps={{
+            toolbar: {
+              sx: {
+                display: 'flex',
+                justifyContent: 'space-between',
+                p: 2,
+              },
+            },
+            columnHeaders: {
+              sx: {
+                color: 'primary.main',
+              },
+            },
+          }}
+        />
+      </Paper>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import { Box, Chip, Container, Paper, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Chip, Container, Paper, Toolbar, Tooltip, Typography } from '@mui/material';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
@@ -15,6 +15,7 @@ import Iconify from 'src/components/iconify';
 
 function FollowupView() {
   const [paginationModel, setPaginationModel] = React.useState({ page: 1, pageSize: 5 });
+  const [selectedRows, setSelectedRows] = React.useState([]);
   const [rowId, setRowId] = React.useState(null);
   const { searchValue } = useSearch();
   const pathname = usePathname();
@@ -43,6 +44,11 @@ function FollowupView() {
       onCloseConfirmBox();
     }
   }, [deletedFollowup]);
+
+  const handleDeleteSelectedRows = () => {
+    deleteFollowup(selectedRows);
+    setSelectedRows([]);
+  };
 
   const columns = [
     {
@@ -162,6 +168,7 @@ function FollowupView() {
         }}
       >
         <DataGrid
+          keepNonExistentRowsSelected
           columns={columns}
           rows={data?.data || []}
           loading={isLoading}
@@ -175,8 +182,18 @@ function FollowupView() {
           onPaginationModelChange={({ page, pageSize }) =>
             setPaginationModel({ page: page + 1, pageSize })
           }
+          onRowSelectionModelChange={setSelectedRows}
           slots={{
-            toolbar: GridToolbar,
+            toolbar: () => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', p: 2 }}>
+                <GridToolbar />
+                {selectedRows.length > 0 && (
+                  <Button color="error" startIcon={<Delete />} onClick={handleDeleteSelectedRows}>
+                    Delete Selected Rows
+                  </Button>
+                )}
+              </Box>
+            ),
           }}
           slotProps={{
             toolbar: {
@@ -191,9 +208,6 @@ function FollowupView() {
                 color: 'primary.main',
               },
             },
-          }}
-          onRowSelectionModelChange={(params) => {
-            // console.log(params);
           }}
         />
       </Paper>
