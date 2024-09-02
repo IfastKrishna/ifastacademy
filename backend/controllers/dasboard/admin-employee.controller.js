@@ -107,7 +107,77 @@ const myTotalExpense = async (req, res) => {
   }
 };
 
-  
+const batchWiseStudentFeeList = async (req, res) => {
+  try {
+    const { batchId, startDate, endDate } = req.query;
+
+    // Convert startDate and endDate to Date objects if they exist
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : new Date();
+
+    // Build the match stage based on the provided query parameters
+    const matchStage = {
+      batchId: batchId ? new mongoose.Types.ObjectId(batchId) : "",
+    };
+
+    if (start) {
+      matchStage.paymentDate = { $gte: start, $lte: end };
+    }
+
+    // Aggregation pipeline
+    const feesData = await StudentFee.aggregate([
+      {
+        $match: matchStage,
+      },
+      {
+        $lookup: {
+          from: "students", // The name of the students collection
+          localField: "studentId",
+          foreignField: "_id",
+          as: "studentInfo",
+        },
+      },
+      {
+        $unwind: "$studentInfo",
+      },
+      {
+        $group: {
+          _id: "$studentId",
+          firstName: { $first: "$studentInfo.firstName" },
+          lastName: { $first: "$studentInfo.lastName" },
+          ifastId: { $first: "$studentInfo.ifastId" },
+          feeList: {
+            $push: {
+              amount: "$amount",
+              paymentDate: "$paymentDate",
+              paymentType: "$paymentType",
+              paymentReference: "$paymentReference",
+              collectedBy: "$collectedBy",
+              dueDate: "$dueDate",
+              approvedBy: "$approvedBy",
+              remarks: "$remarks",
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          firstName: 1,
+          lastName: 1,
+          ifastId: 1,
+          feeList: 1,
+        },
+      },
+    ]);
+
+    res
+      .status(200)
+      .json({ message: "fetch data successfully", data: feesData });
+  } catch (error) {
+    handleErrors(error, res);
+  }
+};
 
 const myIncome = async (req, res) => {
   const { _id } = req.user;
@@ -419,4 +489,5 @@ module.exports = {
   todayAdmission,
   totalAdmissionInThisMonth,
   todayFollowUp,
+  batchWiseStudentFeeList,
 };

@@ -466,23 +466,6 @@ export default function Router() {
               ),
             },
             {
-              path: 'take/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
-                  <TakeBatchAttendance />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: 'edit/:id',
-              element: (
-                <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>
-                  <BatchWiseAttendance />
-                </ProtectedRoute>
-              ),
-            },
-
-            {
               path: 'attendance',
               element: (
                 <ProtectedRoute roles={['admin', 'superadmin', 'employee']}>

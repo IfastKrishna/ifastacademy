@@ -1,28 +1,28 @@
-import { Chip, Container, Tooltip } from '@mui/material';
+import { Box, Chip, Container, Paper, Toolbar, Tooltip, Typography } from '@mui/material';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { DataTable } from 'src/components/data-table';
+import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
 import { useSearch } from 'src/context/NavSerch';
-import { usePathname } from 'src/routes/hooks';
-import TopContent from './top-content';
+import { usePathname, useRouter } from 'src/routes/hooks';
 import useGetFollowups from 'src/libs/query/followup/useGetFollowups';
 import config from 'src/config';
 import useDeleteFollowup from 'src/libs/mutation/followup/useDeleteFollouwp';
 import { fDate } from 'src/utils/format-time';
-import ActionMenu from 'src/components/data-table/ActionMenu';
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDisclosure from 'src/hooks/use-disclosure';
+import { Delete } from '@mui/icons-material';
+import Iconify from 'src/components/iconify';
 
 function FollowupView() {
-  const [page, setPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(5);
+  const [paginationModel, setPaginationModel] = React.useState({ page: 1, pageSize: 5 });
   const [rowId, setRowId] = React.useState(null);
   const { searchValue } = useSearch();
   const pathname = usePathname();
+  const router = useRouter();
 
   const { data, isLoading, isSuccess } = useGetFollowups({
-    page,
-    pageSize,
+    page: paginationModel.page,
+    pageSize: paginationModel.pageSize,
     search: searchValue[pathname],
   });
 
@@ -44,97 +44,95 @@ function FollowupView() {
     }
   }, [deletedFollowup]);
 
-  const menus = (row, router) => {
-    return [
-      {
-        itemText: 'View',
-        icon: 'eva:eye-outline',
-        onClick: () => router?.push(`/followup/view/${row?._id}`),
-      },
-      {
-        itemText: 'Edit',
-        disabled: row?.status === 'completed',
-        icon: 'eva:edit-fill',
-        onClick: () => router?.push(`/followup/edit/${row?._id}`),
-      },
-      {
-        itemText: 'Delete',
-        color: 'error.main',
-        icon: 'eva:trash-2-outline',
-        onClick: () => {
-          setRowId(row?._id);
-          onOpenConfirmBox();
-        },
-      },
-    ];
-  };
-
-  const columnDef = [
+  const columns = [
     {
-      accessorFn: (row) => `${row?.leadDetails?.firstName} ${row?.leadDetails?.lastName}`,
-      header: 'Full Name',
-      size: 100,
+      field: 'fullName',
+      headerName: 'Full Name',
+      width: 150,
+      valueGetter: (params, row) =>
+        `${row.leadDetails?.firstName || ''} ${row.leadDetails?.lastName || ''}`,
     },
     {
-      accessorFn: (row) => `${row?.leadDetails?.phoneNo || row?.leadDetails?.mobileNo}`,
-      header: 'Contact No',
-      size: 100,
+      field: 'contactNo',
+      headerName: 'Contact No',
+      width: 130,
+      valueGetter: (params, row) =>
+        `${row.leadDetails?.phoneNo || row.leadDetails?.mobileNo || ''}`,
     },
     {
-      accessorFn: (row) => `${row?.assignedTo?.firstName} ${row?.assignedTo?.lastName}`,
-      header: 'Assigned To',
-      size: 120,
-    },
-
-    {
-      accessorFn: (row) => row?.assignedTo?.phoneNo,
-      header: 'Assigned To (Phone No)',
-      size: 100,
+      field: 'assignedToName',
+      headerName: 'Assigned To',
+      width: 150,
+      valueGetter: (params, row) =>
+        `${row.assignedTo?.firstName || ''} ${row.assignedTo?.lastName || ''}`,
     },
     {
-      cell: ({ row }) => (
-        <Tooltip placement="top" title={row.original?.followupDetails}>
-          {row.original?.followupDetails}
-        </Tooltip>
-      ),
-      header: 'Followup Details',
-      size: 200,
+      field: 'assignedToPhone',
+      headerName: 'Assigned To (Phone No)',
+      width: 150,
+      valueGetter: (params, row) => row.assignedTo?.phoneNo || '',
     },
     {
-      cell: ({ row }) => (
-        <Tooltip placement="top" title={row.original?.notes}>
-          {row.original?.notes}
-        </Tooltip>
-      ),
-      header: 'Notes',
+      field: 'followupDetails',
+      headerName: 'Followup Details',
+      valueGetter: (params, row) => row.followupDetails || '',
     },
     {
-      accessorFn: (row) => `${fDate(row?.dueDate)}`,
-      header: 'Due Date',
-      size: 100,
+      field: 'notes',
+      headerName: 'Notes',
+      valueGetter: (params, row) => row.notes || '',
     },
     {
-      cell: ({ row: { original } }) => (
+      field: 'dueDate',
+      headerName: 'Due Date',
+      width: 130,
+      valueGetter: (params, row) => fDate(row.dueDate),
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      renderCell: (params) => (
         <Chip
           size="small"
           color={
-            original?.status === 'pending'
+            params.value === 'pending'
               ? 'warning'
-              : original?.status === 'completed'
+              : params.value === 'completed'
               ? 'success'
               : 'error'
           }
-          label={original?.status}
+          label={params.value}
         />
       ),
-      header: 'Status',
-      size: 100,
     },
-
     {
-      header: 'Action',
-      cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,
-      size: 50,
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<Delete />}
+          label="Delete"
+          onClick={() => {
+            setRowId(params?.row?._id);
+            onOpenConfirmBox();
+          }}
+        />,
+
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:edit-fill" width={20} />}
+          disabled={params?.row?.status === 'completed'}
+          label="Edit"
+          showInMenu
+          onClick={() => router?.push(`/followup/edit/${params?.row?._id}`)}
+        />,
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:eye-outline" width={20} />}
+          label="View"
+          showInMenu
+          onClick={() => router?.push(`/followup/view/${params?.row?._id}`)}
+        />,
+      ],
     },
   ];
 
@@ -143,6 +141,9 @@ function FollowupView() {
       <Helmet>
         <title>Followup View | {config?.appName}</title>
       </Helmet>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Followups
+      </Typography>
       <ConfirmationModal
         confirmationTitle="Delete Followup"
         confirmationDescription="Are you sure you want to delete this followup?"
@@ -153,19 +154,49 @@ function FollowupView() {
           deleteFollowup([rowId]);
         }}
       />
-      <DataTable
-        columnDef={columnDef}
-        topContent={<TopContent />}
-        rows={data?.data}
-        loading={isLoading}
-        page={page}
-        pageSize={pageSize}
-        height={'55vh'}
-        setPage={setPage}
-        setPageSize={setPageSize}
-        total={data?.count}
-        stickyHeader
-      />
+      <Paper
+        elevation={3}
+        sx={{
+          height: 'calc(100vh - 200px)',
+          width: '100%',
+        }}
+      >
+        <DataGrid
+          columns={columns}
+          rows={data?.data || []}
+          loading={isLoading}
+          getRowId={(row) => row._id}
+          rowCount={data?.count || 0}
+          pageSizeOptions={[5, 10, 20, 30]}
+          disableSelectionOnClick
+          paginationMode="server"
+          checkboxSelection
+          paginationModel={{ page: paginationModel.page - 1, pageSize: paginationModel.pageSize }}
+          onPaginationModelChange={({ page, pageSize }) =>
+            setPaginationModel({ page: page + 1, pageSize })
+          }
+          slots={{
+            toolbar: GridToolbar,
+          }}
+          slotProps={{
+            toolbar: {
+              sx: {
+                display: 'flex',
+                justifyContent: 'space-between',
+                p: 2,
+              },
+            },
+            columnHeaders: {
+              sx: {
+                color: 'primary.main',
+              },
+            },
+          }}
+          onRowSelectionModelChange={(params) => {
+            // console.log(params);
+          }}
+        />
+      </Paper>
     </Container>
   );
 }

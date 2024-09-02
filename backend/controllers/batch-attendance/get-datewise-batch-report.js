@@ -2,10 +2,11 @@ const mongoose = require("mongoose");
 const BatchAttendance = require("../../models/batch-attendance");
 const handleErrors = require("../../utils/handleErrors");
 
-const getBatchAttendance = async (req, res) => {
-  let { batchId, date } = JSON.parse(req.query.batchInfo);
-  console.log("batchId recvied and date", batchId, date);
+const getBatchAttendanceByDateAndId = async (req, res) => {
+  // console.log("batchId recvied and date", batchId, date);
   try {
+    let { batchId, date } = req.query;
+
     if (!batchId || !date) {
       return res
         .status(400)
@@ -106,4 +107,4 @@ const getBatchAttendance = async (req, res) => {
   }
 };
 
-module.exports = getBatchAttendance;
+module.exports = getBatchAttendanceByDateAndId;

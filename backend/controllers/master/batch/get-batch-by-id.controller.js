@@ -1,4 +1,5 @@
 const { Batch } = require("../../../models/master/batch.models");
+const handleErrors = require("../../../utils/handleErrors");
 
 const getBatchById = async (req, res) => {
   try {
