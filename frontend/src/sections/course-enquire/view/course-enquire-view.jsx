@@ -2,7 +2,7 @@ import { Chip, Container, Tooltip, Box, Button, Paper, Typography } from '@mui/m
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
-import { Delete } from '@mui/icons-material';
+import { Add, Delete, PlusOne } from '@mui/icons-material';
 import Iconify from 'src/components/iconify';
 import config from 'src/config';
 import useGetCourseEnquires from 'src/libs/query/course-enquire/useGetCourseEnquiers';
@@ -11,7 +11,7 @@ import useUpdateEnquireStatus from 'src/libs/mutation/course-enquire/useUpdateEn
 import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDisclosure from 'src/hooks/use-disclosure';
 import useDeleteEnquire from 'src/libs/mutation/course-enquire/useDeleteEnquire';
-import { usePathname } from 'src/routes/hooks';
+import { usePathname, useRouter } from 'src/routes/hooks';
 import { useSearch } from 'src/context/NavSerch';
 
 function CourseEnquireView() {
@@ -20,6 +20,7 @@ function CourseEnquireView() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const { searchValue } = useSearch();
   const pathname = usePathname();
+  const router = useRouter();
   const { isOpen: deleteModeOn, open: onDeleteOpen, close: onDeleteClose } = useDisclosure();
 
   const { data, isLoading, isSuccess } = useGetCourseEnquires({
@@ -84,13 +85,11 @@ function CourseEnquireView() {
     {
       field: 'enquireDate',
       headerName: 'Enquire Date',
-      width: 150,
       valueGetter: (params, row) => fDate(row?.enquireDate),
     },
     {
       field: 'status',
       headerName: 'Status',
-      width: 120,
       renderCell: (params) => (
         <Chip
           size="small"
@@ -103,7 +102,6 @@ function CourseEnquireView() {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 150,
       getActions: (params) => [
         <GridActionsCellItem
           icon={<Delete />}
@@ -118,11 +116,13 @@ function CourseEnquireView() {
           disabled={params.row?.status === 'completed'}
           label="Edit"
           showInMenu
+          onClick={() => router.push(`/enquire/edit/${params.row._id}`)}
         />,
         <GridActionsCellItem
           icon={<Iconify icon="eva:eye-outline" width={20} />}
           label="View"
           showInMenu
+          onClick={() => router.push(`/enquire/view/${params.row._id}`)}
         />,
       ],
     },
@@ -176,6 +176,13 @@ function CourseEnquireView() {
             toolbar: () => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', p: 2 }}>
                 <GridToolbar />
+                <Button
+                  sx={{ padding: 0 }}
+                  startIcon={<Add />}
+                  onClick={() => router.push('/enquire/create')}
+                >
+                  Add
+                </Button>
                 {selectedRows.length > 0 && (
                   <Button color="error" startIcon={<Delete />} onClick={handleDeleteSelectedRows}>
                     Delete Selected Rows

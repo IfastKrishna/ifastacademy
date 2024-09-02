@@ -11,6 +11,7 @@ const useGetUsers = ({ page = 1, pageSize = 10, search = '' }) => {
     retry: (failureCount, error) => failureCount < 1,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    enabled: page > 0 && pageSize > 0,
   });
 };
 
