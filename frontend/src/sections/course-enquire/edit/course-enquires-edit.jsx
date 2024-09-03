@@ -17,18 +17,15 @@ import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import config from 'src/config';
+import { useUI } from 'src/context/CostomeUi';
 import useUpdateEnquire from 'src/libs/mutation/course-enquire/useUpdateEnquire';
 import useGetCourseEnquiresById from 'src/libs/query/course-enquire/useGetCourseEnquireById';
 import useGetCourses from 'src/libs/query/master/course/useGetCourses';
 import useGetLeadSources from 'src/libs/query/master/leace-source/useGetLeadSource';
 import { usePathname, useRouter } from 'src/routes/hooks';
 
-function CourseEnquiresEdit({
-  variant = 'standard',
-  size = 'medium',
-  btnSize = 'medium',
-  btnVariant = 'contained',
-}) {
+function CourseEnquiresEdit() {
+  const { uiSettings } = useUI();
   const [coursesId, setCoursesId] = React.useState([]);
   const [leadSourceId, setLeadSourceId] = React.useState('');
   const [gender, setGender] = React.useState('');
@@ -79,7 +76,7 @@ function CourseEnquiresEdit({
     } = event;
     const courses = typeof value === 'string' ? value.split(',') : value;
     setCoursesId(courses);
-    setValue('courseInterest', courses); // Set the form value for courseInterest
+    setValue('courseInterest', courses);
   };
 
   React.useEffect(() => {
@@ -109,9 +106,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'First Name is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="First Name"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors.firstName}
@@ -128,9 +125,9 @@ function CourseEnquiresEdit({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Last Name"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.lastName}
@@ -148,9 +145,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'Qualification is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Qualification"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.qualification}
@@ -168,9 +165,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'Date of Birth is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Date of Birth"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   type="date"
                   fullWidth
                   {...field}
@@ -183,7 +180,12 @@ function CourseEnquiresEdit({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl variant={variant} size={size} fullWidth error={!!errors.gender}>
+            <FormControl
+              variant={uiSettings.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+              error={!!errors.gender}
+            >
               <InputLabel>Gender</InputLabel>
               <Controller
                 name="gender"
@@ -215,9 +217,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'Email is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Email"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.email}
@@ -235,9 +237,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'Phone Number is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Phone Number"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.phoneNo}
@@ -256,8 +258,8 @@ function CourseEnquiresEdit({
                 <TextField
                   {...field}
                   fullWidth
-                  size={size}
-                  variant={variant}
+                  size={uiSettings.textFieldSize}
+                  variant={uiSettings.textFieldVariant}
                   label="Alternative Mobile Number"
                   error={!!errors?.alternativePhoneNo}
                   helperText={errors?.alternativePhoneNo?.message}
@@ -274,9 +276,9 @@ function CourseEnquiresEdit({
               rules={{ required: 'Street Address is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Street Address"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.streetAddress}
@@ -288,15 +290,41 @@ function CourseEnquiresEdit({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
+            <FormControl
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+            >
+              <InputLabel>Interest Level</InputLabel>
+              <Controller
+                name="interestLevel"
+                control={control}
+                rules={{ required: 'Interest level is required' }}
+                defaultValue=""
+                render={({ field }) => (
+                  <Select {...field} label="Interest Level" displayEmpty>
+                    <MenuItem value="" disabled>
+                      Select
+                    </MenuItem>
+                    <MenuItem value="high">High</MenuItem>
+                    <MenuItem value="medium">Medium</MenuItem>
+                    <MenuItem value="low">Low</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors.interestLevel?.message}</FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 xs={12} sm={6}>
             <Controller
               name="city"
               rules={{ required: 'City is required' }}
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="City"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.city}
@@ -314,9 +342,9 @@ function CourseEnquiresEdit({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="State"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.state}
@@ -334,9 +362,9 @@ function CourseEnquiresEdit({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings.textFieldVariant}
                   label="Postal Code"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.postalCode}
@@ -348,7 +376,12 @@ function CourseEnquiresEdit({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl variant={variant} size={size} fullWidth error={!!errors.courseInterest}>
+            <FormControl
+              variant={uiSettings.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+              error={!!errors.courseInterest}
+            >
               <InputLabel>Course Interest</InputLabel>
               <Controller
                 name="courseInterest"
@@ -381,7 +414,12 @@ function CourseEnquiresEdit({
             </FormControl>
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl variant={variant} size={size} fullWidth error={!!errors.leadSource}>
+            <FormControl
+              variant={uiSettings.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+              error={!!errors.leadSource}
+            >
               <InputLabel>Lead Source</InputLabel>
               <Controller
                 name="leadSource"
@@ -409,7 +447,12 @@ function CourseEnquiresEdit({
             </FormControl>
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl variant={variant} size={size} fullWidth error={!!errors.status}>
+            <FormControl
+              variant={uiSettings.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+              error={!!errors.status}
+            >
               <InputLabel>Status</InputLabel>
               <Controller
                 name="status"
@@ -437,10 +480,16 @@ function CourseEnquiresEdit({
         {isEdit && (
           <LoadingButton
             loading={updating}
-            size={btnSize}
-            variant={btnVariant}
-            type="submit"
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              width: {
+                xs: '100%',
+                sm: 'auto',
+              },
+            }}
+            variant={uiSettings?.btnVariant}
+            size={uiSettings?.btnSize}
+            color={uiSettings?.btnColor}
           >
             {isEdit ? 'Update Enquire' : 'View Enquire'}
           </LoadingButton>

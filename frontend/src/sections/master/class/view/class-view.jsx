@@ -1,27 +1,40 @@
-import { Chip, Container } from '@mui/material';
 import React from 'react';
+import { Button, Chip, Container, Paper } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import { DataTable } from 'src/components/data-table';
-import TopContent from './top-content';
-import { useSearch } from 'src/context/NavSerch';
-import { usePathname } from 'src/routes/hooks';
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+} from '@mui/x-data-grid';
+import { Add, CalendarMonth, Delete, Paid } from '@mui/icons-material';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 import useDisclosure from 'src/hooks/use-disclosure';
-import ActionMenu from 'src/components/data-table/ActionMenu';
-import { createColumnHelper } from '@tanstack/react-table';
-import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import { fDate } from 'src/utils/format-time';
-import { ConfirmationModal } from 'src/components/confirmation-model';
 import useDeleteBatch from 'src/libs/mutation/master/batch-class/useDeleteBatchClass';
 import config from 'src/config';
+import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
+import { useSearch } from 'src/context/NavSerch';
+import { usePathname, useRouter } from 'src/routes/hooks';
+import { ConfirmationModal } from 'src/components/confirmation-model';
+import Iconify from 'src/components/iconify';
 
 function ClassView() {
-  const [classId, setClassId] = React.useState(null);
-  const [page, setPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(5);
   const { searchValue } = useSearch();
   const pathname = usePathname();
-  const { data, isLoading } = useGetBatches({ search: searchValue[pathname], pageSize, page });
+  const router = useRouter();
+  const [classId, setClassId] = React.useState(null);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [paginationModel, setPaginationModel] = React.useState({ page: 0, pageSize: 5 });
+
+  const { data, isLoading } = useGetBatches({
+    search: searchValue[pathname],
+    pageSize: paginationModel.pageSize,
+    page: paginationModel.page,
+  });
+
   const {
     mutate: deleteBatch,
     isPending: deletingBatch,
@@ -29,94 +42,97 @@ function ClassView() {
   } = useDeleteBatch();
 
   const { isOpen, open, close } = useDisclosure();
-  const columnHelper = createColumnHelper();
 
   React.useEffect(() => {
     if (batchDeleted) {
       setClassId(null);
       close();
     }
-  }, [batchDeleted]);
+  }, [batchDeleted, close]);
 
   const confirmDelete = () => {
     deleteBatch([classId]);
   };
 
-  const menus = (row, router) => {
-    return [
-      {
-        itemText: 'View',
-        icon: 'eva:eye-outline',
-        onClick: () => router?.push(`/masters-batch/view/${row?._id}`),
-      },
-      {
-        itemText: 'Attendance',
-        icon: 'eva:clipboard-outline',
-        onClick: () => router?.push(`/batch-attendance/take/${row?._id}`),
-      },
-      {
-        itemText: 'Edit',
-        icon: 'eva:edit-fill',
-        onClick: () => router?.push(`/masters-batch/edit/${row?._id}`),
-      },
-      {
-        itemText: 'Delete',
-        color: 'error.main',
-        icon: 'eva:trash-2-outline',
-        onClick: () => {
-          setClassId(row?._id);
-          open();
-        },
-      },
-    ];
-  };
-
-  const columnDef = [
+  const columns = [
     {
-      accessorKey: 'name',
-      header: 'Name',
-      size: 100,
-    },
-    columnHelper.accessor('description', {
-      header: 'Description',
-      size: 200,
-    }),
-    {
-      accessorFn: (row) => `${row?.course?.name}`,
-      header: 'Course Name',
-      size: 200,
+      field: 'name',
+      headerName: 'Name',
+      width: 100,
     },
     {
-      accessorFn: (row) => row?.course?.duration,
-      header: 'Course Duration',
-      size: 120,
+      field: 'description',
+      headerName: 'Description',
+      width: 200,
     },
     {
-      accessorFn: (row) => fDate(row?.course?.startDate),
-      header: 'Course Start Date',
-      size: 120,
+      field: 'courseName',
+      headerName: 'Course Name',
+      width: 200,
+      valueGetter: (params, row) => row?.course?.name,
     },
     {
-      accessorFn: (row) => row?.course?.level,
-      header: 'Course Level',
-      size: 120,
+      field: 'courseDuration',
+      headerName: 'Course Duration',
+      width: 120,
+      valueGetter: (params, row) => row?.course?.duration,
     },
     {
-      cell: ({ row: { original } }) =>
-        original?.course?.isActive ? (
+      field: 'courseStartDate',
+      headerName: 'Course Start Date',
+      width: 120,
+      valueGetter: (params, row) => fDate(row?.course?.startDate),
+    },
+    {
+      field: 'courseEndDate',
+      headerName: 'Course Level',
+      width: 120,
+      valueGetter: (params, row) => row?.course?.level,
+    },
+    {
+      field: 'courseStatus',
+      headerName: 'Course Status',
+      width: 120,
+      renderCell: (params) =>
+        params.row?.course?.isActive ? (
           <Chip label="Active" color="success" />
         ) : (
           <Chip label="Inactive" color="error" />
         ),
-      header: 'Course Status',
-      size: 120,
     },
     {
-      header: 'Action',
-      cell: ({ row: { original } }) => <ActionMenu menus={menus} row={original} />,
-      size: 50,
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<Delete />}
+          label="Delete"
+          onClick={() => {
+            setClassId(params.row?._id);
+            open();
+          }}
+        />,
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:edit-fill" width={20} />}
+          disabled={params.row?.status === 'completed'}
+          label="Edit"
+          showInMenu
+          onClick={() => router.push(`/masters-batch/edit/${params.row._id}`)}
+        />,
+        <GridActionsCellItem
+          icon={<Iconify icon="eva:eye-outline" width={20} />}
+          label="View"
+          showInMenu
+          onClick={() => router.push(`/masters-batch/view/${params.row._id}`)}
+        />,
+      ],
     },
   ];
+
+  const handleDeleteSelectedRows = () => {
+    deleteBatch(selectedRows);
+  };
 
   return (
     <Container>
@@ -139,18 +155,70 @@ function ClassView() {
         onConfirm={confirmDelete}
       />
 
-      <DataTable
-        rows={data?.data}
-        columnDef={columnDef}
-        height={'65vh'}
-        topContent={<TopContent />}
-        setPage={setPage}
-        page={page}
-        total={data?.count}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        loading={isLoading}
-      />
+      <Paper
+        elevation={3}
+        sx={{
+          height: 'calc(100vh - 200px)',
+          width: '100%',
+        }}
+      >
+        <DataGrid
+          keepNonExistentRowsSelected
+          columns={columns}
+          rows={data?.data || []}
+          loading={isLoading}
+          getRowId={(row) => row._id}
+          rowCount={data?.count || 0}
+          pageSizeOptions={[5, 10, 20, 30]}
+          disableSelectionOnClick
+          paginationMode="server"
+          checkboxSelection
+          paginationModel={paginationModel}
+          onPaginationModelChange={({ page, pageSize }) => setPaginationModel({ page, pageSize })}
+          onRowSelectionModelChange={setSelectedRows}
+          slots={{
+            toolbar: () => (
+              <GridToolbarContainer sx={{ p: 2 }}>
+                <GridToolbarDensitySelector />
+                <GridToolbarColumnsButton />
+                <GridToolbarExport />
+                <Button startIcon={<Add />} onClick={() => router.push('/masters-batch/create')}>
+                  Add
+                </Button>
+                <Button
+                  startIcon={<CalendarMonth />}
+                  onClick={() => router.push('/batch-wise/attendance')}
+                >
+                  BatchAttendance
+                </Button>
+                <Button startIcon={<Paid />} onClick={() => router.push('/batch-wise/fee')}>
+                  BatchFee
+                </Button>
+
+                {selectedRows.length > 0 && (
+                  <Button color="error" startIcon={<Delete />} onClick={handleDeleteSelectedRows}>
+                    Delete Selected Rows
+                  </Button>
+                )}
+              </GridToolbarContainer>
+            ),
+          }}
+          slotProps={{
+            toolbar: {
+              sx: {
+                display: 'flex',
+                justifyContent: 'space-between',
+                p: 2,
+              },
+            },
+            columnHeaders: {
+              sx: {
+                color: 'primary.main',
+              },
+            },
+          }}
+        />
+      </Paper>
     </Container>
   );
 }

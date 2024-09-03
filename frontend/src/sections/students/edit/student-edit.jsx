@@ -18,17 +18,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import config from 'src/config';
+import { useUI } from 'src/context/CostomeUi';
 import useUpdateStudent from 'src/libs/mutation/student/useUpdateStudent';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
 import useGetStudentById from 'src/libs/query/student/useGetStudentById';
 import { usePathname, useRouter } from 'src/routes/hooks';
 
-function StudentEdit({
-  variant = 'standard',
-  size = 'medium',
-  btnVariant = 'contained',
-  btnSize = 'medium',
-}) {
+function StudentEdit() {
+  const { uiSettings } = useUI();
   const [batchesId, setBatchesId] = React.useState([]);
   const { id } = useParams();
   const pathname = usePathname();
@@ -42,10 +39,27 @@ function StudentEdit({
     reset,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      ifastId: ``,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNo: '',
+      dob: new Date().toISOString().split('T')[0],
+      emergencyContact: '',
+      enrolledBatch: [],
+      joiningDate: new Date().toISOString().split('T')[0],
+      streetAddress: '',
+      city: '',
+      postalCode: '',
+      state: '',
+      status: '',
+    },
+  });
 
   const { mutate: updateStudent, isPending, isSuccess } = useUpdateStudent();
-  const { data: batchData, isSuccess: batchesLoaded } = useGetBatches({ pageSize: -1 });
+  const { data: batchData, isSuccess: batchesLoaded } = useGetBatches({ page: 1, pageSize: 'all' });
   const { data: studentData, isSuccess: studentLoaded } = useGetStudentById({ id });
 
   React.useEffect(() => {
@@ -104,8 +118,8 @@ function StudentEdit({
               fullWidth
               type="text"
               label="Institute ID"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('ifastId', {
                 value: `IFAST/${new Date().getFullYear()}/`,
               })}
@@ -118,8 +132,8 @@ function StudentEdit({
           <Grid2 xs={12} sm={6}>
             <TextField
               fullWidth
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               label="First Name"
               {...register('firstName', { required: 'First Name is required' })}
               error={!!errors?.firstName}
@@ -132,8 +146,8 @@ function StudentEdit({
             <TextField
               fullWidth
               label="Last Name"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('lastName', { required: 'Last Name is required' })}
               error={!!errors?.lastName}
               helperText={errors?.lastName?.message}
@@ -145,8 +159,8 @@ function StudentEdit({
             <TextField
               fullWidth
               label="Email"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('email', { required: 'Email is required' })}
               error={!!errors?.email}
               helperText={errors?.email?.message}
@@ -159,8 +173,8 @@ function StudentEdit({
               fullWidth
               label="Phone No"
               type="tel"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('phoneNo', {
                 required: 'Phone No is required',
                 pattern: {
@@ -179,8 +193,8 @@ function StudentEdit({
               fullWidth
               type="date"
               label="Date of Birth"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               InputLabelProps={{ shrink: true }}
               {...register('dob', {
                 required: 'Date of Birth is required',
@@ -194,8 +208,8 @@ function StudentEdit({
             <TextField
               fullWidth
               type="tel"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               label="Emergency Contact"
               {...register('emergencyContact')}
               error={!!errors?.emergencyContact}
@@ -205,8 +219,13 @@ function StudentEdit({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl fullWidth size={size} variant={variant} error={!!errors?.enrolledBatch}>
-              <InputLabel id="select-batches-label">Select Batches</InputLabel>
+            <FormControl
+              fullWidth
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
+              error={!!errors?.enrolledBatch}
+            >
+              <InputLabel>Select Batches</InputLabel>
               <Controller
                 name="enrolledBatch"
                 control={control}
@@ -214,8 +233,7 @@ function StudentEdit({
                 render={({ field }) => (
                   <Select
                     {...field}
-                    labelId="select-batches-label"
-                    id="select-batches"
+                    label="Select Batches"
                     multiple
                     value={batchesId}
                     disabled={!isEditMode}
@@ -246,8 +264,8 @@ function StudentEdit({
               fullWidth
               type="date"
               label="Joining Date"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               InputLabelProps={{ shrink: true }}
               {...register('joiningDate', {
                 required: 'Joining Date is required',
@@ -259,11 +277,40 @@ function StudentEdit({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
+            <FormControl
+              fullWidth
+              error={!!errors.batchId}
+              variant={uiSettings.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              disabled={!isEditMode}
+            >
+              <InputLabel shrink={true}>Status</InputLabel>
+              <Controller
+                name="status"
+                control={control}
+                rules={{ required: 'Status is required' }}
+                render={({ field }) => (
+                  <Select label="Status" {...field} displayEmpty>
+                    <MenuItem value="" disabled>
+                      <em>Select Batch</em>
+                    </MenuItem>
+
+                    <MenuItem value="Active">Active</MenuItem>
+                    <MenuItem value="InActive">InActive</MenuItem>
+                    <MenuItem value="Dropout">Dropout</MenuItem>
+                    <MenuItem value="Graduated">Graduated</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors.status?.message}</FormHelperText>
+            </FormControl>
+          </Grid2>
+          <Grid2 xs={12} sm={6}>
             <TextField
               fullWidth
               label="Street Address"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('streetAddress', { required: 'Street Address is required' })}
               error={!!errors?.streetAddress}
               helperText={errors?.streetAddress?.message}
@@ -275,8 +322,8 @@ function StudentEdit({
             <TextField
               fullWidth
               label="City"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('city', { required: 'City is required', value: 'North Delhi' })}
               error={!!errors?.city}
               helperText={errors?.city?.message}
@@ -288,8 +335,8 @@ function StudentEdit({
             <TextField
               fullWidth
               label="Postal Code"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('postalCode', {
                 required: 'Postal Code is required',
                 value: '110082',
@@ -304,8 +351,8 @@ function StudentEdit({
             <TextField
               fullWidth
               label="State"
-              size={size}
-              variant={variant}
+              size={uiSettings?.textFieldSize}
+              variant={uiSettings?.textFieldVariant}
               {...register('state', {
                 required: 'State is required',
                 value: 'Delhi',
@@ -313,15 +360,21 @@ function StudentEdit({
               error={!!errors?.state}
               helperText={errors?.state?.message}
               disabled={!isEditMode}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid2>
           <Grid2 xs={12}>
             <LoadingButton
-              size={btnSize}
-              loading={isPending}
               type="submit"
-              variant={btnVariant}
-              fullWidth
+              sx={{
+                width: {
+                  xs: '100%',
+                  sm: 'auto',
+                },
+              }}
+              variant={uiSettings?.btnVariant}
+              size={uiSettings?.btnSize}
+              color={uiSettings?.btnColor}
             >
               {isEditMode ? 'Update' : 'Create'}
             </LoadingButton>
