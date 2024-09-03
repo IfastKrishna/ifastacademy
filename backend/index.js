@@ -9,8 +9,13 @@ const AllRouters = require("./routes/index.js");
 const PORT = port || 8080;
 const app = express();
 
+// const corsOptions = {
+//   origin: process.env.CLINT_URL.split(","),
+//   credentials: true,
+// };
+
 const corsOptions = {
-  origin: process.env.CLINT_URL.split(","),
+  origin: true,
   credentials: true,
 };
 
