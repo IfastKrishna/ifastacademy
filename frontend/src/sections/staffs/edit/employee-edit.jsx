@@ -20,9 +20,11 @@ import useUpdateEmployee from 'src/libs/mutation/employee/useUpdateEmployee';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import { usePathname, useRouter } from 'src/routes/hooks';
 import config from 'src/config';
+import { useUI } from 'src/context/CostomeUi';
 
 function EmployeeEdit() {
   const router = useRouter();
+  const { uiSettings } = useUI();
   const { id } = useParams();
   const thisPath = usePathname();
   const isEditPage = usePathname().includes('edit');
@@ -79,7 +81,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Institute ID"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('ifastId', { required: 'Institute ID is required' })}
               fullWidth
               error={!!errors?.ifastId}
@@ -92,7 +95,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="First Name"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('firstName', { required: 'First name is required' })}
               fullWidth
               error={!!errors.firstName}
@@ -105,7 +109,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Last Name"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('lastName')}
               fullWidth
               error={!!errors?.lastName}
@@ -118,7 +123,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Email"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('email', { required: 'Email is required' })}
               fullWidth
               error={!!errors.email}
@@ -131,7 +137,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Phone Number"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('phoneNo', {
                 required: 'Phone number is required',
                 pattern: {
@@ -150,7 +157,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Emergency Contact"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('emergencyContact')}
               fullWidth
               error={!!errors?.emergencyContact}
@@ -163,7 +171,8 @@ function EmployeeEdit() {
             <TextField
               label="Date of Birth"
               type="date"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('dob', { required: 'Date of Birth is required' })}
               fullWidth
               error={!!errors?.dob}
@@ -174,7 +183,12 @@ function EmployeeEdit() {
           </Grid2>
 
           <Grid2 xs={12} sm={6}>
-            <FormControl fullWidth variant="standard" error={!!errors?.jobTitle}>
+            <FormControl
+              fullWidth
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              error={!!errors?.jobTitle}
+            >
               <InputLabel>Select Job Title</InputLabel>
               <Controller
                 name="jobTitle"
@@ -182,7 +196,7 @@ function EmployeeEdit() {
                 defaultValue=""
                 rules={{ required: 'Job Title is required' }}
                 render={({ field }) => (
-                  <Select {...field} disabled={!isEditPage}>
+                  <Select {...field} disabled={!isEditPage} label="Select Job Title">
                     <MenuItem value="staff">Staff</MenuItem>
                     <MenuItem value="teacher">Teacher</MenuItem>
                   </Select>
@@ -196,7 +210,8 @@ function EmployeeEdit() {
             <TextField
               label="Start Date"
               type="date"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('startDate', {
                 required: 'Start Date is required',
               })}
@@ -212,7 +227,8 @@ function EmployeeEdit() {
             <TextField
               label="End Date"
               type="date"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('endDate')}
               fullWidth
               error={!!errors?.endDate}
@@ -224,7 +240,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Street Address"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('streetAddress', { required: 'Street Address is required' })}
               fullWidth
               error={!!errors?.streetAddress}
@@ -236,7 +253,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="City"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('city', { required: 'City is required' })}
               fullWidth
               error={!!errors?.city}
@@ -248,7 +266,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Postal Code"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('postalCode', { required: 'Postal Code is required' })}
               fullWidth
               error={!!errors?.postalCode}
@@ -260,7 +279,8 @@ function EmployeeEdit() {
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Country"
-              variant="standard"
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('country', { required: 'Country is required' })}
               fullWidth
               error={!!errors?.country}
@@ -269,15 +289,69 @@ function EmployeeEdit() {
               InputLabelProps={{ shrink: true }}
             />
           </Grid2>
-
-          {isEditPage && (
-            <Grid2 xs={12}>
-              <LoadingButton loading={isPending} type="submit" variant="contained" fullWidth>
-                Update
-              </LoadingButton>
-            </Grid2>
-          )}
+          <Grid2 xs={12} sm={6}>
+            <Controller
+              name="salary"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  label="Salary"
+                  {...field}
+                  type="number"
+                  variant={uiSettings?.textFieldVariant}
+                  size={uiSettings.textFieldSize}
+                  fullWidth
+                  error={!!errors?.salary}
+                  helperText={errors?.salary?.message}
+                />
+              )}
+            />
+          </Grid2>
+          <Grid2 xs={12} sm={6}>
+            <FormControl
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              error={!!errors?.baseOnSalary}
+              fullWidth
+            >
+              <InputLabel>Salary Type</InputLabel>
+              <Controller
+                name="baseOnSalary"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Select {...field} label="Salary Type">
+                    <MenuItem value="" disabled>
+                      Select Salary Type
+                    </MenuItem>
+                    <MenuItem value="monthly">Monthly</MenuItem>
+                    <MenuItem value="per-student(%)">Per Student(%)</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors?.baseOnSalary?.message}</FormHelperText>
+            </FormControl>
+          </Grid2>
         </Grid2>
+        {isEditPage && (
+          <LoadingButton
+            loading={isPending}
+            type="submit"
+            sx={{
+              width: {
+                xs: '100%',
+                sm: 'auto',
+              },
+            }}
+            variant={uiSettings?.btnVariant}
+            size={uiSettings?.btnSize}
+            color={uiSettings?.btnColor}
+            fullWidth
+          >
+            Update
+          </LoadingButton>
+        )}
       </Box>
     </Container>
   );

@@ -20,8 +20,10 @@ import useAddEmployee from 'src/libs/mutation/employee/useAddEmployee';
 import { BreadcrumbsGen } from 'src/components/navigation-breadcumbs';
 import config from 'src/config';
 import useGetBatches from 'src/libs/query/master/batch-class/useGetBatches';
+import { useUI } from 'src/context/CostomeUi';
 
 function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medium' }) {
+  const { uiSettings } = useUI();
   const [fetching, setFetching] = React.useState(false);
   const [batchesId, setBatchesId] = React.useState([]);
   const {
@@ -78,7 +80,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Institute ID"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('ifastId', { required: 'Institute ID is required', value: nextIdData })}
               fullWidth
               error={!!errors?.ifastId}
@@ -90,7 +93,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="First Name"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('firstName', { required: 'First name is required' })}
               fullWidth
               error={!!errors.firstName}
@@ -101,7 +105,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Last Name"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('lastName')}
               fullWidth
               error={!!errors?.lastName}
@@ -112,7 +117,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Email"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('email', { required: 'Email is required' })}
               fullWidth
               error={!!errors.email}
@@ -123,7 +129,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Phone Number"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('phoneNo', {
                 required: 'Phone number is required',
                 pattern: {
@@ -140,7 +147,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Emergency Contact"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('emergencyContact')}
               fullWidth
               error={!!errors?.emergencyContact}
@@ -152,7 +160,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
             <TextField
               label="Date of Birth"
               type="date"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('dob', { required: 'Date of Birth is required' })}
               fullWidth
               error={!!errors?.dob}
@@ -162,7 +171,12 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           </Grid2>
 
           <Grid2 xs={12} sm={6}>
-            <FormControl fullWidth variant={variant} error={!!errors?.jobTitle}>
+            <FormControl
+              fullWidth
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              error={!!errors?.jobTitle}
+            >
               <InputLabel>Select Job Title</InputLabel>
               <Controller
                 name="jobTitle"
@@ -170,7 +184,7 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
                 defaultValue=""
                 rules={{ required: 'Job Title is required' }}
                 render={({ field }) => (
-                  <Select {...field}>
+                  <Select {...field} label="Select Job Title">
                     <MenuItem value="staff">Staff</MenuItem>
                     <MenuItem value="teacher">Teacher</MenuItem>
                   </Select>
@@ -182,7 +196,12 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
 
           {watch('jobTitle') === 'teacher' && (
             <Grid2 xs={12} sm={6}>
-              <FormControl fullWidth size={size} variant={variant} error={!!errors?.enrolledBatch}>
+              <FormControl
+                fullWidth
+                variant={uiSettings?.textFieldVariant}
+                size={uiSettings.textFieldSize}
+                error={!!errors?.enrolledBatch}
+              >
                 <InputLabel id="batch-select-label">Select Batches</InputLabel>
                 <Controller
                   name="enrolledBatch"
@@ -223,7 +242,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
             <TextField
               label="Joining Date"
               type="date"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('joiningDate', {
                 required: 'Start Date is required',
               })}
@@ -238,7 +258,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
             <TextField
               label="End Date"
               type="date"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('endDate')}
               fullWidth
               error={!!errors?.endDate}
@@ -250,7 +271,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Notes"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('notes')}
               fullWidth
               error={!!errors?.notes}
@@ -261,7 +283,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Street Address"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('streetAddress', { required: 'Street Address is required' })}
               fullWidth
               error={!!errors?.streetAddress}
@@ -272,7 +295,8 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="City"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('city', { required: 'City is required' })}
               fullWidth
               error={!!errors?.city}
@@ -283,26 +307,74 @@ function EmployeeCreate({ variant = 'standard', size = 'medium', btnSize = 'medi
           <Grid2 xs={12} sm={6}>
             <TextField
               label="Postal Code"
-              variant={variant}
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
               {...register('postalCode', { required: 'Postal Code is required' })}
               fullWidth
               error={!!errors?.postalCode}
               helperText={errors?.postalCode?.message}
             />
           </Grid2>
-
-          <Grid2 xs={12}>
-            <LoadingButton
-              loading={isPending}
-              type="submit"
-              variant="contained"
+          <Grid2 xs={12} sm={6}>
+            <Controller
+              name="salary"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  label="Salary"
+                  {...field}
+                  type="number"
+                  variant={uiSettings?.textFieldVariant}
+                  size={uiSettings.textFieldSize}
+                  fullWidth
+                  error={!!errors?.salary}
+                  helperText={errors?.salary?.message}
+                />
+              )}
+            />
+          </Grid2>
+          <Grid2 xs={12} sm={6}>
+            <FormControl
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              error={!!errors?.baseOnSalary}
               fullWidth
-              size={btnSize}
             >
-              Submit
-            </LoadingButton>
+              <InputLabel>Salary Type</InputLabel>
+              <Controller
+                name="baseOnSalary"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Select {...field} label="Salary Type">
+                    <MenuItem value="" disabled>
+                      Select Salary Type
+                    </MenuItem>
+                    <MenuItem value="monthly">Monthly</MenuItem>
+                    <MenuItem value="per-student(%)">Per Student (%)</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors?.baseOnSalary?.message}</FormHelperText>
+            </FormControl>
           </Grid2>
         </Grid2>
+        <LoadingButton
+          type="submit"
+          loading={isPending}
+          sx={{
+            width: {
+              xs: '100%',
+              sm: 'auto',
+            },
+          }}
+          variant={uiSettings?.btnVariant}
+          size={uiSettings?.btnSize}
+          color={uiSettings?.btnColor}
+        >
+          Submit
+        </LoadingButton>
       </Box>
     </Container>
   );

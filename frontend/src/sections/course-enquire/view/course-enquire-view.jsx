@@ -1,4 +1,4 @@
-import { Chip, Container, Tooltip, Box, Button, Paper, Typography } from '@mui/material';
+import { Chip, Container, Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
@@ -29,7 +29,7 @@ function CourseEnquireView() {
     search: searchValue[pathname],
   });
 
-  const { mutate: updateStatus } = useUpdateEnquireStatus();
+  // const { mutate: updateStatus } = useUpdateEnquireStatus();
 
   const {
     mutate: onDeleteEnquire,
@@ -75,6 +75,23 @@ function CourseEnquireView() {
         `${row?.address?.streetAddress || ''}, ${row?.address?.city || ''}, ${
           row?.address?.postalCode || ''
         }, ${row?.address?.state || ''}, ${row?.address?.country || ''}`,
+    },
+    {
+      field: 'interestLevel',
+      headerName: 'Interest Level',
+      width: 150,
+      renderCell: (params) => (
+        <Chip
+          label={params.row?.interestLevel}
+          color={
+            params.row?.interestLevel == 'low'
+              ? 'error'
+              : params.row?.interestLevel == 'high'
+              ? 'success'
+              : 'warning'
+          }
+        />
+      ),
     },
     {
       field: 'courseInterest',

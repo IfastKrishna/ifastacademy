@@ -15,17 +15,14 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useUI } from 'src/context/CostomeUi';
 import useAddEnquire from 'src/libs/mutation/course-enquire/useAddEnquire';
 import useGetCourses from 'src/libs/query/master/course/useGetCourses';
 import useGetLeadSources from 'src/libs/query/master/leace-source/useGetLeadSource';
 import useGetAssignableUser from 'src/libs/query/user/useGetAssigedUser';
 
-function CourseEnquireCreate({
-  size = 'small',
-  variant = 'standard',
-  btnSize = 'medium',
-  btnVariant = 'contained',
-}) {
+function CourseEnquireCreate() {
+  const { uiSettings } = useUI();
   const [coursesId, setCoursesId] = React.useState([]);
   const {
     control,
@@ -84,9 +81,9 @@ function CourseEnquireCreate({
               rules={{ required: 'First Name is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="First Name"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors.firstName}
@@ -101,9 +98,9 @@ function CourseEnquireCreate({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Last Name"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.lastName}
@@ -119,9 +116,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Qualification is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Qualification"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.qualification}
@@ -137,9 +134,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Date of Birth is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Date of Birth"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   type="date"
                   fullWidth
                   {...field}
@@ -156,7 +153,12 @@ function CourseEnquireCreate({
               control={control}
               rules={{ required: 'Gender is required' }}
               render={({ field }) => (
-                <FormControl variant={variant} size={size} fullWidth error={!!errors.gender}>
+                <FormControl
+                  variant={uiSettings?.textFieldVariant}
+                  size={uiSettings.textFieldSize}
+                  fullWidth
+                  error={!!errors.gender}
+                >
                   <InputLabel>Gender</InputLabel>
                   <Select {...field} label="Gender">
                     <MenuItem value="male">Male</MenuItem>
@@ -175,9 +177,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Email is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Email"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.email}
@@ -193,9 +195,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Phone Number is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Phone Number"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.phoneNo}
@@ -212,8 +214,8 @@ function CourseEnquireCreate({
                 <TextField
                   {...field}
                   fullWidth
-                  size={size}
-                  variant={variant}
+                  size={uiSettings.textFieldSize}
+                  variant={uiSettings?.textFieldVariant}
                   label="Alternative Mobile Number"
                   error={!!errors?.alternativePhoneNo}
                   helperText={errors?.alternativePhoneNo?.message}
@@ -228,9 +230,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Street Address is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Street Address"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.streetAddress}
@@ -246,9 +248,9 @@ function CourseEnquireCreate({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="City"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.city}
@@ -264,9 +266,9 @@ function CourseEnquireCreate({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="State"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.state}
@@ -282,9 +284,9 @@ function CourseEnquireCreate({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Postal Code"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.postalCode}
@@ -294,7 +296,12 @@ function CourseEnquireCreate({
             />
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <FormControl variant={variant} size={size} fullWidth error={!!errors?.courseInterest}>
+            <FormControl
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+              error={!!errors?.courseInterest}
+            >
               <InputLabel>Select Course</InputLabel>
               <Controller
                 name="courseInterest"
@@ -328,22 +335,26 @@ function CourseEnquireCreate({
             </FormControl>
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <Controller
-              name="interestLevel"
-              control={control}
-              rules={{ required: 'Interest level is required' }}
-              render={({ field }) => (
-                <FormControl variant={variant} size={size} fullWidth>
-                  <InputLabel>Interest Level</InputLabel>
+            <FormControl
+              variant={uiSettings?.textFieldVariant}
+              size={uiSettings.textFieldSize}
+              fullWidth
+            >
+              <InputLabel>Interest Level</InputLabel>
+              <Controller
+                name="interestLevel"
+                control={control}
+                rules={{ required: 'Interest level is required' }}
+                render={({ field }) => (
                   <Select {...field} label="Interest Level">
                     <MenuItem value="high">High</MenuItem>
                     <MenuItem value="medium">Medium</MenuItem>
                     <MenuItem value="low">Low</MenuItem>
                   </Select>
-                  <FormHelperText>{errors.interestLevel?.message}</FormHelperText>
-                </FormControl>
-              )}
-            />
+                )}
+              />
+              <FormHelperText>{errors.interestLevel?.message}</FormHelperText>
+            </FormControl>
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Controller
@@ -351,7 +362,12 @@ function CourseEnquireCreate({
               control={control}
               rules={{ required: 'Lead Source is required' }}
               render={({ field }) => (
-                <FormControl variant={variant} size={size} fullWidth error={!!errors.leadSource}>
+                <FormControl
+                  variant={uiSettings?.textFieldVariant}
+                  size={uiSettings.textFieldSize}
+                  fullWidth
+                  error={!!errors.leadSource}
+                >
                   <InputLabel>Lead Source</InputLabel>
                   <Select {...field} label="Lead Source">
                     {leadSourceData?.data?.map((source) => (
@@ -385,8 +401,8 @@ function CourseEnquireCreate({
                     <TextField
                       {...params}
                       label="Assign To"
-                      variant={variant}
-                      size={size}
+                      variant={uiSettings?.textFieldVariant}
+                      size={uiSettings.textFieldSize}
                       error={!!errors?.assignedTo}
                       helperText={errors?.assignedTo?.message}
                     />
@@ -402,9 +418,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Follow-up Details is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Follow-up Details"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.followupDetails}
@@ -421,9 +437,9 @@ function CourseEnquireCreate({
               rules={{ required: 'Follow-up Date is required' }}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Next Follow-up Date"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   type="date"
                   fullWidth
                   {...field}
@@ -440,9 +456,9 @@ function CourseEnquireCreate({
               control={control}
               render={({ field }) => (
                 <TextField
-                  variant={variant}
+                  variant={uiSettings?.textFieldVariant}
                   label="Notes"
-                  size={size}
+                  size={uiSettings.textFieldSize}
                   fullWidth
                   {...field}
                   error={!!errors?.notes}
@@ -453,11 +469,18 @@ function CourseEnquireCreate({
           </Grid2>
         </Grid2>
         <LoadingButton
-          type="submit"
-          variant={btnVariant}
-          size={btnSize}
           loading={enquireSubmiting}
-          sx={{ mt: 2 }}
+          type="submit"
+          sx={{
+            mt: 2,
+            width: {
+              xs: '100%',
+              sm: 'auto',
+            },
+          }}
+          variant={uiSettings?.btnVariant}
+          size={uiSettings?.btnSize}
+          color={uiSettings?.btnColor}
         >
           Submit
         </LoadingButton>
