@@ -25,12 +25,12 @@ const batchSchema = new mongoose.Schema(
 
     batchTiming: {
       type: String,
-      required: true,
+      required: false,
     },
 
     capacity: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     monthlyFee: {

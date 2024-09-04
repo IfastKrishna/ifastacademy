@@ -1,4 +1,5 @@
-const PORT = 8080;
+require("dotenv").config();
+const PORT = process.env.PORT || 8080;
 const DB_NAME = "ifastacademy";
-// add commit
+
 module.exports = { PORT, DB_NAME };
