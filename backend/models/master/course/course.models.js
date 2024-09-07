@@ -37,10 +37,12 @@ const courseSchema = new mongoose.Schema(
       default: true,
     },
 
-    requirements: {
-      type: String,
-      trim: true,
-    },
+    topics: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Topic",
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -1,4 +1,4 @@
-const { Course } = require("../../../models/master/course.models");
+const { Course } = require("../../../models/master/course/course.models");
 const handleErrors = require("../../../utils/handleErrors");
 
 const getCourseById = async (req, res) => {

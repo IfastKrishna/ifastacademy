@@ -63,15 +63,6 @@ function BatchWiseAttendance() {
     }
   }, [loadedBatches, reset, batches, getValues]);
 
-  useEffect(() => {
-    if (userLoaded) {
-      reset({
-        ...getValues(),
-        takenBy: user?.data?.userId,
-      });
-    }
-  }, [user, reset, userLoaded, getValues]);
-
   const {
     data: attendanceData,
     isSuccess: loadAttendance,
@@ -109,10 +100,12 @@ function BatchWiseAttendance() {
       );
     });
   };
+  console.log(attendanceData?.data);
 
   const onSubmit = (data) => {
     const formattedData = {
       ...data,
+      takenBy: attendanceData?.data?.takenBy?._id || user?.data?.userId || user?.data?._id,
       date: dayjs(data.date).format('YYYY-MM-DD'),
       attendance:
         students?.data?.map((student) => {
@@ -125,6 +118,7 @@ function BatchWiseAttendance() {
         }) || [],
     };
 
+    console.log(formattedData);
     submit(formattedData);
   };
 
@@ -259,66 +253,38 @@ function BatchWiseAttendance() {
               />
             </Grid2>
             <Grid2 xs={12} sm={6}>
-              <FormControl
+              <TextField
                 fullWidth
-                error={!!errors.takenBy}
+                label="Taken By"
                 variant={uiSettings?.textFieldVariant}
                 size={uiSettings?.textFieldSize}
+                InputLabelProps={{ shrink: true }}
+                value={
+                  attendanceData?.data
+                    ? `${attendanceData?.data?.takenBy?.firstName} ${attendanceData?.data?.takenBy?.lastName} ${attendanceData?.data?.takenBy?.ifastId})`
+                    : `${user?.data?.firstName} ${user?.data?.lastName} ${user?.data?.ifastId}`
+                }
                 disabled
-              >
-                <InputLabel shrink={true}>Taken By</InputLabel>
-                <Controller
-                  name="takenBy"
-                  control={control}
-                  rules={{ required: 'Taken By is required' }}
-                  render={({ field }) => (
-                    <Select {...field} label="Taken By" displayEmpty>
-                      <MenuItem value="" disabled>
-                        Select
-                      </MenuItem>
-                      {loadAttendance ? (
-                        <MenuItem value={attendanceData?.data?.takenBy?._id} selected>
-                          {attendanceData?.data?.takenBy?.firstName}{' '}
-                          {attendanceData?.data?.takenBy?.lastName} (
-                          {attendanceData?.data?.takenBy?.ifastId})
-                        </MenuItem>
-                      ) : (
-                        <MenuItem value={user?.data?.userId} selected>
-                          {user?.data?.firstName} {user?.data?.lastName} ({user?.data?.ifastId})
-                        </MenuItem>
-                      )}
-                    </Select>
-                  )}
-                />
-                <FormHelperText>{errors.takenBy?.message}</FormHelperText>
-              </FormControl>
+              />
             </Grid2>
 
             {/* Today Topic Field */}
             <Grid2 xs={12} sm={6}>
-              <FormControl
-                fullWidth
-                error={!!errors.todayTopic}
-                variant={uiSettings?.textFieldVariant}
-                size={uiSettings?.textFieldSize}
-              >
-                <InputLabel shrink={true}>Today Topic</InputLabel>
-                <Controller
-                  name="todayTopic"
-                  control={control}
-                  rules={{ required: 'Topic is required' }}
-                  render={({ field }) => (
-                    <Select {...field} label="Today Topic" displayEmpty>
-                      <MenuItem value="" disabled>
-                        Select
-                      </MenuItem>
-                      <MenuItem value="topic 1">Topic 1</MenuItem>
-                      <MenuItem value="topic 2">Topic 2</MenuItem>
-                    </Select>
-                  )}
-                />
-                <FormHelperText>{errors?.todayTopic?.message}</FormHelperText>
-              </FormControl>
+              <Controller
+                name="todayTopic"
+                control={control}
+                rules={{ required: 'Topic is required' }}
+                render={({ field }) => (
+                  <TextField
+                    fullWidth
+                    error={!!errors.todayTopic}
+                    variant={uiSettings?.textFieldVariant}
+                    size={uiSettings?.textFieldSize}
+                    {...field}
+                    label="Today Topic"
+                  />
+                )}
+              />
             </Grid2>
 
             {/* Problem Faced Field */}
